@@ -1,0 +1,92 @@
+
+# THIS FILE CONTAINS HARDWARE RELATED CONFIGS FOR BUILD
+
+
+######################################
+# BUILD CONFIG
+######################################
+
+# SELECT THE CHIP
+CHIP = STM32F103C8
+
+# START ADDRESS FOR .bin FILE
+ADDR = 0x08000000
+
+# CPU CORE
+CPU_CORE = cortex-m3
+
+# OUTPUT NAME
+TARGET = _Makefile_Template
+
+# STARTUP FILE
+STARTUP = startup_stm32f103xb.s
+
+# LINKER SCRIPT FILE
+LDSCRIPT = STM32F103CBTx_FLASH.ld
+
+
+######################################
+# TRANSLATION UNITS
+######################################
+
+# MCU/HW RELATED C TRANSLATION UNITS
+HW_C_SOURCES = \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c \
+Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_iwdg.c \
+Core/Src/system_stm32f1xx.c \
+Core/Src/stm32f1xx_it.c \
+Core/Src/stm32f1xx_hal_msp.c \
+Core/Src/gpio.c \
+Core/Src/iwdg.c \
+Core/Src/usart.c
+
+# MCU/HW RELATED C++ TRANSLATION UNITS
+HW_CPP_SOURCES = \
+
+
+# MCU/HW RELATED ASSEMBLER TRANSLATION UNITS
+HW_AS_SOURCES = \
+$(STARTUP) \
+
+
+######################################
+# INCLUDES
+######################################
+
+# COMPILER INCLUDES
+HW_INCLUDES = \
+-IDrivers/STM32F1xx_HAL_Driver/Inc \
+-IDrivers/STM32F1xx_HAL_Driver/Inc/Legacy \
+-IDrivers/CMSIS/Device/ST/STM32F1xx/Include \
+-IDrivers/CMSIS/Include
+
+
+# ASSEMBLER INCLUDES
+HW_AS_INCLUDES = \
+
+
+######################################
+# DEFINES
+######################################
+
+# ASSEMBLER DEFINES
+HW_AS_DEFS = \
+
+
+# COMPILER DEFINES
+HW_DEFS = \
+-DSTM32F103xB \
+-DUSE_HAL_DRIVER

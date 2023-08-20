@@ -1,4 +1,12 @@
 
+# ABOUT
+
+This repo contains template for projects I use. Template includes:
+- Makefile for building the projects(multi hardware builds and RTOS are supported)
+- Readme file
+- License file
+- Git ignore file
+- Set of rules I follow in software development
 
 
 # LICENSE

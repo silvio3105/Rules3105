@@ -18,7 +18,7 @@ HW_VER = mk_22-0091rev1
 
 # INCLUDE HW STUFF
 ifeq ($(HW_VER), mk_22-0091rev1)
-include MakeHW/mk_22-0091rev1
+include .hw/mk_22-0091rev1
 endif
 
 # RELEASE BUILD

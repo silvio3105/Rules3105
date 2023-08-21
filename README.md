@@ -47,6 +47,7 @@ Tasks combine application modules and their logic to do something useful. In cas
 # PROJECT FOLDER STRUCTURE
 
 - 📂 **{Project_name}**: Root folder.
+    - 📂 **.backend**: Folder with files for readme.
 	- 📂 **.builds***: Folder with other build folders(used by Make and ARM-GCC).
   	- 📂 **.docs***: Folder with project documentation generated with Doxygen.
   	- 📂 **.doxygen***: Folder with Doxygen project file.

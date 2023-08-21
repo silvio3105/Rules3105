@@ -14,7 +14,7 @@ This repo contains template for projects I use. Template includes:
 
 **This part applies only to firmware projects.**
 
-![Project structure diagram](.backend/Project%20structure.svg "Project structure diagram")
+![Project structure diagram](.backend/Project%20structure.png "Project structure diagram")
 
 Diagram shows project structure. It goes from the base up.
 

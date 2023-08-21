@@ -10,7 +10,7 @@ This repo contains template for projects I use. Template includes:
 - Set of rules I follow in embedded software development
 
 
-# PROJECT STRUCTURE
+# PROJECT APPLICATION STRUCTURE
 
 **This part applies only to firmware projects.**
 
@@ -69,7 +69,7 @@ Tasks combine application modules and their logic to do something useful. In cas
 _*: File/folder not needed if project is library/driver. Library/driver files are placed in root folder._
 
 
-# RULES
+# VERSIONING & NAMING
 ### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**
@@ -98,6 +98,49 @@ Firmware version is copied from software versioning rule.
 Examples:
 `3DCLK-FW_v0.13.18rc3` is name of .bin/.hex file for 3D Clock firmware, version 0.13.18, release candidate 3.
 `3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of .bin/.hex file for 3D Clock firmware for hardware version 22-0091rev1, firmware version v1.0.5, release candidate 1.
+
+### File naming
+
+Every file is named with first uppercase letter(Main.cpp, not main.cpp).
+Files made for C++ have .hpp header file, while C files have .h header file.
+
+
+# TOOLS
+
+List of the tools I use (Windows 10 Pro x64):
+-	VS Code
+	- C/C++ IntelliSense by Microsoft
+	- Cortex-Debug by marus25
+	- debug-tracker-vscode by mcu-debug
+	- Doxygen Documentation Generator by Christoph Schlosser
+	- Hex Editor by Microsoft
+	- Markdown All in One by Yu Zhang
+	- Markdown Preview by Yiyi Wang
+	- MemoryView by mcu-debug
+	- Peripheral Viewer by mcu-debug
+	- RTOS Views by mcu-debug
+	- Serial Monitor by Microsoft
+	- Solarized by Ryan Olson
+- Git
+- ARM-GCC v10.3.1 20210824 (GNU Arm Embedded Toolchain 10.3-2021.10)
+- GNU Make v3.81
+- Doxygen
+- SEGGER J-Link(SWD)
+- STM32CubeMX
+- nRF PPK2
+- Salea Logic
+- CMSIS Configuration Wizard
+- Draw.io
+- Fusion 360 (Electronics)
+- Saturn PCB Toolkit
+
+
+# CODE STANDARD
+
+### C++ over C!
+
+I prefer to use C++ over C, but only parts of C++ that does not induce overhead(expect templates).
+Classes, namespaces and enum classes FTW!
 
 
 # LICENSE

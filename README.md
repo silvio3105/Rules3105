@@ -6,8 +6,8 @@ This repo contains template for projects I use. Template includes:
 - Readme file
 - License file
 - Git ignore file
-- Software structure
-- Set of rules I follow in embedded software development
+- Project structures
+- Set of coding rules I follow in embedded software development
 
 
 # PROJECT APPLICATION STRUCTURE
@@ -108,38 +108,38 @@ Files made for C++ have .hpp header file, while C files have .h header file.
 # TOOLS
 
 List of the tools I use (Windows 10 Pro x64):
--	VS Code
-	- C/C++ IntelliSense by Microsoft
-	- Cortex-Debug by marus25
-	- debug-tracker-vscode by mcu-debug
-	- Doxygen Documentation Generator by Christoph Schlosser
-	- Hex Editor by Microsoft
-	- Markdown All in One by Yu Zhang
-	- Markdown Preview by Yiyi Wang
-	- MemoryView by mcu-debug
-	- Peripheral Viewer by mcu-debug
-	- RTOS Views by mcu-debug
-	- Serial Monitor by Microsoft
-	- Solarized by Ryan Olson
-- Git
-- ARM-GCC v10.3.1 20210824 (GNU Arm Embedded Toolchain 10.3-2021.10)
-- GNU Make v3.81
-- Doxygen
-- SEGGER J-Link(SWD)
-- STM32CubeMX
-- nRF PPK2
-- Salea Logic
-- CMSIS Configuration Wizard
-- Draw.io
-- Fusion 360 (Electronics)
-- Saturn PCB Toolkit
+-	[VS Code](https://code.visualstudio.com/download)
+	- [C/C++ IntelliSense by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+	- [Cortex-Debug by marus25](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
+	- [debug-tracker-vscode by mcu-debug](https://marketplace.visualstudio.com/items?itemName=mcu-debug.debug-tracker-vscode)
+	- [Doxygen Documentation Generator by Christoph Schlosser](https://marketplace.visualstudio.com/items?itemName=cschlosser.doxdocgen)
+	- [Hex Editor by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
+	- [Markdown All in One by Yu Zhang](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+	- [Markdown Preview by Yiyi Wang](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+	- [MemoryView by mcu-debug](https://marketplace.visualstudio.com/items?itemName=mcu-debug.memory-view)
+	- [Peripheral Viewer by mcu-debug](https://marketplace.visualstudio.com/items?itemName=mcu-debug.peripheral-viewer)
+	- [RTOS Views by mcu-debug](https://marketplace.visualstudio.com/items?itemName=mcu-debug.rtos-views)
+	- [Serial Monitor by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-serial-monitor)
+	- [Solarized by Ryan Olson](https://marketplace.visualstudio.com/items?itemName=ryanolsonx.solarized)
+- [Git](https://git-scm.com/downloads)
+- [ARM-GCC v10.3.1 20210824 (GNU Arm Embedded Toolchain 10.3-2021.10)](https://developer.arm.com/downloads/-/gnu-rm)
+- [GNU Make v3.81](https://gnuwin32.sourceforge.net/packages/make.htm)
+- [Doxygen](https://www.doxygen.nl/download.html)
+- [SEGGER J-Link(SWD)](https://www.segger.com/downloads/jlink/)
+- [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
+- [nRF PPK2](https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2)
+- [Salea Logic](https://www.saleae.com/downloads/)
+- [CMSIS Configuration Wizard](https://sourceforge.net/projects/cmsisconfig/)
+- [Draw.io](https://app.diagrams.net/)
+- [Fusion 360 (Electronics)](https://www.autodesk.com/products/fusion-360/overview)
+- [Saturn PCB Toolkit](https://saturnpcb.com/saturn-pcb-toolkit/)
 
 
 # CODE STANDARD
 
 ### C++ over C!
 
-I prefer to use C++ over C, but only parts of C++ that does not induce overhead(expect templates).
+I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).
 Classes, namespaces and enum classes FTW!
 
 

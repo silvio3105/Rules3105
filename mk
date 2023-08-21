@@ -36,8 +36,8 @@ USE_G3 = 0
 # USE G++ INSTEAD OF GCC
 GPP = 0
 
-# OUTPUT LOCATION
-BUILD_DIR = .build
+# BUILD FOLDER
+BUILD_FOLDER = .build/$(BUILD_NAME)
 
 # PRINT GCC VERSION AFTER BUILD
 PRINT_VER = 0
@@ -58,16 +58,31 @@ EXCEPTIONS = 0
 DEF_LIB = 0
 
 # JLINK SCRIPT NAMES
-FLASH_SCRIPT = JLink_Flash_$(TARGET).jlink
-ERASE_SCRIPT = JLink_Erase_$(TARGET).jlink
+FLASH_SCRIPT = JLink_Flash_$(BUILD_NAME).jlink
+ERASE_SCRIPT = JLink_Erase_$(BUILD_NAME).jlink
 
-# PREFIX
+# TOOLCHAIN PREFIX
 TC_PREFIX = arm-none-eabi-
-SRC_PREFIX = Core/Src
+
+# MAIN C/C++ SOURCE FOLDER
+SRC_FOLDER = Src
+
+# MAIN C/C++ HEADER FOLDER
+INC_FOLDER = Inc
+
+# FOLDER WITH JLINK SCRIPTS
+JLINK_FOLDER = .jlink
+
+# RTOS STUFF
 ifeq ($(RTOS), 1)
-RTOS_PREFIX = RTOS
-RTOS_SRC_PREFIX = $(RTOS_PREFIX)/Src
-RTOS_INC_PREFIX = $(RTOS_PREFIX)/Inc
+# RTOS MAIN FOLDER
+RTOS_FOLDER = RTOS
+
+# RTOS C/C++ SOURCE FOLDER
+RTOS_SRC_FOLDER = $(RTOS_FOLDER)/Src
+
+# RTOS INCLUDE FOLDER
+RTOS_INC_FOLDER = $(RTOS_FOLDER)/Inc
 endif
 
 
@@ -80,12 +95,12 @@ endif
 # C UNITS
 C_SOURCES = \
 $(HW_C_SOURCES) \
-$(SRC_PREFIX)/main.c \
 
 
 # C++ UNITS
 CPP_SOURCES =  \
 $(HW_CPP_SOURCES) \
+$(SRC_FOLDER)/Main.cpp \
 
 
 # ASSEMBLER UNITS
@@ -104,7 +119,7 @@ AS_INCLUDES =  \
 # C/C++ INCLUDE DIRECTORIES
 C_INCLUDES =  \
 $(HW_INCLUDES) \
--ICore/Inc \
+-I$(INC_FOLDER) \
 
 
 ######################################
@@ -126,27 +141,27 @@ $(HW_DEFS) \
 ######################################
 ifeq ($(RTOS), 1)
 C_SOURCES += \
-$(RTOS_SRC_PREFIX)/os_systick.c \
-$(RTOS_SRC_PREFIX)/RTX_Config.c \
-$(RTOS_SRC_PREFIX)/rtx_delay.c \
-$(RTOS_SRC_PREFIX)/rtx_evflags.c \
-$(RTOS_SRC_PREFIX)/rtx_evr.c \
-$(RTOS_SRC_PREFIX)/rtx_kernel.c \
-$(RTOS_SRC_PREFIX)/rtx_memory.c \
-$(RTOS_SRC_PREFIX)/rtx_mempool.c \
-$(RTOS_SRC_PREFIX)/rtx_msgqueue.c \
-$(RTOS_SRC_PREFIX)/rtx_mutex.c \
-$(RTOS_SRC_PREFIX)/rtx_semaphore.c \
-$(RTOS_SRC_PREFIX)/rtx_system.c \
-$(RTOS_SRC_PREFIX)/rtx_thread.c \
-$(RTOS_SRC_PREFIX)/rtx_timer.c \
-$(RTOS_SRC_PREFIX)/rtx_lib.c \
+$(RTOS_SRC_FOLDER)/os_systick.c \
+$(RTOS_SRC_FOLDER)/RTX_Config.c \
+$(RTOS_SRC_FOLDER)/rtx_delay.c \
+$(RTOS_SRC_FOLDER)/rtx_evflags.c \
+$(RTOS_SRC_FOLDER)/rtx_evr.c \
+$(RTOS_SRC_FOLDER)/rtx_kernel.c \
+$(RTOS_SRC_FOLDER)/rtx_memory.c \
+$(RTOS_SRC_FOLDER)/rtx_mempool.c \
+$(RTOS_SRC_FOLDER)/rtx_msgqueue.c \
+$(RTOS_SRC_FOLDER)/rtx_mutex.c \
+$(RTOS_SRC_FOLDER)/rtx_semaphore.c \
+$(RTOS_SRC_FOLDER)/rtx_system.c \
+$(RTOS_SRC_FOLDER)/rtx_thread.c \
+$(RTOS_SRC_FOLDER)/rtx_timer.c \
+$(RTOS_SRC_FOLDER)/rtx_lib.c \
 
 ASM_SOURCES += \
 $(RTOS_PREFIX)/irq_armv7m.S \
 
 C_INCLUDES += \
-$(RTOS_INC_PREFIX) \
+-I$(RTOS_INC_FOLDER) \
 
 endif
 
@@ -234,49 +249,49 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 #######################################
 LIBS = -lc -lm -lnosys 
 LIBDIR = 
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref,--gc-sections,--print-memory-usage
+LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_FOLDER)/$(BUILD_NAME).map,--cref,--gc-sections,--print-memory-usage
 
 
 #######################################
 # BUILD
 #######################################
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
+all: $(BUILD_FOLDER)/$(BUILD_NAME).elf $(BUILD_FOLDER)/$(BUILD_NAME).hex $(BUILD_FOLDER)/$(BUILD_NAME).bin
 
 # LIST OF C OBJECTS
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
+OBJECTS = $(addprefix $(BUILD_FOLDER)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
 
 # LIST OF C++ OBJECTS
-OBJECTS_CPP = $(addprefix $(BUILD_DIR)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
+OBJECTS_CPP = $(addprefix $(BUILD_FOLDER)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
 
 # LIST OF ASM OBJECTS
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
+OBJECTS += $(addprefix $(BUILD_FOLDER)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
-$(BUILD_DIR)/%.o: %.c $(MAKEFILE) | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+$(BUILD_FOLDER)/%.o: %.c $(MAKEFILE) | $(BUILD_FOLDER) 
+	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.c=.lst)) $< -o $@
 
-$(BUILD_DIR)/%.o: %.cpp $(MAKEFILE) | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.cpp=.lst)) $< -o $@
+$(BUILD_FOLDER)/%.o: %.cpp $(MAKEFILE) | $(BUILD_FOLDER) 
+	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.cpp=.lst)) $< -o $@
 
-$(BUILD_DIR)/%.o: %.s $(MAKEFILE) | $(BUILD_DIR)
+$(BUILD_FOLDER)/%.o: %.s $(MAKEFILE) | $(BUILD_FOLDER)
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) $(OBJECTS_CPP) Makefile
+$(BUILD_FOLDER)/$(BUILD_NAME).elf: $(OBJECTS) $(OBJECTS_CPP) Makefile
 	$(CC) $(OBJECTS) $(OBJECTS_CPP) $(LDFLAGS) -o $@
 
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+$(BUILD_FOLDER)/%.hex: $(BUILD_FOLDER)/%.elf | $(BUILD_FOLDER)
 	$(HEX) $< $@
 	
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+$(BUILD_FOLDER)/%.bin: $(BUILD_FOLDER)/%.elf | $(BUILD_FOLDER)
 	$(BIN) $< $@
 
 ifeq ($(PRINT_VER), 1)
 	$(CC) --version
 endif	
 	
-$(BUILD_DIR):
+$(BUILD_FOLDER):
 	mkdir $@
 
 
@@ -284,25 +299,25 @@ $(BUILD_DIR):
 # FLASH CHIP
 #######################################
 flash: all
-	if not exist $(FLASH_SCRIPT) (echo Creating flash script & (echo r& echo h& echo loadbin $(BUILD_DIR)/$(TARGET).bin,$(ADDR)& echo verifybin $(BUILD_DIR)/$(TARGET).bin,$(ADDR)& echo r& echo q) > $(FLASH_SCRIPT)) else (echo Flash script exists) 
-	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(FLASH_SCRIPT)
+	if not exist $(JLINK_FOLDER)/$(FLASH_SCRIPT) (echo Creating flash script & (echo r& echo h& echo loadbin $(BUILD_FOLDER)/$(BUILD_NAME).bin,$(ADDR)& echo verifybin $(BUILD_FOLDER)/$(BUILD_NAME).bin,$(ADDR)& echo r& echo q) > $(JLINK_FOLDER)/$(FLASH_SCRIPT)) else (echo Flash script exists) 
+	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(JLINK_FOLDER)/$(FLASH_SCRIPT)
 	
 #######################################
 # ERASE CHIP FLASH MEMORY
 #######################################		
 erase:
-	if not exist $(ERASE_SCRIPT) (echo Creating erase script & (echo r& echo h& echo erase& echo r& echo q) > $(ERASE_SCRIPT)) else (echo Erase script exists)
-	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(ERASE_SCRIPT)
+	if not exist $(JLINK_FOLDER)/$(ERASE_SCRIPT) (echo Creating erase script & (echo r& echo h& echo erase& echo r& echo q) > $(JLINK_FOLDER)/$(ERASE_SCRIPT)) else (echo Erase script exists)
+	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(JLINK_FOLDER)/$(ERASE_SCRIPT)
 	
 
 #######################################
 # REMOVE BUILD FOLDER & OTHER STUFF
 #######################################
 clean:
-	if exist $(BUILD_DIR) (echo Deleting build directory & rmdir /s /q $(BUILD_DIR))
-	if exist $(FLASH_SCRIPT) (echo Deleting flash script & del $(FLASH_SCRIPT))
-	if exist $(ERASE_SCRIPT) (echo Deleting erase script & del $(ERASE_SCRIPT))
+	if exist $(BUILD_FOLDER) (echo Deleting build directory & rmdir /s /q $(BUILD_FOLDER))
+	if exist $(JLINK_FOLDER)/$(FLASH_SCRIPT) (echo Deleting flash script & del $(JLINK_FOLDER)/$(FLASH_SCRIPT))
+	if exist $(JLINK_FOLDER)/$(ERASE_SCRIPT) (echo Deleting erase script & del $(JLINK_FOLDER)/$(ERASE_SCRIPT))
 
 
 
--include $(wildcard $(BUILD_DIR)/*.d)
+-include $(wildcard $(BUILD_FOLDER)/*.d)

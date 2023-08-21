@@ -6,7 +6,7 @@
 # BUILD CONFIG
 ######################################
 
-# SELECT THE CHIP
+# SELECT THE CHIP (JLINK)
 CHIP = STM32F103C8
 
 # START ADDRESS FOR .bin FILE
@@ -15,8 +15,8 @@ ADDR = 0x08000000
 # CPU CORE
 CPU_CORE = cortex-m3
 
-# OUTPUT NAME
-TARGET = _Makefile_Template
+# BUILD NAME
+BUILD_NAME = _Makefile_Template
 
 # STARTUP FILE
 STARTUP = startup_stm32f103xb.s

@@ -10,14 +10,71 @@ This repo contains template for projects I use. Template includes:
 - Set of rules I follow in embedded software development
 
 
-# RULES
+# PROJECT STRUCTURE
 
-### Versioning
+**This part applies only to firmware projects.**
+
+![Project structure diagram](.backend/Project%20structure.svg "Project structure diagram")
+
+Diagram shows project structure. It goes from the base up.
+
+### Hardware
+
+The base for every project. It runs the project.
+
+### Drivers
+
+Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is wirrten without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided). Drivers are not written with application logic. They are like little lego, You can use it everywhere. Drivers can interact with libraries.
+Every driver is written as C++ class within own namespace.
+
+### Libraries
+
+Library is piece of the software with basic logic that does not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.
+Eg., library with string manipulation functions.
+Every library is written within own namespace.
+
+### Application modules
+
+Application modules combines drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).
+Every module has its own namespace and can be written as many C++ classes.
+
+### Tasks
+
+Tasks combine application modules and their logic to do something useful. In case of bare metal project there is only one task - endless loop in main().
+
+
+
+# PROJECT FOLDER STRUCTURE
+
+- 📂 **{Project_name}**: Root folder.
+	- 📂 **.builds***: Folder with other build folders(used by Make and ARM-GCC).
+  	- 📂 **.docs***: Folder with project documentation generated with Doxygen.
+  	- 📂 **.doxygen***: Folder with Doxygen project file.
+  	- 📂 **.hw***: Folder with hardware related configs for Make.
+  	- 📂 **.jlink***: Folder with JLink scripts from flash and erase. 
+  	- 📂 **.releases***: Folder with stable releases.
+    	- 📂 **RC***: Folder with release candidate releases.
+  	- 📂 **.vscode**: Folder with VS Code config files.
+  	- 📂 **Inc***: Folder with .h and .hpp header files.
+  	- 📂 **RTOS***: Folder with RTOS related files.
+    	- 📂 **Inc***: Folder with RTOS related header files.
+    	- 📂 **Src***: Folder with RTOS related source files.
+  	- 📂 **Src***: Folder with .c and .cpp source files.
+  	- .gitignore: Git ignore file.
+  	- LICENSE: Project license.
+  	- mk*: Main Makefile used for bulding the project.
+  	- README.md: Main readme file.
+
+_*: File/folder not needed if project is library/driver. Library/driver files are placed in root folder._
+
+
+# RULES
+### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**
   `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test/alpha/beta release.
   `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1. 
-  Every number is "8-bit". If `Y` goes over 255, `X` will increase by one and `Y` will reset to zero.
+  `X`, `Y` and `Z` must be "8-bit number" while `A` cannot go over 99. If `Y` goes over 255, `X` will increase by one and `Y` will reset to zero.
   Examples:
   `v0.1rc5` Release candidate #5 for version 0.1.
   `v1.13` Stable release, version 1.13.
@@ -29,6 +86,17 @@ This repo contains template for projects I use. Template includes:
   Examples:
   `v0.13.18rc8` Release candidate #8 for version 0.13.18
   `v13.12.0` Stable release, version 13.12.0
+
+### Build naming
+
+This rule applies to naming build executables files(.bin and .hex).
+Naming rule is: **{fw_name}\_{fw_version}(_{HW})**
+Firmware name contains project name and firmware type, eg., `3DCLK-FW` is name of firmware for 3D Clock project. `3DCLK-BL` is name of bootloader for 3D Clock project. Firmware name is max 16 chars long.
+Firmware version is copied from software versioning rule.
+`_HW` is inserted in case when build is for specific hardware, eg., hardware 22-0091rev1.
+Examples:
+`3DCLK-FW_v0.13.18rc3` is name of .bin/.hex file for 3D Clock firmware, version 0.13.18, release candidate 3.
+`3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of .bin/.hex file for 3D Clock firmware for hardware version 22-0091rev1, firmware version v1.0.5, release candidate 1.
 
 
 # LICENSE

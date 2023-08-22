@@ -24,18 +24,19 @@ The base for every project. It runs the project.
 
 ### Drivers
 
-Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is wirrten without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided). Drivers are not written with application logic. They are like little lego, You can use it everywhere. Drivers can interact with libraries.
+Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is wirrten without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided).<br>
+Drivers are not written with application logic. They are like little lego, You can use it everywhere. Drivers can interact with libraries.<br>
 Every driver is written as C++ class within own namespace.
 
 ### Libraries
 
-Library is piece of the software with basic logic that does not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.
-Eg., library with string manipulation functions.
+Library is piece of the software with basic logic that does not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.<br>
+Eg., library with string manipulation functions.<br>
 Every library is written within own namespace.
 
 ### Application modules
 
-Application modules combines drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).
+Application modules combines drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).<br>
 Every module has its own namespace and can be written as many C++ classes.
 
 ### Tasks
@@ -73,23 +74,23 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
 ### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**
-  `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test release.
-  `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1. 
-  `X`, `Y` and `A` cannot go over 99. If `Y` goes over 99, `X` will increase by one and `Y` will reset to zero.
-  New features will increase `X` and/or `Y`. It depends on number of features and its size which are introduced with new version.
-  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).
-  Examples:
-  `v0.1rc5` Release candidate #5 for version 0.1.
+  `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test release.<br>
+  `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1.<br>
+  `X`, `Y` and `A` cannot go over 99. If `Y` goes over 99, `X` will increase by one and `Y` will reset to zero.<br>
+  New features will increase `X` and/or `Y`. It depends on number of features and its size which are introduced with new version.<br>
+  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).<br>
+  Examples:<br>
+  `v0.1rc5` Release candidate #5 for version 0.1.<br>
   `v1.13` Stable release, version 1.13.
 
 - **Firmware: vX.Y.Z(rcA)**
-  `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.
-  `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.
-  `X`, `Y`, `Z` and `A` cannot go over 99.
-  Bug fixes and minor updates increase `Z` number while new features increase `Y` number. `X` is increased when `Y` goes over 99.
-  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).
-  Examples:
-  `v0.13.18rc8` Release candidate #8 for version 0.13.18
+  `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.<br>
+  `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.<br>
+  `X`, `Y`, `Z` and `A` cannot go over 99.<br>
+  Bug fixes and minor updates increase `Z` number while new features increase `Y` number. `X` is increased when `Y` goes over 99.<br>
+  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).<br>
+  Examples:<br>
+  `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
   `v13.12.0` Stable release, version 13.12.0
 
 ### Build naming

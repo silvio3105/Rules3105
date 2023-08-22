@@ -15,7 +15,7 @@ This repo contains template for projects I use. Template includes:
 **This part applies only to firmware projects.**
 
 <p align="center">
-  <img src=".backend/Project%20structure.png" alt="Project structure diagram" title="Project structure diagram" />
+  <img src=".backend/Project%20structure.png" alt="Project application structure diagram" title="Project application structure diagram" />
 </p>
 
 Diagram shows project structure. It goes from the base up.

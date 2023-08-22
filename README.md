@@ -221,6 +221,9 @@ This is only basic layout for source and header files. Layout depends on case-to
 	// ----- EXTERNS
 
 
+	// ----- NAMESPACES
+
+
 	// ----- FUNCTION DECLARATIONS
 
 
@@ -234,6 +237,14 @@ This is only basic layout for source and header files. Layout depends on case-to
 ### Code example
 
 ```cpp
+
+/*
+This is comment block.
+Comment block is multiline comment.
+*/
+
+// This is inline comment
+
 #define THIS_IS_MACRO				value
 #define THIS_IS_SECOND_MACRO			(THIS_IS_MACRO - 5)
 
@@ -254,6 +265,11 @@ struct
 	ext_handler_f someHandler;
 } this_is_struct_t;
 
+/**
+ * @brief Class brief.
+ * 
+ * Class description.
+ */
 class ThisIsClass
 {
 	public:
@@ -271,7 +287,7 @@ extern volatile someVaraible;
 uint32_t thisIsVariable = 0; /**< @brief This is inline doxygen comment. */
 
 /**
- * @brief Function brief
+ * @brief Function brief.
  * 
  * Function description.
  * 
@@ -283,6 +299,102 @@ uint32_t thisIsVariable = 0; /**< @brief This is inline doxygen comment. */
  */
 void someFunction(const uint8_t argOne, uint16_t* argsList, uint32_t& varRef);
 
+namespace SomeNameSpace
+{
+	// VARIABLES
+	uint64_t x;
+
+	// FUNCTIONS
+	void setFoo(char someChar);
+}
+
+```
+
+### Code workflow comments
+
+For some reason I like to add bunch of "workflow comments".
+Workflow comments describe what lines below (comment) do. I tend to "group" lines of code into little sections.
+
+```cpp
+void foo(void)
+{
+	float tmp = 0;
+	uint16_t x = 1;
+	char str[32] = { '\0' };
+	uint32_t* ptr = nullptr;
+
+	// Execute something with value x
+	exe(x);
+
+	// Calculate result and convert it
+	foo2(ptr, x);
+	tmp = 2.00f * (*ptr);
+
+	// Do something with value
+	if (tmp > 10.00f) tmp = 10.00f;
+		else tmp -= 0.55f;
+
+	// Check does string exist
+	if (str[0])
+	{
+		// Do something with string		
+	}
+	else return; // String does not exist, abort
+
+	// Rest of the function...
+
+}
+```
+
+### Nested if statments?
+
+I prefer less nested code. If I can check requirments before function does its job, I do it.
+
+Short examples:
+```cpp
+void foo(void)
+{
+	// Check if device is online
+	if (isOnline())
+	{
+		// Check if data is ready
+		if (isReady())
+		{
+			// Send data
+			bar();
+			bar2();
+		}
+		else print("Not ready\n");
+	}
+	else print("Not online\n");
+}
+```
+
+```cpp
+void foo(void)
+{
+	// Check if device is online
+	if (!isOnline())
+	{
+		print("Not online\n");
+
+		// Abort
+		return;
+	}
+
+	// Check if data is ready
+	if (!isReady())
+	{
+		print("Not ready\n");
+
+		// Abort
+		return:	
+	}
+
+	// Send data
+	bar();
+	bar2();
+}
 ```
 
 

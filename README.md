@@ -73,7 +73,7 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
 # VERSIONING & NAMING
 ### Software versioning
 
-- **Library/Driver: vX.Y(rcA)**
+- **Library/Driver: vX.Y(rcA)**<br>
   `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test release.<br>
   `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1.<br>
   `X`, `Y` and `A` cannot go over 99. If `Y` goes over 99, `X` will increase by one and `Y` will reset to zero.<br>
@@ -83,7 +83,7 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
   `v0.1rc5` Release candidate #5 for version 0.1.<br>
   `v1.13` Stable release, version 1.13.
 
-- **Firmware: vX.Y.Z(rcA)**
+- **Firmware: vX.Y.Z(rcA)**<br>
   `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.<br>
   `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.<br>
   `X`, `Y`, `Z` and `A` cannot go over 99.<br>
@@ -95,18 +95,18 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
 
 ### Build naming
 
-This rule applies to naming build executables files(.bin and .hex).
-Naming rule is: **{fw_name}\_{fw_version}(_{HW})**
-Firmware name contains project name and firmware type, eg., `3DCLK-FW` is name of firmware for 3D Clock project. `3DCLK-BL` is name of bootloader for 3D Clock project. Firmware name is max 16 chars long.
-Firmware version is copied from software versioning rule.
-`_HW` is inserted in case when build is for specific hardware, eg., hardware 22-0091rev1.
-Examples:
-`3DCLK-FW_v0.13.18rc3` is name of .bin/.hex file for 3D Clock firmware, version 0.13.18, release candidate 3.
+This rule applies to naming build executables files(.bin and .hex).<br>
+Naming rule is: **{fw_name}\_{fw_version}(_{HW})**<br>
+Firmware name contains project name and firmware type, eg., `3DCLK-FW` is name of firmware for 3D Clock project. `3DCLK-BL` is name of bootloader for 3D Clock project. Firmware name is max 16 chars long.<br>
+Firmware version is copied from software versioning rule.<br>
+`_HW` is inserted in case when build is for specific hardware, eg., hardware 22-0091rev1.<br>
+Examples:<br>
+`3DCLK-FW_v0.13.18rc3` is name of .bin/.hex file for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
 `3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of .bin/.hex file for 3D Clock firmware for hardware version 22-0091rev1, firmware version v1.0.5, release candidate 1.
 
 ### File naming
 
-Every file is named with first uppercase letter(Main.cpp, not main.cpp).
+Every file is named with first uppercase letter(Main.cpp, not main.cpp).<br>
 Files made for C++ have .hpp header file, while C files have .h header file.
 
 
@@ -148,7 +148,7 @@ I prefer to use tabs for indents, size 4.
 
 ### C++ over C!
 
-I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).
+I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).<br>
 Classes, namespaces and enum classes FTW!
 
 ### Code layout

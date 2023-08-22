@@ -280,7 +280,7 @@ class ThisIsClass
 	~ThisIsClass(void);
 
 	private:
-	uint16_t someArray[] = "Array";
+	char someArray[] = "Array";
 
 	inline void someFunction(void);
 };

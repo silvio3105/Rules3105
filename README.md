@@ -26,20 +26,20 @@ The base for every project. It runs the project.
 
 ### Drivers
 
-Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is wirrten without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided).<br>
+Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided). Because of that, drivers are not fixed to certian MCU or framework.<br>
 Drivers are not written with application logic. They are like little lego, You can use it everywhere. Drivers can interact with libraries.<br>
 Every driver is written as C++ class within own namespace.
 
 ### Libraries
 
-Library is piece of the software with basic logic that does not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.<br>
-Eg., library with string manipulation functions.<br>
-Every library is written within own namespace.
+Libraries are piece of the software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.<br>
+Every library is written within own namespace.<br>
+Eg., library with string manipulation functions.
 
 ### Application modules
 
-Application modules combines drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).<br>
-Every module has its own namespace and can be written as many C++ classes.
+Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).<br>
+Every module has its own namespace and can be written as one or more C++ classes.
 
 ### Tasks
 

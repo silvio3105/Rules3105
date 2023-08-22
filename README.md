@@ -400,6 +400,11 @@ void foo(void)
 }
 ```
 
+### Declarations & Definitions
+
+Declarations are placed in header files(.hpp/.h).<br>
+Definitions and static stuff are placed in translation units(.cpp/.c).<br>
+Inline and template stuff are defined in header files.
 
 
 # LICENSE

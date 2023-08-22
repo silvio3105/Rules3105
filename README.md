@@ -73,17 +73,21 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
 ### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**
-  `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test/alpha/beta release.
+  `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test release.
   `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1. 
-  `X`, `Y` and `Z` must be "8-bit number" while `A` cannot go over 99. If `Y` goes over 255, `X` will increase by one and `Y` will reset to zero.
+  `X`, `Y` and `A` cannot go over 99. If `Y` goes over 99, `X` will increase by one and `Y` will reset to zero.
+  New features will increase `X` and/or `Y`. It depends on number of features and its size which are introduced with new version.
+  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).
   Examples:
   `v0.1rc5` Release candidate #5 for version 0.1.
   `v1.13` Stable release, version 1.13.
 
 - **Firmware: vX.Y.Z(rcA)**
-  `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test/alpha/beta release.
+  `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.
   `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.
-  Every number is "8-bit" which means it cannot go over 255.
+  `X`, `Y`, `Z` and `A` cannot go over 99.
+  Bug fixes and minor updates increase `Z` number while new features increase `Y` number. `X` is increased when `Y` goes over 99.
+  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).
   Examples:
   `v0.13.18rc8` Release candidate #8 for version 0.13.18
   `v13.12.0` Stable release, version 13.12.0

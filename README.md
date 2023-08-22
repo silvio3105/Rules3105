@@ -137,6 +137,10 @@ List of the tools I use (Windows 10 Pro x64):
 
 # CODE STANDARD
 
+### Indents
+
+I prefer to use tabs for indents, size 4.
+
 ### C++ over C!
 
 I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).

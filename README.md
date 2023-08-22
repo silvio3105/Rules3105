@@ -227,7 +227,7 @@ This is only basic layout for source and header files. Layout depends on case-to
 
 ```cpp
 #define THIS_IS_MACRO				value
-#define THIS_IS_SECOND_MACRO		(THIS_IS_MACRO - 5)
+#define THIS_IS_SECOND_MACRO			(THIS_IS_MACRO - 5)
 
 #define __THIS_IS_MACRO_FUNCTION(_arg1, _arg2) \
 	(_arg1 - _arg2)

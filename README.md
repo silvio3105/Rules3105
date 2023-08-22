@@ -142,6 +142,142 @@ List of the tools I use (Windows 10 Pro x64):
 I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).
 Classes, namespaces and enum classes FTW!
 
+### Code layout
+
+This is only basic layout for source and header files. Layout depends on case-to-case and it is prone to changes.
+
+- SourceFile.cpp:
+	```cpp
+	/**
+	* @file SourceFile.cpp
+	* @author silvio3105 (www.github.com/silvio3105)
+	* @brief This is template source file.
+	* 
+	* @copyright Copyright (c) 2023, silvio3105
+	* 
+	*/
+
+	// ----- INCLUDE FILES
+
+
+	// ----- VARIABLES
+
+
+	// ----- STATIC FUNCTION DECLARATIONS
+
+
+	// ----- FUNCTION DEFINITIONS
+
+
+
+
+	// END WITH NEW LINE
+
+	```
+
+- SourceFile.hpp
+	```cpp
+	/**
+	* @file SourceFile.hpp
+	* @author silvio3105 (www.github.com/silvio3105)
+	* @brief This is template header file.
+	* 
+	* @copyright Copyright (c) 2023, silvio3105
+	* 
+	*/
+
+	#ifndef _SOURCEFILE_H_
+	#define _SOURCEFILE_H_
+
+	// ----- INCLUDE FILES
+
+
+	// ----- DEFINES
+
+
+	// ----- MACRO FUNCTIONS
+
+
+	// ----- ENUMS
+
+
+	// ----- TYPEDEFS
+
+
+	// ----- STRUCTS
+
+
+	// ----- CLASS
+
+
+	// ----- EXTERNS
+
+
+	// ----- FUNCTION DECLARATIONS
+
+
+	#endif // _SOURCEFILE_H_
+
+
+	// END WITH NEW LINE
+
+	```
+
+### Code example
+
+```cpp
+#define THIS_IS_MACRO				value
+#define THIS_IS_SECOND_MACRO		(THIS_IS_MACRO - 5)
+
+#define __THIS_IS_MACRO_FUNCTION(_arg1, _arg2) \
+	(_arg1 - _arg2)
+
+enum: uint8_t
+{
+	THIS_IS_ENUM1 = 0,
+	THIS_IS_ENUM2
+} enum_type_t;
+
+typedef void (*ext_handler_f)(void);
+
+struct
+{
+	uint8_t someVar;
+	ext_handler_f someHandler;
+} this_is_struct_t;
+
+class ThisIsClass
+{
+	public:
+	ThisIsClass(void);
+	~ThisIsClass(void);
+
+	private:
+	uint16_t someArray[] = "Array";
+
+	inline void someFunction(void);
+};
+
+extern volatile someVaraible;
+
+uint32_t thisIsVariable = 0; /**< @brief This is inline doxygen comment. */
+
+/**
+ * @brief Function brief
+ * 
+ * Function description.
+ * 
+ * @param argOne Some argument.
+ * @param argsList Some argument.
+ * @param varRef Some argument.
+ * 
+ * @return No return value.
+ */
+void someFunction(const uint8_t argOne, uint16_t* argsList, uint32_t& varRef);
+
+```
+
+
 
 # LICENSE
 

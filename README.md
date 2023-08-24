@@ -151,13 +151,16 @@ I prefer to use tabs for indents, size 4.
 ### C++ over C!
 
 I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).<br>
-Classes, namespaces and enum classes FTW!
+Classes, namespaces and enum classes!
 
 ### Code layout
 
 This is only basic layout for source and header files. Layout depends on case-to-case and it is prone to changes.
 
 - SourceFile.cpp:
+
+	Defines, macro functions, enums, typedefs, structs and classes in translation unit means they are intended only and only for that translation unit.
+
 	```cpp
 	/**
 	* @file SourceFile.cpp
@@ -169,6 +172,24 @@ This is only basic layout for source and header files. Layout depends on case-to
 	*/
 
 	// ----- INCLUDE FILES
+
+
+	// ----- DEFINES
+
+
+	// ----- MACRO FUNCTIONS
+
+
+	// ----- ENUMS
+
+
+	// ----- TYPEDEFS
+
+
+	// ----- STRUCTS
+
+
+	// ----- CLASSES	
 
 
 	// ----- VARIABLES
@@ -218,7 +239,7 @@ This is only basic layout for source and header files. Layout depends on case-to
 	// ----- STRUCTS
 
 
-	// ----- CLASS
+	// ----- CLASSES
 
 
 	// ----- EXTERNS

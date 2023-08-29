@@ -180,10 +180,10 @@ This is only basic layout for source and header files. Layout depends on case-to
 	// ----- MACRO FUNCTIONS
 
 
-	// ----- ENUMS
-
-
 	// ----- TYPEDEFS
+
+
+	// ----- ENUMS
 
 
 	// ----- STRUCTS
@@ -230,10 +230,10 @@ This is only basic layout for source and header files. Layout depends on case-to
 	// ----- MACRO FUNCTIONS
 
 
-	// ----- ENUMS
-
-
 	// ----- TYPEDEFS
+
+
+	// ----- ENUMS
 
 
 	// ----- STRUCTS
@@ -260,35 +260,100 @@ This is only basic layout for source and header files. Layout depends on case-to
 
 ### Code example
 
+Pointers and references are written like this:
+
+```cpp
+uint8_t* ptr8 = nullptr;
+
+void foo(uint16_t& argRef);
+```
+
+not like this:
+
+```cpp
+uint8_t * ptr8 = nullptr;
+uint8_t *ptr8 = nullptr;
+
+void foo(uint16_t & argRef);
+void foo(uint16_t &argRef);
+```
+
+After comma should be space, so `uint8_t foo(void* ptr, uint16_t len);` not `uint8_t foo(void* ptr,uint16_t len);`. Same applies to arrays.
+
+Here's complete code example:
+
 ```cpp
 
 /*
-This is comment block.
-Comment block is multiline comment.
+	This is comment block.
+	Comment block is multiline comment.
 */
 
 // This is inline comment
 
+/*
+	Defines are written in uppercase and space is replaced with underscore.
+	Since defines does not have "namespace", every define should start with module abbreviation, eg., "#define FWCFG_GSM_UART USART1".
+	If macro contains multiple elements(eg., another macro), it's value is placed between ().
+*/
 #define THIS_IS_MACRO				value
 #define THIS_IS_SECOND_MACRO			(THIS_IS_MACRO - 5)
 
-#define __THIS_IS_MACRO_FUNCTION(_arg1, _arg2) \
-	(_arg1 - _arg2)
+/*
+	Macro function is written in uppercase, it starts with two underscores and spaces are replaced with underscores.
+	Argument names start with underscore and first letter is in lowercase.
+	Function body is written in new line.
+*/
+#define __THIS_IS_MACRO_FUNCTION(_argOne, _argTwo) \
+	(_argOne - _argTwo)
 
-enum: uint8_t
+/*
+	C-style enum type is written in lowercase, spaces are replaced with underscores and type name edits with "_t".
+	Enum values are written like defines.
+	Enum definition also contains data size(uint8_t, uint16_t etc..).
+	Every value starts with abbreviation(eg., "GSM_ERROR") if not placed inside namespace.
+*/
+enum enum_type_t: uint8_t
 {
 	THIS_IS_ENUM1 = 0,
 	THIS_IS_ENUM2
-} enum_type_t;
+};
 
+/*
+	Same as C-style enums but:
+	Enum value names in enum class are named with uppercase letter for every word.
+	Value names do not start with abbreviation(eg., "gsmError").
+*/
+enum class enum_class_t: uint16_t
+{
+	EnumOne = 0,
+	EnumTwo
+};
+
+// Type alias is written using same rules as enum types. 
+typedef uint16_t idx_t;
+
+// Same as typedef above but it ends with "_f".
 typedef void (*ext_handler_f)(void);
 
+/*
+	Struct type uses rules from typedefs.
+	Struct members are named using rules for global variables.
+	Each member should have default value.
+	Structs are used only for data storage(no functions).
+*/
 struct
 {
-	uint8_t someVar;
-	ext_handler_f someHandler;
+	uint8_t someVar = 1;
+	uint32_t* somePtr = nullptr;
 } this_is_struct_t;
 
+/*
+	Classes hold data(as structs) and methods to manipulate with data.
+	Class name is written with uppercase first letter of every word in name.
+	Only private part of class contains variables. To get or set variable from outside, getter and setter methods are used.
+	Variables and methods in class use naming rules from global variables and functions 
+*/
 /**
  * @brief Class brief.
  * 
@@ -300,16 +365,28 @@ class ThisIsClass
 	ThisIsClass(void);
 	~ThisIsClass(void);
 
-	private:
-	char someArray[] = "Array";
+	uint8_t somePublicFunction(void);
 
-	inline void someFunction(void);
+	private:
+	const char someArray[] = "Array"; /**< @brief This is inline doxygen comment. */
+
+	inline void somePrivateFunction(void);
 };
 
-extern volatile someVaraible;
+// Classic extern
+extern volatile uint8_t someVaraible;
 
-uint32_t thisIsVariable = 0; /**< @brief This is inline doxygen comment. */
+/*
+	Global variable name starts with module abbreviation if not in namespace.
+	Module abbreviation is written in lowercase while every other word starts with uppercase.
+	Variable should have default value.
+*/
+uint32_t thisIsVariable = 0;
 
+/*
+	Global function name starts with module abbreviation if not in namespace.
+	Module abbreviation is written in lowercase while every other word starts with uppercase.
+*/
 /**
  * @brief Function brief.
  * 
@@ -323,6 +400,7 @@ uint32_t thisIsVariable = 0; /**< @brief This is inline doxygen comment. */
  */
 void someFunction(const uint8_t argOne, uint16_t* argsList, uint32_t& varRef);
 
+// Namespace uses naming rules from classes. Content in namespace uses same global type rule.
 namespace SomeNameSpace
 {
 	// VARIABLES
@@ -424,11 +502,11 @@ void foo(void)
 ### Declarations & Definitions
 
 Declarations are placed in header files(.hpp/.h).<br>
-Definitions and static stuff are placed in translation units(.cpp/.c).<br>
+Definitions and private (static) stuff are placed in translation units(.cpp/.c).<br>
 Inline and template stuff are defined in header files.
 
 
-# LICENSE
+# LICENSE (does not apply - only for template)
 
 Copyright (c) 2023, silvio3105 (www.github.com/silvio3105)
 

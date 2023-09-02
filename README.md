@@ -50,21 +50,24 @@ Tasks combine application modules and their logic to do something useful. In cas
 # PROJECT FOLDER STRUCTURE
 
 - 📂 **{Project_name}**: Root folder.
-    - 📂 **.backend**: Folder with files for readme.
-	- 📂 **.builds***: Folder with other build folders(used by Make and ARM-GCC).
-  	- 📂 **.docs***: Folder with project documentation generated with Doxygen.
-  	- 📂 **.doxygen***: Folder with Doxygen project file.
+	- 📂 **.builds***: Folder with HW build folders(used by Make and ARM-GCC).
+  	- 📂 **.docs***: Folder with project documentation generated with Doxygen and files used for documentation.
   	- 📂 **.hw***: Folder with hardware related configs for Make.
   	- 📂 **.jlink***: Folder with JLink scripts from flash and erase. 
   	- 📂 **.releases***: Folder with stable releases.
     	- 📂 **RC***: Folder with release candidate releases.
   	- 📂 **.vscode**: Folder with VS Code config files.
-  	- 📂 **Inc***: Folder with .h and .hpp header files.
+  	- 📂 **App***: Folder with application files.
+    	- 📂 **Inc***: Folder with application header files.
+    	- 📂 **Src***: Folder with application source files.
+  	- 📂 **Drivers***: Folder with driver files.
+      	- 📂 **Inc***: Folder with driver header files.
+    	- 📂 **Src***: Folder with driver source files. 
   	- 📂 **RTOS***: Folder with RTOS related files.
     	- 📂 **Inc***: Folder with RTOS related header files.
     	- 📂 **Src***: Folder with RTOS related source files.
-  	- 📂 **Src***: Folder with .c and .cpp source files.
   	- .gitignore: Git ignore file.
+  	- Doxyfile: Doxygen project file.
   	- LICENSE: Project license.
   	- mk*: Main Makefile used for bulding the project.
   	- README.md: Main readme file.

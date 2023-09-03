@@ -92,14 +92,17 @@ _***: Needed only when project is driver or library._
 ### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**<br>
-  `X` is mayor, `Y` is minor, `rc` stands for `release candidate` which means test release.<br>
-  `X`, `Y` and `A` are the numbers. `X` and `Y` can start from 0 while `A` starts from 1.<br>
-  `X`, `Y` and `A` cannot go over 99. If `Y` goes over 99, `X` will increase by one and `Y` will reset to zero.<br>
-  New features will increase `X` and/or `Y`. It depends on number of features and its size which are introduced with new version.<br>
-  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).<br>
-  Examples:<br>
-  `v0.1rc5` Release candidate #5 for version 0.1.<br>
-  `v1.13` Stable release, version 1.13.
+	- **X**: Mayor version number. Can start from 0. Cannot go over 99.
+	- **Y**: Minor version number. Can start from 0. Cannot go over 99.
+	- **rc**: Stands for release candidate which means test release.
+	- **A**: Release candidate number. Starts from 1. Cannot go over 99.
+
+	New features increase `X` and/or `Y`. It depends on number of features and its weight which are introduced with new version.<br>
+	If `X` is increased, `Y` starts from 0.<br>
+When `X` is 0 then it means software does not contain all features for first full release. Software is in beta state(not same as release candidate).<br>
+Examples:
+	- `v0.1rc5` Release candidate #5 for version 0.1.
+	- `v1.13` Stable release, version 1.13.
 
 - **Application: vX.Y.Z(rcA)**<br>
   `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.<br>

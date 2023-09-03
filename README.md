@@ -57,22 +57,35 @@ Tasks combine application modules and their logic to do something useful. In cas
   	- 📂 **.releases***: Folder with stable releases.
     	- 📂 **RC***: Folder with release candidate releases.
   	- 📂 **.vscode**: Folder with VS Code config files.
-  	- 📂 **App***: Folder with application files.
-    	- 📂 **Inc***: Folder with application header files.
-    	- 📂 **Src***: Folder with application source files.
   	- 📂 **Drivers***: Folder with driver files.
       	- 📂 **Inc***: Folder with driver header files.
-    	- 📂 **Src***: Folder with driver source files. 
-  	- 📂 **RTOS***: Folder with RTOS related files.
-    	- 📂 **Inc***: Folder with RTOS related header files.
-    	- 📂 **Src***: Folder with RTOS related source files.
-  	- .gitignore: Git ignore file.
+    	- 📂 **Src***: Folder with driver source files.
+  	- 📂 **Examples*****: Folder with driver/library examples.
+  	- 📂 **Libraries***: Folder with library files.
+    	- 📂 **Inc***: Folder with library header files.
+    	- 📂 **Src***: Folder with library source files. 
+  	- 📂 **Modules***: Folder with application module files.
+    	- 📂 **Inc***: Folder with application module header files.
+    	- 📂 **Src***: Folder with application module source files.
+  	- 📂 **RTOS****: Folder with RTOS related files.
+    	- 📂 **Inc****: Folder with RTOS related header files.
+    	- 📂 **Src****: Folder with RTOS related source files.
+  	- 📂 **Tasks****: Folder with task files.
+    	- 📂 **Inc****: Folder with task header files.
+    	- 📂 **Src****: Folder with task source files. 
+  	- .gitignore: List of items for Git to ignore.
   	- Doxyfile: Doxygen project file.
   	- LICENSE: Project license.
+	- Main.cpp*: Main source file with application entry point.
+	- Main.hpp*: Main header file.
   	- mk*: Main Makefile used for bulding the project.
   	- README.md: Main readme file.
 
-_*: File/folder not needed if project is library/driver. Library/driver files are placed in root folder._
+Driver/Library files are placed in root.
+
+_*: Not needed if project is driver or library._
+_**: Needed only when application uses RTOS._
+_***: Needed only when project is driver or library._
 
 
 # VERSIONING & NAMING
@@ -88,7 +101,7 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
   `v0.1rc5` Release candidate #5 for version 0.1.<br>
   `v1.13` Stable release, version 1.13.
 
-- **Firmware: vX.Y.Z(rcA)**<br>
+- **Application: vX.Y.Z(rcA)**<br>
   `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.<br>
   `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.<br>
   `X`, `Y`, `Z` and `A` cannot go over 99.<br>
@@ -98,16 +111,16 @@ _*: File/folder not needed if project is library/driver. Library/driver files ar
   `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
   `v13.12.0` Stable release, version 13.12.0
 
-### Build naming
+### Release naming
 
-This rule applies to naming build executables files(.bin and .hex).<br>
 Naming rule is: **{fw_name}\_{fw_version}(_{HW})**<br>
-Firmware name contains project name and firmware type, eg., `3DCLK-FW` is name of firmware for 3D Clock project. `3DCLK-BL` is name of bootloader for 3D Clock project. Firmware name is max 16 chars long.<br>
+This rule applies to naming application executables files(.bin and .hex).<br>
+Application name contains project name and application type tag, eg., `3DCLK-FW` is name of firmware for 3D Clock. `3DCLK-BL` is name of bootloader for 3D Clock. Firmware name is max 16 chars long.<br>
 Firmware version is copied from software versioning rule.<br>
-`_HW` is inserted in case when build is for specific hardware, eg., hardware 22-0091rev1.<br>
+`_HW` is inserted in case when release is for specific hardware, eg., hardware `22-0091rev1`.<br>
 Examples:<br>
-`3DCLK-FW_v0.13.18rc3` is name of .bin/.hex file for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
-`3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of .bin/.hex file for 3D Clock firmware for hardware version 22-0091rev1, firmware version v1.0.5, release candidate 1.
+`3DCLK-FW_v0.13.18rc3` is release name for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
+`3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of executables for hardware version `22-0091rev1`, release `3DCLK-FW_v1.0.5rc1` for 3D Clock, firmware version v1.0.5, release candidate 1.
 
 ### File naming
 

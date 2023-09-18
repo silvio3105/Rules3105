@@ -92,27 +92,28 @@ _***: Needed only when project is driver or library._
 ### Software versioning
 
 - **Library/Driver: vX.Y(rcA)**<br>
-	- **X**: Mayor version number. Can start from 0. Cannot go over 99.
-	- **Y**: Minor version number. Can start from 0. Cannot go over 99.
-	- **rc**: Stands for release candidate which means test release.
-	- **A**: Release candidate number. Starts from 1. Cannot go over 99.
-
-	New features increase `X` and/or `Y`. It depends on number of features and its weight which are introduced with new version.<br>
-	If `X` is increased, `Y` starts from 0.<br>
-When `X` is 0 then it means software does not contain all features for first full release. Software is in beta state(not same as release candidate).<br>
-Examples:
-	- `v0.1rc5` Release candidate #5 for version 0.1.
-	- `v1.13` Stable release, version 1.13.
+	- **Y**: Minor version number. Starts from zero. Cannot go over 99. With leading zero(if `Y` is not zero). Increased by some amount by bug fixes and new features. Resets to zero when `X` increases.
+    - **X**: Mayor version number. Can start from zero. Cannot go over 99. Without leading zero. Increased when `Y` overflows.
+    - **rc**: Stands for release candidate which means test release.
+    - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
+    
+    `X` = 0 means the software does not contain all features for the first full release - beta phase (not the same as the release candidate).<br>
+    Examples:
+    - `v0.01rc5` Release candidate #5 for version 0.01.
+    - `v1.13` Stable release, version 1.13.
+<br>
 
 - **Application: vX.Y.Z(rcA)**<br>
-  `X` is mayor, `Y` is minor, `Z` is build and `rc` stands for `release candidate` which means test release.<br>
-  `X`, `Y`, `Z` and `A` are the numbers. `X`, `Y` and `Z` can start from 0 while `A` starts from 1.<br>
-  `X`, `Y`, `Z` and `A` cannot go over 99.<br>
-  Bug fixes and minor updates increase `Z` number while new features increase `Y` number. `X` is increased when `Y` goes over 99.<br>
-  If `X` is 0 then it means that software does not contain all features for first full release(beta phase).<br>
-  Examples:<br>
-  `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
-  `v13.12.0` Stable release, version 13.12.0
+    - **Z**: Build number. Starts from zero. Cannot go over 99. With leading zero(if `Z` is not zero). Increased by some amount by bug fixes. Resets to zero when `Y` increases.
+    - **Y**: Minor version number. Starts from zero. Cannot go over 99. With leading zero(if `Y` is not zero). Increased by one when `Z` overflows or new features are introduced. Resets to zero when `X` increases.
+    - **X**: Mayor version number. Can start from zero. Cannot go over 99. Without leading zero. Increased by one when `Y` overflows or when big changes are introduced(on the application code side).
+    - **rc**: Stands for release candidate which means test release.
+    - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
+
+    `X` = 0 means the software does not contain all features for the first full release - beta phase (not the same as the release candidate).<br>
+    Examples:<br>
+    - `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
+    - `v13.12.0` Stable release, version 13.12.0
 
 ### Release naming
 
@@ -327,7 +328,7 @@ Here's complete code example:
 	(_argOne - _argTwo)
 
 /*
-	C-style enum type is written in lowercase, spaces are replaced with underscores and type name edits with "_t".
+	C-style enum type is written in lowercase, spaces are replaced with underscores and type name ends with "_t".
 	Enum values are written like defines.
 	Enum definition also contains data size(uint8_t, uint16_t etc..).
 	Every value starts with abbreviation(eg., "GSM_ERROR") if not placed inside namespace.

@@ -1,7 +1,7 @@
 
 # ABOUT
 
-This repo contains template for projects I use. Template includes:
+This repo contains a template for projects I use. Template includes:
 - Makefile for building the projects(multi hardware builds and RTOS are supported)
 - Readme file
 - License file
@@ -18,7 +18,7 @@ This repo contains template for projects I use. Template includes:
   <img src=".docs/Project%20structure.png" alt="Project application structure diagram" title="Project application structure diagram" />
 </p>
 
-Diagram shows project structure. It goes from the base up.
+The diagram shows the project structure. It goes from the base up.
 
 ### Hardware
 
@@ -26,66 +26,66 @@ The base for every project. It runs the project.
 
 ### Drivers
 
-Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without other driver(s). Only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO etc.) is through external handler(user provided). Because of that, drivers are not fixed to certian MCU or framework.<br>
-Drivers are not written with application logic. They are like little lego, You can use it everywhere. Drivers can interact with libraries.<br>
-Every driver is written as C++ class within own namespace.
+Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without another driver(s). The only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO, etc.) is through an external handler(user provided). Because of that, drivers are not fixed to certain MCU or framework.<br>
+Drivers are not written with application logic. They are like little legos, You can use them everywhere. Drivers can interact with libraries.<br>
+Every driver is written as a C++ class within its namespace.
 
 ### Libraries
 
-Libraries are piece of the software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not wirtten with application logic.<br>
-Every library is written within own namespace.<br>
-Eg., library with string manipulation functions.
+Libraries are pieces of software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not written with application logic.<br>
+Every library is written within its namespace.<br>
+Eg., a library with string manipulation functions.
 
 ### Application modules
 
-Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not bench, but many planks combined create the bench).<br>
-Every module has its own namespace and can be written as one or more C++ classes.
+Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
+Every module has its namespace and can be written as one or more C++ classes.
 
 ### Tasks
 
-Tasks combine application modules and their logic to do something useful. In case of bare metal project there is only one task - endless loop in main().
+Tasks combine application modules and their logic to do something useful. In the case of the bare metal project, there is only one task - an endless loop in `main()`.
 
 
 
 # PROJECT FOLDER STRUCTURE
 
 - 📂 **{Project_name}**: Root folder.
-	- 📂 **.builds***: Folder with HW build folders(used by Make and ARM-GCC).
-  	- 📂 **.docs***: Folder with project documentation generated with Doxygen and files used for documentation.
-  	- 📂 **.hw***: Folder with hardware related configs for Make.
-  	- 📂 **.jlink***: Folder with JLink scripts from flash and erase. 
-  	- 📂 **.releases***: Folder with stable releases.
-    	- 📂 **RC***: Folder with release candidate releases.
-  	- 📂 **.vscode**: Folder with VS Code config files.
-  	- 📂 **Drivers***: Folder with driver files.
-      	- 📂 **Inc***: Folder with driver header files.
-    	- 📂 **Src***: Folder with driver source files.
-  	- 📂 **Examples*****: Folder with driver/library examples.
-  	- 📂 **Libraries***: Folder with library files.
-    	- 📂 **Inc***: Folder with library header files.
-    	- 📂 **Src***: Folder with library source files. 
-  	- 📂 **Modules***: Folder with application module files.
-    	- 📂 **Inc***: Folder with application module header files.
-    	- 📂 **Src***: Folder with application module source files.
-  	- 📂 **RTOS****: Folder with RTOS related files.
-    	- 📂 **Inc****: Folder with RTOS related header files.
-    	- 📂 **Src****: Folder with RTOS related source files.
-  	- 📂 **Tasks****: Folder with task files.
-    	- 📂 **Inc****: Folder with task header files.
-    	- 📂 **Src****: Folder with task source files. 
-  	- .gitignore: List of items for Git to ignore.
-  	- Doxyfile: Doxygen project file.
-  	- LICENSE: Project license.
-	- Main.cpp*: Main source file with application entry point.
-	- Main.hpp*: Main header file.
-  	- mk*: Main Makefile used for bulding the project.
-  	- README.md: Main readme file.
+    - 📂 **.builds***: Folder with HW build folders(used by Make and ARM-GCC).
+    - 📂 **.docs***: Folder with project documentation generated with Doxygen and files used for documentation.
+    - 📂 **.hw***: Folder with hardware-related configs for Make.
+    - 📂 **.jlink***: Folder with JLink scripts from flash and erase. 
+    - 📂 **.releases***: Folder with stable releases.
+        - 📂 **RC***: Folder with release candidate releases.
+    - 📂 **.vscode**: Folder with VS Code config files.
+    - 📂 **Drivers***: Folder with driver files.
+        - 📂 **Inc***: Folder with driver header files.
+        - 📂 **Src***: Folder with driver source files.
+    - 📂 **Examples*****: Folder with driver/library examples.
+    - 📂 **Libraries***: Folder with library files.
+        - 📂 **Inc***: Folder with library header files.
+        - 📂 **Src***: Folder with library source files. 
+    - 📂 **Modules***: Folder with application module files.
+        - 📂 **Inc***: Folder with application module header files.
+        - 📂 **Src***: Folder with application module source files.
+    - 📂 **RTOS****: Folder with RTOS-related files.
+        - 📂 **Inc****: Folder with RTOS-related header files.
+        - 📂 **Src****: Folder with RTOS-related source files.
+    - 📂 **Tasks****: Folder with task files.
+        - 📂 **Inc****: Folder with task header files.
+        - 📂 **Src****: Folder with task source files. 
+    - .gitignore: List of items for Git to ignore.
+    - Doxyfile: Doxygen project file.
+    - LICENSE: Project license.
+    - Main.cpp*: Main source file with application entry point.
+    - Main.hpp*: Main header file.
+    - mk*: Main Makefile used for building the project.
+    - README.md: Main readme file.
 
 Driver/Library files are placed in root.
 
-_*: Not needed if project is driver or library._
-_**: Needed only when application uses RTOS._
-_***: Needed only when project is driver or library._
+_*: Not needed if the project is a driver or library._
+_**: Needed only when the application uses RTOS._
+_***: Needed only when the project is driver or library._
 
 
 # VERSIONING & NAMING
@@ -119,17 +119,17 @@ _***: Needed only when project is driver or library._
 
 Naming rule is: **{fw_name}\_{fw_version}(_{HW})**<br>
 This rule applies to naming application executables files(.bin and .hex).<br>
-Application name contains project name and application type tag, eg., `3DCLK-FW` is name of firmware for 3D Clock. `3DCLK-BL` is name of bootloader for 3D Clock. Firmware name is max 16 chars long.<br>
-Firmware version is copied from software versioning rule.<br>
-`_HW` is inserted in case when release is for specific hardware, eg., hardware `22-0091rev1`.<br>
+Application name contains project name and application type tag, eg., `3DCLK-FW` is the name of firmware for 3D Clock. `3DCLK-BL` is the name of the bootloader for 3D Clock. The firmware name is max 16 chars long.<br>
+The firmware version is copied from the software versioning rule.<br>
+`_HW` is inserted in the case when release is for specific hardware, eg., hardware `22-0091rev1`.<br>
 Examples:<br>
-`3DCLK-FW_v0.13.18rc3` is release name for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
-`3DCLK-FW_v1.0.5rc1_22-0091rev1` is name of executables for hardware version `22-0091rev1`, release `3DCLK-FW_v1.0.5rc1` for 3D Clock, firmware version v1.0.5, release candidate 1.
+- `3DCLK-FW_v0.13.18rc3` is release name for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
+- `3DCLK-FW_v1.0.50rc1_22-0091rev1` is name of executables for hardware version `22-0091rev1`, release `3DCLK-FW_v1.0.50rc1` for 3D Clock, firmware version v1.0.50, release candidate 1.
 
 ### File naming
 
 Every file is named with first uppercase letter(Main.cpp, not main.cpp).<br>
-Files made for C++ have .hpp header file, while C files have .h header file.
+Files made for C++ have a .hpp header file, while C files have a .h header file.
 
 
 # TOOLS
@@ -171,15 +171,15 @@ I prefer to use tabs for indents, size 4.
 ### C++ over C!
 
 I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).<br>
-Classes, namespaces and enum classes!
+Classes, namespaces, and enum classes!
 
 ### Code layout
 
-This is only basic layout for source and header files. Layout depends on case-to-case and it is prone to changes.
+This is only a basic layout for source and header files. Layout depends on case-to-case and it is prone to changes.
 
 - SourceFile.cpp:
 
-	Defines, macro functions, enums, typedefs, structs and classes in translation unit means they are intended only and only for that translation unit.
+    Defines, macro functions, enums, typedefs, structs, and classes in the translation unit means they are intended only and only for that translation unit.
 
 	```cpp
 	/**
@@ -305,74 +305,74 @@ Here's complete code example:
 ```cpp
 
 /*
-	This is comment block.
-	Comment block is multiline comment.
+    This is a comment block.
+    The comment block is a multiline comment.
 */
 
-// This is inline comment
+// This is an inline comment
 
 /*
-	Defines are written in uppercase and space is replaced with underscore.
-	Since defines does not have "namespace", every define should start with module abbreviation, eg., "#define FWCFG_GSM_UART USART1".
-	If macro contains multiple elements(eg., another macro), it's value is placed between ().
+    Defines are written in uppercase and space is replaced with underscore.
+    Since defines does not have "namespace", every define should start with a module abbreviation, eg., "#define FWCFG_GSM_UART USART1".
+    If a macro contains multiple elements(eg., another macro), its value is placed between ().
 */
-#define THIS_IS_MACRO				value
-#define THIS_IS_SECOND_MACRO			(THIS_IS_MACRO - 5)
+#define THIS_IS_MACRO               value
+#define THIS_IS_SECOND_MACRO            (THIS_IS_MACRO - 5)
 
 /*
-	Macro function is written in uppercase, it starts with two underscores and spaces are replaced with underscores.
-	Argument names start with underscore and first letter is in lowercase.
-	Function body is written in new line.
+    The macro function is written in uppercase, it starts with two underscores, and spaces are replaced with underscores.
+    Argument names start with underscore and the first letter is in lowercase.
+    The function body is written in a new line.
 */
 #define __THIS_IS_MACRO_FUNCTION(_argOne, _argTwo) \
-	(_argOne - _argTwo)
+    (_argOne - _argTwo)
 
 /*
-	C-style enum type is written in lowercase, spaces are replaced with underscores and type name ends with "_t".
-	Enum values are written like defines.
-	Enum definition also contains data size(uint8_t, uint16_t etc..).
-	Every value starts with abbreviation(eg., "GSM_ERROR") if not placed inside namespace.
+    C-style enum type is written in lowercase, spaces are replaced with underscores and the type name ends with "_t".
+    Enum values are written like defines.
+    Enum definition also contains data size(uint8_t, uint16_t, etc..).
+    Every value starts with an abbreviation(eg., "GSM_ERROR") if not placed inside the namespace.
 */
 enum enum_type_t: uint8_t
 {
-	THIS_IS_ENUM1 = 0,
-	THIS_IS_ENUM2
+    THIS_IS_ENUM1 = 0,
+    THIS_IS_ENUM2
 };
 
 /*
-	Same as C-style enums but:
-	Enum value names in enum class are named with uppercase letter for every word.
-	Value names do not start with abbreviation(eg., "gsmError").
+    Same as C-style enums but:
+    Enum value names in the enum class are named with uppercase letters for every word.
+    Value names do not start with an abbreviation(eg., "gsmError").
 */
 enum class enum_class_t: uint16_t
 {
-	EnumOne = 0,
-	EnumTwo
+    EnumOne = 0,
+    EnumTwo
 };
 
-// Type alias is written using same rules as enum types. 
+// Type alias is written using the same rules as enum types. 
 typedef uint16_t idx_t;
 
 // Same as typedef above but it ends with "_f".
 typedef void (*ext_handler_f)(void);
 
 /*
-	Struct type uses rules from typedefs.
-	Struct members are named using rules for global variables.
-	Each member should have default value.
-	Structs are used only for data storage(no functions).
+    Struct type uses rules from typedefs.
+    Struct members are named using rules for global variables.
+    Each member should have a default value.
+    Structs are used only for data storage(no functions).
 */
 struct
 {
-	uint8_t someVar = 1;
-	uint32_t* somePtr = nullptr;
+    uint8_t someVar = 1;
+    uint32_t* somePtr = nullptr;
 } this_is_struct_t;
 
 /*
-	Classes hold data(as structs) and methods to manipulate with data.
-	Class name is written with uppercase first letter of every word in name.
-	Only private part of class contains variables. To get or set variable from outside, getter and setter methods are used.
-	Variables and methods in class use naming rules from global variables and functions 
+    Classes hold data(as structs) and methods to manipulate the data.
+    The class name is written with the uppercase first letter of every word in the name.
+    Only the private part of the class contains variables. To get or set variables from outside, getter and setter methods are used.
+    Variables and methods in class use naming rules from global variables and functions 
 */
 /**
  * @brief Class brief.
@@ -381,31 +381,31 @@ struct
  */
 class ThisIsClass
 {
-	public:
-	ThisIsClass(void);
-	~ThisIsClass(void);
+    public:
+    ThisIsClass(void);
+    ~ThisIsClass(void);
 
-	uint8_t somePublicFunction(void);
+    uint8_t somePublicFunction(void);
 
-	private:
-	const char someArray[] = "Array"; /**< @brief This is inline doxygen comment. */
+    private:
+    const char someArray[] = "Array"; /**< @brief This is inline doxygen comment. */
 
-	inline void somePrivateFunction(void);
+    inline void somePrivateFunction(void);
 };
 
 // Classic extern
 extern volatile uint8_t someVaraible;
 
 /*
-	Global variable name starts with module abbreviation if not in namespace.
-	Module abbreviation is written in lowercase while every other word starts with uppercase.
-	Variable should have default value.
+    Global variable name starts with module abbreviation if not in namespace.
+    Module abbreviation is written in lowercase while every other word starts in uppercase.
+    The variable should have a default value.
 */
 uint32_t thisIsVariable = 0;
 
 /*
-	Global function name starts with module abbreviation if not in namespace.
-	Module abbreviation is written in lowercase while every other word starts with uppercase.
+    Global function name starts with module abbreviation if not in namespace.
+    Module abbreviation is written in lowercase while every other word starts in uppercase.
 */
 /**
  * @brief Function brief.
@@ -420,22 +420,22 @@ uint32_t thisIsVariable = 0;
  */
 void someFunction(const uint8_t argOne, uint16_t* argsList, uint32_t& varRef);
 
-// Namespace uses naming rules from classes. Content in namespace uses same global type rule.
+// Namespace uses naming rules from classes. Content in the namespace uses the same global type rule.
 namespace SomeNameSpace
 {
-	// VARIABLES
-	uint64_t x;
+    // VARIABLES
+    uint64_t x;
 
-	// FUNCTIONS
-	void setFoo(char someChar);
+    // FUNCTIONS
+    void setFoo(char someChar);
 }
 
 ```
 
 ### Code workflow comments
 
-For some reason I like to add bunch of "workflow comments".
-Workflow comments describe what lines below (comment) do. I tend to "group" lines of code into little sections.
+For some reason, I like to add a bunch of "workflow comments".
+Workflow comments describe what the lines below (comment) do. I tend to "group" lines of code into little sections.
 
 ```cpp
 void foo(void)
@@ -470,7 +470,7 @@ void foo(void)
 
 ### Nested if statments?
 
-I prefer less nested code. If I can check requirments before function does its job, I do it.
+I prefer less nested code. If I can check requirements before the function does its job, I do it.
 
 Short examples:
 ```cpp

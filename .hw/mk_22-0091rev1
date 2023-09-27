@@ -7,7 +7,7 @@
 ######################################
 
 # SELECT THE CHIP (JLINK)
-CHIP = STM32F103C8
+CHIP = STM32F103CB
 
 # START ADDRESS FOR .bin FILE
 ADDR = 0x08000000

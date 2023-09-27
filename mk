@@ -1,7 +1,5 @@
 
 # THIS FILE IS MAIN MAKEFILE THAT IS USED FOR BUILDING THE PROJECT
-# PER HARDWARE STUFF IS IN MakeHW FOLDER
-
 
 ######################################
 # BUILD CONFIG
@@ -16,10 +14,8 @@ RTOS = 0
 # SELECT THE HW VERSION
 HW_VER = mk_22-0091rev1
 
-# INCLUDE HW STUFF
-ifeq ($(HW_VER), mk_22-0091rev1)
-include .hw/mk_22-0091rev1
-endif
+# INCLUDE HW CONFIG
+include .hw/$(HW_VER)
 
 # RELEASE BUILD
 RELEASE = 0
@@ -37,7 +33,7 @@ USE_G3 = 0
 GPP = 0
 
 # BUILD FOLDER
-BUILD_FOLDER = .build/$(BUILD_NAME)
+BUILD_FOLDER = .builds/$(BUILD_NAME)
 
 # PRINT GCC VERSION AFTER BUILD
 PRINT_VER = 0
@@ -64,28 +60,8 @@ ERASE_SCRIPT = JLink_Erase_$(BUILD_NAME).jlink
 # TOOLCHAIN PREFIX
 TC_PREFIX = arm-none-eabi-
 
-# MAIN C/C++ SOURCE FOLDER
-SRC_FOLDER = Src
-
-# MAIN C/C++ HEADER FOLDER
-INC_FOLDER = Inc
-
 # FOLDER WITH JLINK SCRIPTS
 JLINK_FOLDER = .jlink
-
-# RTOS STUFF
-ifeq ($(RTOS), 1)
-# RTOS MAIN FOLDER
-RTOS_FOLDER = RTOS
-
-# RTOS C/C++ SOURCE FOLDER
-RTOS_SRC_FOLDER = $(RTOS_FOLDER)/Src
-
-# RTOS INCLUDE FOLDER
-RTOS_INC_FOLDER = $(RTOS_FOLDER)/Inc
-endif
-
-
 
 
 ######################################
@@ -100,40 +76,44 @@ $(HW_C_SOURCES) \
 # C++ UNITS
 CPP_SOURCES =  \
 $(HW_CPP_SOURCES) \
-$(SRC_FOLDER)/Main.cpp \
+Main.cpp \
 
 
 # ASSEMBLER UNITS
 ASM_SOURCES =  \
-$(STARTUP) \
+$(HW_AS_SOURCES) \
 
 
 ######################################
 # INCLUDE DIRECTORIES
 ######################################
 
-# ASSEMBLER INCLUDE DIRECTORIES
-AS_INCLUDES =  \
-
-
 # C/C++ INCLUDE DIRECTORIES
 C_INCLUDES =  \
 $(HW_INCLUDES) \
--I$(INC_FOLDER) \
+-I./ \
+-IDrivers/Inc \
+-ILibraries/Inc \
+-IModules/Inc \
+
+
+# ASSEMBLER INCLUDE DIRECTORIES
+AS_INCLUDES =  \
+$(HW_AS_INCLUDES) \
 
 
 ######################################
 # DEFINES
 ######################################
 
-# ASSEMBLER DEFINES
-AS_DEFS =  \
-$(HW_AS_DEFS) \
-
-
 # C/C++ DEFINES
 C_DEFS =  \
 $(HW_DEFS) \
+
+
+# ASSEMBLER DEFINES
+AS_DEFS =  \
+$(HW_AS_DEFS) \
 
 
 ######################################
@@ -141,27 +121,30 @@ $(HW_DEFS) \
 ######################################
 ifeq ($(RTOS), 1)
 C_SOURCES += \
-$(RTOS_SRC_FOLDER)/os_systick.c \
-$(RTOS_SRC_FOLDER)/RTX_Config.c \
-$(RTOS_SRC_FOLDER)/rtx_delay.c \
-$(RTOS_SRC_FOLDER)/rtx_evflags.c \
-$(RTOS_SRC_FOLDER)/rtx_evr.c \
-$(RTOS_SRC_FOLDER)/rtx_kernel.c \
-$(RTOS_SRC_FOLDER)/rtx_memory.c \
-$(RTOS_SRC_FOLDER)/rtx_mempool.c \
-$(RTOS_SRC_FOLDER)/rtx_msgqueue.c \
-$(RTOS_SRC_FOLDER)/rtx_mutex.c \
-$(RTOS_SRC_FOLDER)/rtx_semaphore.c \
-$(RTOS_SRC_FOLDER)/rtx_system.c \
-$(RTOS_SRC_FOLDER)/rtx_thread.c \
-$(RTOS_SRC_FOLDER)/rtx_timer.c \
-$(RTOS_SRC_FOLDER)/rtx_lib.c \
+RTOS/Src/os_systick.c \
+RTOS/Src/RTX_Config.c \
+RTOS/Src/rtx_delay.c \
+RTOS/Src/rtx_evflags.c \
+RTOS/Src/rtx_evr.c \
+RTOS/Src/rtx_kernel.c \
+RTOS/Src/rtx_memory.c \
+RTOS/Src/rtx_mempool.c \
+RTOS/Src/rtx_msgqueue.c \
+RTOS/Src/rtx_mutex.c \
+RTOS/Src/rtx_semaphore.c \
+RTOS/Src/rtx_system.c \
+RTOS/Src/rtx_thread.c \
+RTOS/Src/rtx_timer.c \
+RTOS/Src/rtx_lib.c \
 
-ASM_SOURCES += \
-$(RTOS_PREFIX)/irq_armv7m.S \
 
 C_INCLUDES += \
--I$(RTOS_INC_FOLDER) \
+-IRTOS/Inc \
+-ITasks/Inc \
+
+
+ASM_SOURCES += \
+
 
 endif
 

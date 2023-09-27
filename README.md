@@ -45,52 +45,42 @@ Every module has its namespace and can be written as one or more C++ classes.<br
 
 Tasks combine application modules and their logic to do something useful. In the case of the bare metal project, there is only one task - an endless loop in `main()`.
 
-### Example
-
-- GNSS task
-  - GNSS module
-    - L80 module driver
-      - UART driver
-      - GPIO driver
-    - NMEA parser and message validation
-
-
 
 # PROJECT FOLDER STRUCTURE
 
 - 📂 **{Project_name}**: Root folder.
     - 📂 **.builds***: Folder with HW build folders(used by Make and ARM-GCC).
     - 📂 **.docs***: Folder with project documentation generated with Doxygen and files used for documentation.
-    - 📂 **.hw***: Folder with hardware-related configs for Make.
-    - 📂 **.jlink***: Folder with JLink scripts from flash and erase. 
+    - 📂 **.git**: Git folder.
+    - 📂 **.hw***: Folder with startup files with Make and application header files for hardware-related configs.
+    - 📂 **.jlink***: Folder with J-Link scripts for flash and erase.
+    - 📂 **.linker***: Folder with linker script files.  
     - 📂 **.releases***: Folder with stable releases.
         - 📂 **RC***: Folder with release candidate releases.
     - 📂 **.vscode**: Folder with VS Code config files.
-    - 📂 **Drivers***: Folder with driver files.
+    - 📂 **Drivers***: Folder with driver source files.
         - 📂 **Inc***: Folder with driver header files.
-        - 📂 **Src***: Folder with driver source files.
     - 📂 **Examples*****: Folder with driver/library examples.
-    - 📂 **Libraries***: Folder with library files.
+    - 📂 **Libraries***: Folder with library source files.
         - 📂 **Inc***: Folder with library header files.
-        - 📂 **Src***: Folder with library source files. 
-    - 📂 **Modules***: Folder with application module files.
+    - 📂 **Modules***: Folder with application module source files.
         - 📂 **Inc***: Folder with application module header files.
-        - 📂 **Src***: Folder with application module source files.
     - 📂 **RTOS****: Folder with RTOS-related files.
         - 📂 **Inc****: Folder with RTOS-related header files.
         - 📂 **Src****: Folder with RTOS-related source files.
-    - 📂 **Tasks****: Folder with task files.
+    - 📂 **Tasks****: Folder with task source files.
         - 📂 **Inc****: Folder with task header files.
-        - 📂 **Src****: Folder with task source files. 
     - .gitignore: List of items for Git to ignore.
     - Doxyfile: Doxygen project file.
     - LICENSE: Project license.
+    - AppConfig.hpp*: Application config header file.
     - Main.cpp*: Main source file with application entry point.
     - Main.hpp*: Main header file.
     - mk*: Main Makefile used for building the project.
     - README.md: Main readme file.
 
-Driver/Library files are placed in root.
+If project is driver or library type, files are placed in root.
+MCU related driver files are placed in its own folder inside `Drivers` folder.
 
 _*: Not needed if the project is a driver or library._
 _**: Needed only when the application uses RTOS._

@@ -26,6 +26,9 @@
 #define _MAIN_H_
 
 
+// ----- INCLUDE FILES
+#include			"Main.hpp"
+
 
 #endif // _MAIN_H_
 

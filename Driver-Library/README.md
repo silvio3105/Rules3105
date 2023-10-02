@@ -1,12 +1,10 @@
 
-# PROJECT_NAME
-
-### About
+# About
 
 Lorem
 
 
-### LICENSE
+# LICENSE
 
 Copyright (c) 2023, silvio3105 (www.github.com/silvio3105)
 

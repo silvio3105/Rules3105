@@ -351,7 +351,7 @@ Here's complete code example:
     Enum definition also contains data size(uint8_t, uint16_t, etc..).
     Every value starts with an abbreviation(eg., "GSM_ERROR") if not placed inside the namespace.
 */
-enum enum_type_t: uint8_t
+enum enum_type_t : uint8_t
 {
     THIS_IS_ENUM1 = 0,
     THIS_IS_ENUM2
@@ -360,9 +360,9 @@ enum enum_type_t: uint8_t
 /*
     Same as C-style enums but:
     Enum value names in the enum class are named with uppercase letters for every word.
-    Value names do not start with an abbreviation(eg., "gsmError").
+    Value names do not start with an abbreviation(eg., "GSM_ERROR").
 */
-enum class enum_class_t: uint16_t
+enum class enum_class_t : uint16_t
 {
     EnumOne = 0,
     EnumTwo
@@ -380,11 +380,11 @@ typedef void (*ext_handler_f)(void);
     Each member should have a default value.
     Structs are used only for data storage(no functions).
 */
-struct
+struct this_is_struct_t
 {
     uint8_t someVar = 1;
     uint32_t* somePtr = nullptr;
-} this_is_struct_t;
+};
 
 /*
     Classes hold data(as structs) and methods to manipulate the data.
@@ -446,7 +446,7 @@ namespace SomeNameSpace
 
     // FUNCTIONS
     void setFoo(char someChar);
-}
+};
 
 ```
 

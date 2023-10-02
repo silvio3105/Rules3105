@@ -99,7 +99,7 @@ MCU related drivers are grouped with folder in `Drivers` folder(both source and 
     - README.md: Project readme file.
 
 **Note:**
-Driver/library files are placed in root folder.
+Driver/library files are placed in root folder or in `Src` or `Inc` folder if project has multiple source or header files.
 
 
 

@@ -1,5 +1,0 @@
-.builds
-.releases
-Makefile
-*.jlink
-*.cortex-*.json

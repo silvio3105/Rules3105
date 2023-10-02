@@ -48,43 +48,60 @@ Tasks combine application modules and their logic to do something useful. In the
 
 # PROJECT FOLDER STRUCTURE
 
+### Bootloader/firmware project folder structure
+
 - 📂 **{Project_name}**: Root folder.
-    - 📂 **.builds***: Folder with HW build folders(used by Make and ARM-GCC).
-    - 📂 **.docs***: Folder with project documentation generated with Doxygen and files used for documentation.
+    - 📂 **.builds**: Folder with HW build folders(used by Make and ARM-GCC).
     - 📂 **.git**: Git folder.
-    - 📂 **.hw***: Folder with startup files with Make and application header files for hardware-related configs.
-    - 📂 **.jlink***: Folder with J-Link scripts for flash and erase.
-    - 📂 **.linker***: Folder with linker script files.  
-    - 📂 **.releases***: Folder with stable releases.
-        - 📂 **RC***: Folder with release candidate releases.
+    - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
+    - 📂 **.releases**: Folder with stable releases.
+        - 📂 **RC**: Folder with release candidate releases.
     - 📂 **.vscode**: Folder with VS Code config files.
-    - 📂 **Drivers***: Folder with driver source files.
-        - 📂 **Inc***: Folder with driver header files.
-    - 📂 **Examples*****: Folder with driver/library examples.
-    - 📂 **Libraries***: Folder with library source files.
-        - 📂 **Inc***: Folder with library header files.
-    - 📂 **Modules***: Folder with application module source files.
-        - 📂 **Inc***: Folder with application module header files.
-    - 📂 **RTOS****: Folder with RTOS-related files.
-        - 📂 **Inc****: Folder with RTOS-related header files.
-        - 📂 **Src****: Folder with RTOS-related source files.
-    - 📂 **Tasks****: Folder with task source files.
-        - 📂 **Inc****: Folder with task header files.
+    - 📂 **Application**: Folder with application layer source files.
+        - 📂 **Inc**: Folder with application layer header files.
+        - 📂 **Tasks**: Folder with task source files.
+          - 📂 **Inc**: Folder with task header files.
+    - 📂 **CMSIS**: Folder with CMSIS related files.
+      - 📂 **Core**: Folder with CMSIS related core files.
+      - 📂 **RTX**: Folder with CMSIS RTX source files.
+        - 📂 **Inc**: Folder with CMSIS RTX header files.
+        - 📂 **Startup**: Folder with RTX startup files. 
+    - 📂 **Config**: Folder with hardware configuration files.
+    - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
+    - 📂 **Drivers**: Folder with driver source files.
+        - 📂 **Inc**: Folder with driver header files.
+    - 📂 **Libraries**: Folder with library source files.
+        - 📂 **Inc**: Folder with library header files.
+    - 📂 **Linker**: Folder with linker script files. 
+    - 📂 **Startup**: Folder with MCU startup files.
+    - .gitignore: List of items for Git to ignore.
+    - AppConfig.hpp: Header file with configuration for application layer.
+    - Doxyfile: Doxygen project file.
+    - LICENSE: Project license.
+    - Main.cpp: Main source file with application entry point.
+    - Main.hpp: Main header file.
+    - Makefile: Project Makefile used for building the project.
+    - README.md: Project readme file.
+
+**Note:**
+MCU related drivers are grouped with folder in `Drivers` folder(both source and header files).
+
+### Driver/library project folder structure
+
+- 📂 **{Project_name}**: Root folder.
+    - 📂 **.git**: Git folder.
+    - 📂 **.vscode**: Folder with VS Code config files.
+    - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
+    - 📂 **Example**: Folder with project example files. 
     - .gitignore: List of items for Git to ignore.
     - Doxyfile: Doxygen project file.
     - LICENSE: Project license.
-    - AppConfig.hpp*: Application config header file.
-    - Main.cpp*: Main source file with application entry point.
-    - Main.hpp*: Main header file.
-    - mk*: Main Makefile used for building the project.
-    - README.md: Main readme file.
+    - README.md: Project readme file.
 
-If project is driver or library type, files are placed in root.
-MCU related driver files are placed in its own folder inside `Drivers` folder.
+**Note:**
+Driver/library files are placed in root folder.
 
-_*: Not needed if the project is a driver or library._
-_**: Needed only when the application uses RTOS._
-_***: Needed only when the project is driver or library._
+
 
 
 # VERSIONING & NAMING
@@ -97,7 +114,7 @@ _***: Needed only when the project is driver or library._
     - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
     
     `X` = 0 means the software does not contain all features for the first full release - beta phase (not the same as the release candidate).<br>
-    Examples:
+    **Examples:**<br>
     - `v0.01rc5` Release candidate #5 for version 0.01.
     - `v1.13` Stable release, version 1.13.
 <br>
@@ -110,7 +127,7 @@ _***: Needed only when the project is driver or library._
     - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
 
     `X` = 0 means the software does not contain all features for the first full release - beta phase (not the same as the release candidate).<br>
-    Examples:<br>
+    **Examples:**<br>
     - `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
     - `v13.12.0` Stable release, version 13.12.0
 
@@ -121,7 +138,7 @@ This rule applies to naming application executables files(.bin and .hex).<br>
 Application name contains project name and application type tag, eg., `3DCLK-FW` is the name of firmware for 3D Clock. `3DCLK-BL` is the name of the bootloader for 3D Clock. The firmware name is max 16 chars long.<br>
 The firmware version is copied from the software versioning rule.<br>
 `_HW` is inserted in the case when release is for specific hardware, eg., hardware `22-0091rev1`.<br>
-Examples:<br>
+**Examples:**<br>
 - `3DCLK-FW_v0.13.18rc3` is release name for 3D Clock firmware, version 0.13.18, release candidate 3.<br>
 - `3DCLK-FW_v1.0.50rc1_22-0091rev1` is name of executables for hardware version `22-0091rev1`, release `3DCLK-FW_v1.0.50rc1` for 3D Clock, firmware version v1.0.50, release candidate 1.
 
@@ -150,12 +167,12 @@ List of the tools I use (Windows 10 Pro x64):
 - [Git](https://git-scm.com/downloads)
 - [ARM-GCC v10.3.1 20210824 (GNU Arm Embedded Toolchain 10.3-2021.10)](https://developer.arm.com/downloads/-/gnu-rm)
 - [GNU Make v3.81](https://gnuwin32.sourceforge.net/packages/make.htm)
-- [Doxygen](https://www.doxygen.nl/download.html)
-- [SEGGER J-Link(SWD)](https://www.segger.com/downloads/jlink/)
+- [Doxygen v1.9.7](https://www.doxygen.nl/download.html)
+- [SEGGER J-Link(SWD) v7.88e](https://www.segger.com/downloads/jlink/)
 - [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
 - [nRF PPK2](https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2)
 - [Salea Logic](https://www.saleae.com/downloads/)
-- [CMSIS Configuration Wizard](https://sourceforge.net/projects/cmsisconfig/)
+- [CMSIS Configuration Wizard v0.0.7](https://sourceforge.net/projects/cmsisconfig/)
 - [Draw.io](https://app.diagrams.net/)
 - [Fusion 360 (Electronics)](https://www.autodesk.com/products/fusion-360/overview)
 - [Saturn PCB Toolkit](https://saturnpcb.com/saturn-pcb-toolkit/)
@@ -169,7 +186,7 @@ I prefer to use tabs for indents, size 4.
 
 ### C++ over C!
 
-I prefer to use C++ over C, but only parts of C++ that do not induce overhead(except templates).<br>
+I prefer to use C++ over C, but only parts of C++ that do not induce overhead and bloat(except templates).<br>
 Classes, namespaces, and enum classes!
 
 ### Code layout
@@ -182,13 +199,13 @@ This is only a basic layout for source and header files. Layout depends on case-
 
 	```cpp
 	/**
-	* @file SourceFile.cpp
-	* @author silvio3105 (www.github.com/silvio3105)
-	* @brief This is template source file.
-	* 
-	* @copyright Copyright (c) 2023, silvio3105
-	* 
-	*/
+	 * @file SourceFile.cpp
+	 * @author silvio3105 (www.github.com/silvio3105)
+	 * @brief This is template source file.
+	 * 
+	 * @copyright Copyright (c) 2023, silvio3105
+	 * 
+	 */
 
 	// ----- INCLUDE FILES
 
@@ -220,6 +237,8 @@ This is only a basic layout for source and header files. Layout depends on case-
 	// ----- FUNCTION DEFINITIONS
 
 
+	// ----- STATIC FUNCTION DEFINITIONS
+
 
 
 	// END WITH NEW LINE
@@ -229,13 +248,13 @@ This is only a basic layout for source and header files. Layout depends on case-
 - SourceFile.hpp
 	```cpp
 	/**
-	* @file SourceFile.hpp
-	* @author silvio3105 (www.github.com/silvio3105)
-	* @brief This is template header file.
-	* 
-	* @copyright Copyright (c) 2023, silvio3105
-	* 
-	*/
+	 * @file SourceFile.hpp
+	 * @author silvio3105 (www.github.com/silvio3105)
+	 * @brief This is template header file.
+	 * 
+	 * @copyright Copyright (c) 2023, silvio3105
+	 * 
+	 */
 
 	#ifndef _SOURCEFILE_H_
 	#define _SOURCEFILE_H_
@@ -523,23 +542,3 @@ void foo(void)
 Declarations are placed in header files(.hpp/.h).<br>
 Definitions and private (static) stuff are placed in translation units(.cpp/.c).<br>
 Inline and template stuff are defined in header files.
-
-
-# LICENSE (does not apply - only for template)
-
-Copyright (c) 2023, silvio3105 (www.github.com/silvio3105)
-
-Access and use of this Project and its contents are granted free of charge to any Person.
-The Person is allowed to copy, modify and use The Project and its contents only for non-commercial use.
-Commercial use of this Project and its contents is prohibited.
-Modifying this License and/or sublicensing is prohibited.
-
-THE PROJECT AND ITS CONTENT ARE PROVIDED "AS IS" WITH ALL FAULTS AND WITHOUT EXPRESSED OR IMPLIED WARRANTY.
-THE AUTHOR KEEPS ALL RIGHTS TO CHANGE OR REMOVE THE CONTENTS OF THIS PROJECT WITHOUT PREVIOUS NOTICE.
-THE AUTHOR IS NOT RESPONSIBLE FOR DAMAGE OF ANY KIND OR LIABILITY CAUSED BY USING THE CONTENTS OF THIS PROJECT.
-
-This License shall be included in all functional textual files.
-
----
-
-Copyright (c) 2023, silvio3105

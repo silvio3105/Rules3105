@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Make_Template",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "STM32F103xB",
+				"USE_HAL_DRIVER"
+            ],
+			"compilerArgs": [
+                "-mcpu=cortex-m3",
+                "-mthumb"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${env:ARM-GCC}/arm-none-eabi-gcc.exe",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

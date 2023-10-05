@@ -1,0 +1,21 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Make_Template",
+			"executable": ".builds/Make_Template/Make_Template.elf",
+			"device": "STM32F103C8",
+			"svdFile": "C:/Development Tools/SVDs/STM32F103.svd",
+			"breakAfterReset": true,
+			"type": "cortex-debug",
+			"request": "launch",
+			"cwd": "${workspaceRoot}",
+			"serverpath": "C:/Development Tools/JLink/JLinkGDBServerCL.exe", 
+			"servertype": "jlink",
+			"interface": "swd"
+		}
+	]
+}

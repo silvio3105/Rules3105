@@ -1,21 +1,7 @@
 
-# THIS FILE IS MAIN MAKEFILE THAT IS USED FOR BUILDING THE PROJECT
-
 ######################################
 # BUILD CONFIG
 ######################################
-
-# MAKEFILE FILE NAME
-MAKEFILE = Makefile
-
-# SET TO 1 IF RTOS IS USED(NON BARE METAL BUILD)
-RTOS = 0
-
-# SELECT THE HW VERSION
-HW_VER = HW_22-0091rev1
-
-# INCLUDE HW CONFIG
-include .hw/$(HW_VER)
 
 # RELEASE BUILD
 RELEASE = 0
@@ -29,11 +15,11 @@ FLTO = 0
 # USE -g3 FLAG IN NON RELEASE BUILD
 USE_G3 = 0
 
+# SET TO 1 TO BUILD WITH RTX5
+RTX = 1
+
 # USE G++ INSTEAD OF GCC
 GPP = 0
-
-# BUILD FOLDER
-BUILD_FOLDER = .builds/$(BUILD_NAME)
 
 # PRINT GCC VERSION AFTER BUILD
 PRINT_VER = 0
@@ -53,15 +39,58 @@ EXCEPTIONS = 0
 # USE DEFAULT LIB
 DEF_LIB = 0
 
+
+######################################
+# HARDWARE-RELATED CONFIG
+######################################
+
+# BUILD FOR HARDWARE VERSION
+HW_VER = Make_Template
+
+# CHIP (FOR J-LINK)
+CHIP = STM32F103C8
+
+# COMPILER DEFINE FOR MCU
+MCU_DEFINE = STM32F103xB
+
+# START ADDRESS FOR .bin FILE
+ADDR = 0x08000000
+
+# CPU CORE
+CPU_CORE = cortex-m3
+
+# LINKER SCRIPT FILE
+LDSCRIPT = STM32F103XB_FLASH.ld
+
+# MCU STARTUP FILE
+STARTUP = startup_stm32f103xb.s
+
+# RTX5 SYSTEM FILE
+RTX_SYS_FILE = stm32f103xb.h
+
+# RTX5 IRQ FILE
+RTX_IRQ_FILE = irq_armv7m.s
+
+
+######################################
+# MISC CONFIG
+######################################
+
 # JLINK SCRIPT NAMES
-FLASH_SCRIPT = JLink_Flash_$(BUILD_NAME).jlink
-ERASE_SCRIPT = JLink_Erase_$(BUILD_NAME).jlink
+FLASH_SCRIPT = JLink_Flash_$(HW_VER).jlink
+ERASE_SCRIPT = JLink_Erase_$(HW_VER).jlink
+
+# FOLDER WITH JLINK SCRIPTS
+JLINK_FOLDER = .jlink
+
+# BUILD FOLDER
+BUILD_FOLDER = .builds\$(HW_VER)
 
 # TOOLCHAIN PREFIX
 TC_PREFIX = arm-none-eabi-
 
-# FOLDER WITH JLINK SCRIPTS
-JLINK_FOLDER = .jlink
+# MAKEFILE FILE NAME
+MAKEFILE = Make/$(HW_VER)
 
 
 ######################################
@@ -70,81 +99,82 @@ JLINK_FOLDER = .jlink
 
 # C UNITS
 C_SOURCES = \
-$(HW_C_SOURCES) \
+MCU/system_stm32f1xx.c \
 
 
 # C++ UNITS
 CPP_SOURCES =  \
-$(HW_CPP_SOURCES) \
 Main.cpp \
 
 
 # ASSEMBLER UNITS
-ASM_SOURCES =  \
-$(HW_AS_SOURCES) \
+AS_SOURCES =  \
+MCU/$(STARTUP) \
 
 
 ######################################
+# INCLUDE PATHS
+######################################
+
 # INCLUDE DIRECTORIES
-######################################
-
-# C/C++ INCLUDE DIRECTORIES
-C_INCLUDES =  \
-$(HW_INCLUDES) \
--I./ \
--IDrivers/Inc \
+INCLUDE_PATHS =  \
+-I. \
+-IConfig \
+-IApplication/Inc \
 -ILibraries/Inc \
--IModules/Inc \
-
-
-# ASSEMBLER INCLUDE DIRECTORIES
-AS_INCLUDES =  \
-$(HW_AS_INCLUDES) \
+-ICMSIS/Core \
+-IMCU/Inc \
 
 
 ######################################
 # DEFINES
 ######################################
 
-# C/C++ DEFINES
-C_DEFS =  \
-$(HW_DEFS) \
-
-
-# ASSEMBLER DEFINES
-AS_DEFS =  \
-$(HW_AS_DEFS) \
+# DEFINES
+DEFINES =  \
+-DHW_$(HW_VER) \
+-D$(MCU_DEFINE) \
 
 
 ######################################
-# RTOS UNITS
+# RTX5 STUFF
 ######################################
-ifeq ($(RTOS), 1)
+
+ifeq ($(RTX), 1)
 C_SOURCES += \
-RTOS/Src/os_systick.c \
-RTOS/Src/RTX_Config.c \
-RTOS/Src/rtx_delay.c \
-RTOS/Src/rtx_evflags.c \
-RTOS/Src/rtx_evr.c \
-RTOS/Src/rtx_kernel.c \
-RTOS/Src/rtx_memory.c \
-RTOS/Src/rtx_mempool.c \
-RTOS/Src/rtx_msgqueue.c \
-RTOS/Src/rtx_mutex.c \
-RTOS/Src/rtx_semaphore.c \
-RTOS/Src/rtx_system.c \
-RTOS/Src/rtx_thread.c \
-RTOS/Src/rtx_timer.c \
-RTOS/Src/rtx_lib.c
+CMSIS/RTX/RTX_Config.c \
+CMSIS/RTX/os_systick.c \
+CMSIS/RTX/rtx_delay.c \
+CMSIS/RTX/rtx_evflags.c \
+CMSIS/RTX/rtx_evr.c \
+CMSIS/RTX/rtx_kernel.c \
+CMSIS/RTX/rtx_memory.c \
+CMSIS/RTX/rtx_mempool.c \
+CMSIS/RTX/rtx_msgqueue.c \
+CMSIS/RTX/rtx_mutex.c \
+CMSIS/RTX/rtx_semaphore.c \
+CMSIS/RTX/rtx_system.c \
+CMSIS/RTX/rtx_thread.c \
+CMSIS/RTX/rtx_timer.c \
+CMSIS/RTX/rtx_lib.c
 
 
-C_INCLUDES += \
--IRTOS/Inc \
--ITasks/Inc \
+CPP_SOURCES += \
 
 
-ASM_SOURCES += \
 
+INCLUDE_PATHS += \
+-ICMSIS/RTX/Inc \
+-IApplication/Tasks/Inc \
+
+
+AS_SOURCES += \
+CMSIS/RTX/IRQ/$(RTX_IRQ_FILE)
+
+
+DEFINES += \
+-DUSING_RTX \
+-DCMSIS_device_header=\"$(RTX_SYS_FILE)\"
 
 endif
 
@@ -152,8 +182,9 @@ endif
 #######################################
 # OPTIMIZATION
 #######################################
+
 ifeq ($(RELEASE), 0)
-C_DEFS += -DDEBUG
+DEFINES += -DDEBUG
 OPT += -Og
 else ifeq ($(SIZE), 1)
 OPT += -Os
@@ -163,20 +194,20 @@ endif
 
 ifeq ($(RELEASE), 0)
 ifeq ($(USE_G3), 1)
-CFLAGS += -g3
+COMPILER_FLAGS += -g3
 else
-CFLAGS += -g
+COMPILER_FLAGS += -g
 endif
-CFLAGS += -gdwarf-2
+COMPILER_FLAGS += -gdwarf-2
 else ifeq ($(FLTO), 1)
-CFLAGS += -flto
-ASFLAGS += -flto
+COMPILER_FLAGS += -flto
 endif
 
 
 #######################################
 # TOOLCHAIN
 #######################################
+
 ifeq ($(GPP), 1)
 CC = $(TC_PREFIX)g++
 AS = $(TC_PREFIX)g++
@@ -191,54 +222,41 @@ BIN = $(CP) -O binary -S
  
 
 #######################################
-# C/C++ COMPILER FLAGS
+# BUILD FLAGS
 #######################################
-SHARED_FLAGS = -mcpu=$(CPU_CORE) -mthumb $(FPU) $(FLOAT-ABI)
-ASFLAGS += $(SHARED_FLAGS) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -Wdouble-promotion -Wshadow -Wformat=2 -Wformat-overflow -Wformat-truncation -fdata-sections -ffunction-sections
-CFLAGS += $(SHARED_FLAGS) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -Wdouble-promotion -Wshadow -Wformat=2 -Wformat-overflow -Wformat-truncation -fdata-sections -ffunction-sections 
+
+CAL_FLAGS = -mcpu=$(CPU_CORE) -mthumb $(FPU) $(FLOAT-ABI)
+COMPILER_FLAGS += $(CAL_FLAGS) $(DEFINES) $(INCLUDE_PATHS) $(OPT) -MMD -MP -MF"$(@:%.o=%.d)" -Wall -Wdouble-promotion -Wshadow -Wformat=2 -Wformat-overflow -Wformat-truncation -fdata-sections -ffunction-sections
+LINKER_FLAGS = $(CAL_FLAGS) -specs=nano.specs -TLinker/$(LDSCRIPT) -lc -lm -lnosys -Wl,-Map=$(BUILD_FOLDER)/$(HW_VER).map,--cref,--gc-sections,--print-memory-usage
 
 ifeq ($(GPP), 1)
 ifeq ($(RTTI), 0)
-ASFLAGS += -fno-rtti
-CFLAGS += -fno-rtti
+COMPILER_FLAGS += -fno-rtti
 endif
 endif
 
 ifeq ($(EXCEPTIONS), 0)
-ASFLAGS += -fno-exceptions
-CFLAGS += -fno-exceptions
+COMPILER_FLAGS += -fno-exceptions
 endif
 
 ifeq ($(DEF_LIB), 0)
-ASFLAGS += -nodefaultlibs
-CFLAGS += -nodefaultlibs
+COMPILER_FLAGS += -nodefaultlibs
 endif
 
 ifeq ($(STACK_ANALYSIS), 1)
-ASFLAGS += -fstack-usage
-CFLAGS += -fstack-usage
+COMPILER_FLAGS += -fstack-usage
 endif
 
 ifneq ($(STACK_OVERFLOW), 0)
-ASFLAGS += -Wstack-usage=$(STACK_OVERFLOW)
-CFLAGS += -Wstack-usage=$(STACK_OVERFLOW)
+COMPILER_FLAGS += -Wstack-usage=$(STACK_OVERFLOW)
 endif
-
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
-
-
-#######################################
-# LINKER FLAGS
-#######################################
-LIBS = -lc -lm -lnosys 
-LIBDIR = 
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_FOLDER)/$(BUILD_NAME).map,--cref,--gc-sections,--print-memory-usage
 
 
 #######################################
 # BUILD
 #######################################
-all: $(BUILD_FOLDER)/$(BUILD_NAME).elf $(BUILD_FOLDER)/$(BUILD_NAME).hex $(BUILD_FOLDER)/$(BUILD_NAME).bin
+
+all: $(BUILD_FOLDER)/$(HW_VER).elf $(BUILD_FOLDER)/$(HW_VER).hex $(BUILD_FOLDER)/$(HW_VER).bin
 
 # LIST OF C OBJECTS
 OBJECTS = $(addprefix $(BUILD_FOLDER)/,$(notdir $(C_SOURCES:.c=.o)))
@@ -249,20 +267,20 @@ OBJECTS_CPP = $(addprefix $(BUILD_FOLDER)/,$(notdir $(CPP_SOURCES:.cpp=.o)))
 vpath %.cpp $(sort $(dir $(CPP_SOURCES)))
 
 # LIST OF ASM OBJECTS
-OBJECTS += $(addprefix $(BUILD_FOLDER)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES)))
+OBJECTS += $(addprefix $(BUILD_FOLDER)/,$(notdir $(AS_SOURCES:.s=.o)))
+vpath %.s $(sort $(dir $(AS_SOURCES)))
 
 $(BUILD_FOLDER)/%.o: %.c $(MAKEFILE) | $(BUILD_FOLDER) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.c=.lst)) $< -o $@
+	$(CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_FOLDER)/%.o: %.cpp $(MAKEFILE) | $(BUILD_FOLDER) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.cpp=.lst)) $< -o $@
+	$(CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(BUILD_FOLDER)/$(notdir $(<:.cpp=.lst)) $< -o $@
 
 $(BUILD_FOLDER)/%.o: %.s $(MAKEFILE) | $(BUILD_FOLDER)
-	$(AS) -c $(CFLAGS) $< -o $@
+	$(AS) -c $(COMPILER_FLAGS) $< -o $@
 
-$(BUILD_FOLDER)/$(BUILD_NAME).elf: $(OBJECTS) $(OBJECTS_CPP) Makefile
-	$(CC) $(OBJECTS) $(OBJECTS_CPP) $(LDFLAGS) -o $@
+$(BUILD_FOLDER)/$(HW_VER).elf: $(OBJECTS) $(OBJECTS_CPP) $(MAKEFILE)
+	$(CC) $(OBJECTS) $(OBJECTS_CPP) $(LINKER_FLAGS) -o $@
 
 $(BUILD_FOLDER)/%.hex: $(BUILD_FOLDER)/%.elf | $(BUILD_FOLDER)
 	$(HEX) $< $@
@@ -281,13 +299,16 @@ $(BUILD_FOLDER):
 #######################################
 # FLASH CHIP
 #######################################
+
 flash: all
-	if not exist $(JLINK_FOLDER)/$(FLASH_SCRIPT) (echo Creating flash script & (echo r& echo h& echo loadbin $(BUILD_FOLDER)/$(BUILD_NAME).bin,$(ADDR)& echo verifybin $(BUILD_FOLDER)/$(BUILD_NAME).bin,$(ADDR)& echo r& echo q) > $(JLINK_FOLDER)/$(FLASH_SCRIPT)) else (echo Flash script exists) 
+	if not exist $(JLINK_FOLDER)/$(FLASH_SCRIPT) (echo Creating flash script & (echo r& echo h& echo loadbin $(BUILD_FOLDER)/$(HW_VER).bin,$(ADDR)& echo verifybin $(BUILD_FOLDER)/$(HW_VER).bin,$(ADDR)& echo r& echo q) > $(JLINK_FOLDER)/$(FLASH_SCRIPT)) else (echo Flash script exists) 
 	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(JLINK_FOLDER)/$(FLASH_SCRIPT)
 	
+
 #######################################
 # ERASE CHIP FLASH MEMORY
 #######################################		
+
 erase:
 	if not exist $(JLINK_FOLDER)/$(ERASE_SCRIPT) (echo Creating erase script & (echo r& echo h& echo erase& echo r& echo q) > $(JLINK_FOLDER)/$(ERASE_SCRIPT)) else (echo Erase script exists)
 	JLink.exe -device $(CHIP) -if SWD -speed 4000 -autoconnect 1 -CommandFile $(JLINK_FOLDER)/$(ERASE_SCRIPT)
@@ -296,10 +317,11 @@ erase:
 #######################################
 # REMOVE BUILD FOLDER & OTHER STUFF
 #######################################
+
 clean:
 	if exist $(BUILD_FOLDER) (echo Deleting build directory & rmdir /s /q $(BUILD_FOLDER))
-	if exist $(JLINK_FOLDER)/$(FLASH_SCRIPT) (echo Deleting flash script & del $(JLINK_FOLDER)/$(FLASH_SCRIPT))
-	if exist $(JLINK_FOLDER)/$(ERASE_SCRIPT) (echo Deleting erase script & del $(JLINK_FOLDER)/$(ERASE_SCRIPT))
+	if exist $(JLINK_FOLDER)\$(FLASH_SCRIPT) (echo Deleting flash script & del $(JLINK_FOLDER)\$(FLASH_SCRIPT))
+	if exist $(JLINK_FOLDER)\$(ERASE_SCRIPT) (echo Deleting erase script & del $(JLINK_FOLDER)\$(ERASE_SCRIPT))
 
 
 

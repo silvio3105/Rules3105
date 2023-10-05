@@ -51,7 +51,8 @@ Tasks combine application modules and their logic to do something useful. In the
 ### Bootloader/firmware project folder structure
 
 - 📂 **{Project_name}**: Root folder.
-    - 📂 **.builds**: Folder with HW build folders(used by Make and ARM-GCC).
+    - 📂 **.builds**: Folder with per hardware build folders(used by Make and ARM-GCC).
+        - 📂 **{Build_name}**
     - 📂 **.git**: Git folder.
     - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
     - 📂 **.releases**: Folder with stable releases.
@@ -60,31 +61,35 @@ Tasks combine application modules and their logic to do something useful. In the
     - 📂 **Application**: Folder with application layer source files.
         - 📂 **Inc**: Folder with application layer header files.
         - 📂 **Tasks**: Folder with task source files.
-          - 📂 **Inc**: Folder with task header files.
-    - 📂 **CMSIS**: Folder with CMSIS related files.
-      - 📂 **Core**: Folder with CMSIS related core files.
+            - 📂 **Inc**: Folder with task header files.
+    - 📂 **CMSIS**: Folder with CMSIS-related files.
+      - 📂 **Core**: Folder with CMSIS-related core files.
       - 📂 **RTX**: Folder with CMSIS RTX source files.
-        - 📂 **Inc**: Folder with CMSIS RTX header files.
-        - 📂 **Startup**: Folder with RTX startup files. 
-    - 📂 **Config**: Folder with hardware configuration files.
+        	- 📂 **Inc**: Folder with CMSIS RTX header files.
+            - 📂 **IRQ**: Folder with RTX startup files. 
+    - 📂 **Config**: Folder with hardware-related configuration files.
     - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
     - 📂 **Drivers**: Folder with driver source files.
-        - 📂 **Inc**: Folder with driver header files.
+        - 📂 **{Driver_Name}**
+            - 📂 **Inc**: Folder with driver header files.
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.
-    - 📂 **Linker**: Folder with linker script files. 
-    - 📂 **Startup**: Folder with MCU startup files.
+    - 📂 **Linker**: Folder with linker scripts. 
+    - 📂 **Make**: Folder with per hardware Make files.
+    - 📂 **MCU**: Folder with MCU-related source files.
+        - 📂 **Inc**: Folder with MCU-related header files.
     - .gitignore: List of items for Git to ignore.
     - AppConfig.hpp: Header file with configuration for application layer.
     - Doxyfile: Doxygen project file.
     - LICENSE: Project license.
     - Main.cpp: Main source file with application entry point.
+    - main.h: Legacy main header file.
     - Main.hpp: Main header file.
-    - Makefile: Project Makefile used for building the project.
     - README.md: Project readme file.
 
 **Note:**
-MCU related drivers are grouped with folder in `Drivers` folder(both source and header files).
+- MCU-related drivers are grouped with folder in `Drivers` folder(both source and header files).
+- Folder `Make` contains one Make file for every hardware version.
 
 ### Driver/library project folder structure
 

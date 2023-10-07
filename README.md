@@ -2,23 +2,23 @@
 # ABOUT
 
 This repo contains a template for projects I use. Template includes:
-- Makefile for building the projects(multi hardware builds and RTOS are supported)
+- Makefile for building the project (RTX5 supported)
+- RTX5 files
 - Readme file
 - License file
 - Git ignore file
-- Project structures
+- Project structure
+- Project folder structure
 - Set of coding rules I follow in embedded software development
 
 
 # PROJECT APPLICATION STRUCTURE
 
-**This part applies only to firmware projects.**
-
 <p align="center">
   <img src=".docs/Project%20structure.png" alt="Project application structure diagram" title="Project application structure diagram" />
 </p>
 
-The diagram shows the project structure. It goes from the base up.
+The diagram shows the project structure.
 
 ### Hardware
 
@@ -28,22 +28,26 @@ The base for every project. It runs the project.
 
 Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without another driver(s). The only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO, etc.) is through an external handler(user provided). Because of that, drivers are not fixed to certain MCU or framework.<br>
 Drivers are not written with application logic. They are like little legos, You can use them everywhere. Drivers can interact with libraries.<br>
-Every driver is written as a C++ class within its namespace.
+Every driver is written as a C++ class within its own namespace.
 
 ### Libraries
 
 Libraries are pieces of software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not written with application logic.<br>
-Every library is written within its namespace.<br>
+Every library is written within its own namespace.<br>
 Eg., a library with string manipulation functions.
 
-### Application modules
+### Application layer
 
-Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
-Every module has its namespace and can be written as one or more C++ classes.<br>
+Application layer is made from application modules. Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
+Every module has its own namespace and can be written as one or more C++ classes.<br>
 
 ### Tasks
 
-Tasks combine application modules and their logic to do something useful. In the case of the bare metal project, there is only one task - an endless loop in `main()`.
+Tasks combine application modules and their logic to do something useful. In the case of the bare metal project, there is no task layer.
+
+### Application
+
+Application entry point(`main`). In case of bare metal application, it is only "task".
 
 
 # PROJECT FOLDER STRUCTURE
@@ -136,6 +140,10 @@ Driver/library files are placed in root folder or in `Src` or `Inc` folder if pr
     - `v0.13.18rc8` Release candidate #8 for version 0.13.18<br>
     - `v13.12.0` Stable release, version 13.12.0
 
+### Version timeline
+
+`v1.10.32` -> `v1.11.0rc1` -> `v1.11.0rc2` -> `v1.11.0rc3` -> `v1.11.0`
+
 ### Release naming
 
 Naming rule is: **{fw_name}\_{fw_version}(_{HW})**<br>
@@ -183,7 +191,7 @@ List of the tools I use (Windows 10 Pro x64):
 - [Saturn PCB Toolkit](https://saturnpcb.com/saturn-pcb-toolkit/)
 
 
-# CODE STANDARD
+# CODE RULES
 
 ### Indents
 
@@ -363,11 +371,11 @@ enum enum_type_t : uint8_t
 };
 
 /*
-    Same as C-style enums but:
+    Same as classes:
     Enum value names in the enum class are named with uppercase letters for every word.
-    Value names do not start with an abbreviation(eg., "GSM_ERROR").
+    Value names do not start with an abbreviation(eg., "ERROR", not "GSM_ERROR").
 */
-enum class enum_class_t : uint16_t
+enum class EnumClass_t : uint16_t
 {
     EnumOne = 0,
     EnumTwo

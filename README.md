@@ -70,7 +70,7 @@ Application entry point(`main`). In case of bare metal application, it is only "
       - 📂 **Core**: Folder with CMSIS-related core files.
       - 📂 **RTX**: Folder with CMSIS RTX source files.
         	- 📂 **Inc**: Folder with CMSIS RTX header files.
-            - 📂 **IRQ**: Folder with RTX startup files. 
+            - 📂 **IRQ**: Folder with RTX IRQ files. 
     - 📂 **Config**: Folder with hardware-related configuration files.
     - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
     - 📂 **Drivers**: Folder with driver source files.

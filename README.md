@@ -38,7 +38,7 @@ Eg., a library with string manipulation functions.
 
 ### Application layer
 
-Application layer is made from application modules. Application modules combine drivers and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
+Application layer is made of application modules. Application modules combine driver(s) and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
 Every module has its own namespace and can be written as one or more C++ classes.<br>
 
 ### Tasks

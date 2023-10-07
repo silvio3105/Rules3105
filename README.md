@@ -93,7 +93,7 @@ Application entry point(`main`). In case of bare metal application, it is only "
 
 **Note:**
 - MCU-related drivers are grouped with folder in `Drivers` folder(both source and header files).
-- Folder `Make` contains one Make file for every hardware version.
+- Folder `Make` contains one Make file for every hardware version and/or application type.
 
 ### Driver/library project folder structure
 

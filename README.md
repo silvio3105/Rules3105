@@ -484,15 +484,24 @@ void foo(void)
 	tmp = 2.00f * (*ptr);
 
 	// Do something with value
-	if (tmp > 10.00f) tmp = 10.00f;
-		else tmp -= 0.55f;
+	if (tmp > 10.00f)
+	{
+		tmp = 10.00f;
+	}
+	else
+	{
+		tmp -= 0.55f;
+	}
 
 	// Check does string exist
 	if (str[0])
 	{
 		// Do something with string		
 	}
-	else return; // String does not exist, abort
+	else // String does not exist, abort
+	{
+		return;
+	}
 
 	// Rest of the function...
 
@@ -517,9 +526,15 @@ void foo(void)
 			bar();
 			bar2();
 		}
-		else print("Not ready\n");
+		else
+		{
+			print("Not ready\n");
+		}
 	}
-	else print("Not online\n");
+	else
+	{
+		print("Not online\n");
+	}
 }
 ```
 
@@ -549,6 +564,54 @@ void foo(void)
 	bar2();
 }
 ```
+
+### Single or multi line if statment
+
+For the sake of easy debugging I prefer multi line if statments.
+
+```cpp
+if (statment)
+{
+	foo();
+}
+```
+
+not
+
+```cpp
+if (statment) foo();
+```
+
+### Curly bracket placment
+
+Every curly bracket is in new line.
+
+```cpp
+function()
+{
+	someCodeHere;
+	foo();
+	return 1;
+}
+```
+
+Not like this(or any variation where curly bracket is not in new line)
+
+```cpp
+function() {
+	someCodeHere;
+	foo();
+	return 1;
+}
+```
+
+Except arrays, sometimes.
+
+```cpp
+uint8_t arr[] = { 1, 2, 3, 4, 5 };
+```
+
+
 
 ### Declarations & Definitions
 

@@ -618,3 +618,17 @@ uint8_t arr[] = { 1, 2, 3, 4, 5 };
 Declarations are placed in header files(.hpp/.h).<br>
 Definitions and private (static) stuff are placed in translation units(.cpp/.c).<br>
 Inline and template stuff are defined in header files.
+
+
+# DEBUG
+
+To enable debug build `DEBUG` flag should be defined during project build. Flag `DEBUG_HANDLER` defines name of the function for debug printing(over UART or RTT). Eg., with flag `DEBUG_HANDLER=log` `log` function will be used for printing debug text.<br>
+Debug toggle switch is `DEBUG` flag. Main debug configuration flag is `DEBUG_HANDLER`. Those two flags are needed to create debug build.
+
+`DEBUG_x(_y)` is flag format to enable per module debug.
+- `x` is driver/library/module name or abbreviation.
+- `y` is driver/library/module part name or abbreviation.
+
+Eg., `DEBUG_SML_RB` will enable debug print for ring buffer in [SML library](www.github.com/silvio3105/SML), `DEBUG_SHT35` will enable debug print for SHT35 driver and `DEBUG_GSM` will enable debug print for GSM module of the project.
+
+Debug related code have to be removed in non-debug build.

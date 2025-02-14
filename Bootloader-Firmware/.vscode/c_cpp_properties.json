@@ -6,15 +6,8 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-				"DEBUG",
-				"DEBUG_HANDLER=log",
-				"DEBUG_LEVEL=0",
-				"DEBUG_SML_COPY",
-				"DEBUG_SML_RC",
-				"DEBUG_EXAMPLE",
 				"STM32F103xB",
-                "USE_HAL_DRIVER",
-				"SML_IMPLEMENTATION"
+                "USE_HAL_DRIVER"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",

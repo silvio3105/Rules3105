@@ -1,53 +1,43 @@
 
 # ABOUT
 
-This repo contains a template for projects I use. Template includes:
-- Makefile for building the project (RTX5 supported)
+This repo contains a template I use for application projects. Template includes:
+- Makefile template with RTOS support for building the application
 - RTX5 files
 - Readme file
 - License file
 - Git ignore file
-- Project structure
 - Project folder structure
 - Set of coding rules I follow in embedded software development
 
 
-# PROJECT APPLICATION STRUCTURE
+# APPLICATION LAYERS
 
 <p align="center">
-  <img src=".docs/Project%20structure.png" alt="Project application structure diagram" title="Project application structure diagram" />
+  <img src=".docs/Application%20layers.png" alt="Application layers diagram" title="Application layers diagram" />
 </p>
 
-The diagram shows the project structure.
+The diagram shows the application layers.
 
 ### Hardware
 
-The base for every project. It runs the project.
+The base for every application. It is only physical layer.
 
 ### Drivers
 
-Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without another driver(s). The only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO, etc.) is through an external handler(user provided). Because of that, drivers are not fixed to certain MCU or framework.<br>
-Drivers are not written with application logic. They are like little legos, You can use them everywhere. Drivers can interact with libraries.<br>
-Every driver is written as a C++ class within its own namespace.
+Drivers are the gate for other layers of the application to interact with the hardware. They are written with minimal logic inside. Every driver is written without the other driver(s). The only way for the driver to interact with hardware(eg., I2C sensor, SPI flash, GPIO, etc.) is through an external handlers(user provided). Because of that, drivers are not fixed to certain MCU or SDK/framework. Drivers are not written with application logic. Drivers can interact with libraries. Every driver is written as a C++ class within its own namespace.
 
 ### Libraries
 
-Libraries are pieces of software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not written with application logic.<br>
-Every library is written within its own namespace.<br>
-Eg., a library with string manipulation functions.
+Libraries are pieces of software with basic logic and do not require interactions with the hardware. Every layer can use libraries. Libraries are not written with application logic. Every library is written within its own C++ namespace. Eg., a library with string manipulation functions.
 
-### Application layer
+### Modules
 
-Application layer is made of application modules. Application modules combine driver(s) and libraries to produce basic logic for the application. Module alone is worthless(one plank is not a bench, but many planks combined create the bench).<br>
-Every module has its own namespace and can be written as one or more C++ classes.<br>
-
-### Tasks
-
-Tasks combine application modules and their logic to do something useful. In the case of the bare metal project, there is no task layer.
+Modules are pieces of application logic. Each module combines drivers and libraries. Eg., ADC module will interact with ADC driver and provide access to voltage info for other modules. So other modules do not care about how voltage is measured.
 
 ### Application
 
-Application entry point(`main`). In case of bare metal application, it is only "task".
+Application layer contains all RTOS tasks(or just `main` "task" in bare metal). If RTOS is used, every module will have its own task or will share task with other module.
 
 
 # PROJECT FOLDER STRUCTURE
@@ -55,8 +45,8 @@ Application entry point(`main`). In case of bare metal application, it is only "
 ### Bootloader/firmware project folder structure
 
 - 📂 **{Project_name}**: Root folder.
-    - 📂 **.builds**: Folder with per hardware build folders(used by Make and ARM-GCC).
-        - 📂 **{Build_name}**
+    - 📂 **.builds**: Folder with per hardware build folders.
+        - 📂 **{Build_name}**: Folder for build type.
     - 📂 **.git**: Git folder.
     - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
     - 📂 **.releases**: Folder with stable releases.
@@ -64,24 +54,23 @@ Application entry point(`main`). In case of bare metal application, it is only "
     - 📂 **.vscode**: Folder with VS Code config files.
     - 📂 **Application**: Folder with application layer source files.
         - 📂 **Inc**: Folder with application layer header files.
-        - 📂 **Tasks**: Folder with task source files.
-            - 📂 **Inc**: Folder with task header files.
     - 📂 **CMSIS**: Folder with CMSIS-related files.
-      - 📂 **Core**: Folder with CMSIS-related core files.
-      - 📂 **RTX**: Folder with CMSIS RTX source files.
-        	- 📂 **Inc**: Folder with CMSIS RTX header files.
-            - 📂 **IRQ**: Folder with RTX IRQ files. 
     - 📂 **Config**: Folder with hardware-related configuration files.
     - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
     - 📂 **Drivers**: Folder with driver source files.
-        - 📂 **{Driver_Name}**
-            - 📂 **Inc**: Folder with driver header files.
+        - 📂 **Inc**: Folder with driver header files.
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.
     - 📂 **Linker**: Folder with linker scripts. 
-    - 📂 **Make**: Folder with per hardware Make files.
-    - 📂 **MCU**: Folder with MCU-related source files.
-        - 📂 **Inc**: Folder with MCU-related header files.
+    - 📂 **Make**: Folder with per hardware Make files(one Make file for every hardware build or application type).
+    - 📂 **MCU**: Folder with per MCU related source files.
+        - 📂 **{MCU type}**: Folder with MCU related source files(eg., _STM32F401C8_).
+            - 📂 **Inc**: Folder with MCU related header files.
+    - 📂 **Modules**: Folder with module source files.
+        - 📂 **Inc**: Folder with module header files.
+    - 📂 **RTOS**: Folder with RTOS source files.
+      	- 📂 **Inc**: Folder with RTOS header files.
+        - 📂 **IRQ**: Folder with RTOS IRQ files.  
     - .gitignore: List of items for Git to ignore.
     - AppConfig.hpp: Header file with configuration for application layer.
     - Doxyfile: Doxygen project file.
@@ -90,10 +79,6 @@ Application entry point(`main`). In case of bare metal application, it is only "
     - main.h: Legacy main header file.
     - Main.hpp: Main header file.
     - README.md: Project readme file.
-
-**Note:**
-- MCU-related drivers are grouped with folder in `Drivers` folder(both source and header files).
-- Folder `Make` contains one Make file for every hardware version and/or application type.
 
 ### Driver/library project folder structure
 

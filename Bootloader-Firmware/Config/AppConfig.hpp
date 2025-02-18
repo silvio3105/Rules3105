@@ -22,8 +22,8 @@
 	This License shall be included in all functional textual files.
 */
 
-#ifndef _APPCONFIG_H_
-#define _APPCONFIG_H_
+#ifndef _APPCONFIG_HPP_
+#define _APPCONFIG_HPP_
 
 // ----- INCLUDE FILES
 
@@ -31,7 +31,7 @@
 // ----- CONFIGURATION
 
 
-#endif // _APPCONFIG_H_
+#endif // _APPCONFIG_HPP_
 
 
 // END WITH NEW LINE

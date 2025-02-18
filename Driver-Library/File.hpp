@@ -15,8 +15,8 @@
 	This License shall be included in all functional textual files.
 */
 
-#ifndef _FILE_H_
-#define _FILE_H_
+#ifndef _FILE_HPP_
+#define _FILE_HPP_
 
 // ----- INCLUDE FILES
 
@@ -49,7 +49,7 @@
 
 
 
-#endif // _FILE_H_
+#endif // _FILE_HPP_
 
 
 // END WITH NEW LINE

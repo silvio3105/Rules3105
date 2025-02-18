@@ -24,6 +24,12 @@
 
 
 // ----- INCLUDE FILES
+#include			"Main.hpp"
+#include			"AppConfig.hpp"
+
+#include			<stdint.h>
+#include 			<stdio.h>
+#include			<string.h>
 
 
 // ----- DEFINES

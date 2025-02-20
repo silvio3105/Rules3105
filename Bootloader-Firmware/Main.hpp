@@ -35,10 +35,13 @@
 // ----- MACRO FUNCTIONS
 
 
-// ----- TYPEDEFS
+// ----- NAMESPACES
 
 
 // ----- ENUMS
+
+
+// ----- TYPEDEFS
 
 
 // ----- STRUCTS
@@ -48,9 +51,6 @@
 
 
 // ----- EXTERNS
-
-
-// ----- NAMESPACES
 
 
 // ----- FUNCTION DECLARATIONS

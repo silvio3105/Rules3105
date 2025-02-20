@@ -42,10 +42,10 @@
 // ----- MACRO FUNCTIONS
 
 
-// ----- TYPEDEFS
-
-
 // ----- ENUMS
+
+
+// ----- TYPEDEFS
 
 
 // ----- STRUCTS
@@ -58,8 +58,6 @@
 
 
 // ----- STATIC FUNCTION DECLARATIONS
-static void SystemClock_Config(void);
-static void Error_Handler(void);
 
 
 // ----- FUNCTION DEFINITIONS

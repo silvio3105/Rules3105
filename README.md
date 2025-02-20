@@ -3,7 +3,7 @@
 
 This repo contains a template I use for application projects. Template includes:
 - Makefile template with RTOS support for building the application
-- RTX5 files
+- RTX5 files with CMSIS-RTOS2 API
 - Readme file
 - License file
 - Git ignore file
@@ -21,7 +21,7 @@ The diagram shows the application layers.
 
 ### Hardware
 
-The base for every application. It is only physical layer.
+The base for every application. It is the only physical layer.
 
 ### Drivers
 
@@ -33,11 +33,12 @@ Libraries are pieces of software with basic logic and do not require interaction
 
 ### Modules
 
-Modules are pieces of application logic. Each module combines drivers and libraries. Eg., ADC module will interact with ADC driver and provide access to voltage info for other modules. So other modules do not care about how voltage is measured.
+Modules are pieces of application logic. Each module combines drivers and libraries with application logic. Eg., ADC module will interact with ADC driver and provide access to voltage info for other modules. So other modules do not care about how voltage is measured. Each module is written within its own C++ namespace.
 
 ### Application
 
-Application layer contains all RTOS tasks(or just `main` "task" in bare metal). If RTOS is used, every module will have its own task or will share task with other module.
+Application layer is made from RTOS tasks(or just `main` "task" in bare metal). If RTOS is used, every module will have its own task or will share task with other module.
+Application layer glues different modules together and creates functional application. 
 
 
 # PROJECT FOLDER STRUCTURE
@@ -56,21 +57,23 @@ Application layer contains all RTOS tasks(or just `main` "task" in bare metal). 
         - 📂 **Inc**: Folder with application layer header files.
     - 📂 **CMSIS**: Folder with CMSIS-related files.
     - 📂 **Config**: Folder with application configuration files.
-        - AppConfig.hpp: Header file with application config(shared between different hardware builds).
-        - AppConfig: Make file with application build config(shared between different hardware builds).
+        - AppConfig.hpp: Header file with application config(common to all hardware builds).
+        - AppConfig: Make file with application build config(common to all hardware builds).
     - 📂 **Documentation**: Folder with application documentation generated with Doxygen and files used for documentation.
     - 📂 **Drivers**: Folder with driver source files.
         - 📂 **Inc**: Folder with driver header files.
+    - 📂 **Hardware**: Folder with application-related hardware config header files and MCU SDK files.
+        - 📂 **{MCU type}**: Folder with MCU files.
+            - 📂 **Inc**: Folder with MCU SDK header files.
+            - 📂 **Linker**: Folder with MCU linker script files. 
+            - 📂 **Startup**: Folder with MCU startup files.
+            - 📂 **SVD**: Folder with MCU system view description file. 
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.
-    - 📂 **Linker**: Folder with linker scripts. 
-    - 📂 **Make**: Folder with per hardware Make files(one Make file for every hardware build or application type).
-    - 📂 **MCU**: Folder with per MCU-related source files.
-        - 📂 **{MCU type}**: Folder with MCU-related source files(eg., _STM32F401C8_).
-            - 📂 **Inc**: Folder with MCU-related header files.
-    - 📂 **Modules**: Folder with module source files.
-        - 📂 **Inc**: Folder with module header files.
-    - 📂 **RTOS**: Folder with RTOS source files.
+    - 📂 **Make**: Folder with per hardware Make files(one Make file for every build type).
+    - 📂 **Modules**: Folder with application modules source files.
+        - 📂 **Inc**: Folder with application modules header files.
+    - 📂 **RTOS**: Folder with RTOS-related files.
       	- 📂 **Inc**: Folder with RTOS header files.
         - 📂 **IRQ**: Folder with RTOS IRQ files.  
     - .gitignore: List of items for Git to ignore.
@@ -99,17 +102,6 @@ Application layer contains all RTOS tasks(or just `main` "task" in bare metal). 
 # VERSIONING & NAMING
 ### Software versioning
 
-- **Library/Driver: vX.Y(rcA)**
-	- **Y**: Minor version number. Starts from zero. Cannot go over 99. With leading zero(if `Y` is not zero). Increased by some amount with new features. Resets to zero when `X` increases.
-    - **X**: Mayor version number. Can start from zero. Cannot go over 99. Without leading zero. Increased when `Y` overflows or with big update(eg., reworked project etc...).
-    - **rc**: Stands for release candidate which means test release(version is not production ready).
-    - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
-    
-    `X` = 0 means the software does not contain all planned features for the first full release - beta phase (not the same as the release candidate).
-    **Examples:**
-    - `v0.01rc5` Release candidate #5 for version 0.01.
-    - `v1.13` Stable release, version 1.13.
-
 - **Application: vX.Y.Z(rcA)**
     - **Z**: Build number. Starts from zero. Cannot go over 99. With leading zero(if `Z` is not zero). Increased by some amount by bug fixes. Resets to zero when `Y` increases.
     - **Y**: Minor version number. Starts from zero. Cannot go over 99. With leading zero(if `Y` is not zero). Increased by one when `Z` overflows or new features are introduced. Resets to zero when `X` increases.
@@ -122,13 +114,25 @@ Application layer contains all RTOS tasks(or just `main` "task" in bare metal). 
     - `v0.13.18rc8` Release candidate #8 for version 0.13.18
     - `v13.12.0` Stable release, version 13.12.0
 
+- **Library/Driver: vX.Y(rcA)**
+	- **Y**: Minor version number. Starts from zero. Cannot go over 99. With leading zero(if `Y` is not zero). Increased by some amount with new features. Resets to zero when `X` increases.
+    - **X**: Mayor version number. Can start from zero. Cannot go over 99. Without leading zero. Increased when `Y` overflows or with big update(eg., reworked project etc...).
+    - **rc**: Stands for release candidate which means test release(version is not production ready).
+    - **A**: Release candidate number. Starts from one. Cannot go over 99. Without leading zero. Increased by one with every new release candidate.
+    
+    `X` = 0 means the software does not contain all planned features for the first full release - beta phase (not the same as the release candidate).
+    **Examples:**
+    - `v0.01rc5` Release candidate #5 for version 0.01.
+    - `v1.13` Stable release, version 1.13.
+
 ### Version timeline
 
 `v1.10.32` -> `v1.11.0rc1` -> `v1.11.0rc2` -> `v1.11.0rc3` -> `v1.11.0` -> `v1.11.01`
+`v1.0r1` -> `v1.0r2` -> `v1.1rc1` -> `v1.1rc2` -> `v1.1r1`
 
 ### Release naming
 
-Naming rule is: **{app_name}\_{app_version}(_{HW})**
+The naming rule is: **{app_name}\_{app_version}(_{HW})**
 The rule also applies to naming application executables files(.bin and .hex).
 Application name contains project name and application type tag, eg., `3DCLK-FW` is the name of firmware(FW) for 3D Clock. `3DCLK-BL` is the name of the bootloader(BL) for 3D Clock. The application name is max 16 chars long.
 The firmware version is copied from the software versioning rule.
@@ -164,7 +168,8 @@ List of the tools I use (Windows 10 Pro x64):
 - [ARM-GCC v14.2.Rel1 20241119](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 - [GNU Make v3.81](https://gnuwin32.sourceforge.net/packages/make.htm)
 - [Doxygen v1.9.8](https://www.doxygen.nl/download.html)
-- [SEGGER J-Link(SWD) v7.88e](https://www.segger.com/downloads/jlink/)
+- [Graphviz v12.2.1](https://graphviz.org/download/)
+- [SEGGER J-Link v7.88e](https://www.segger.com/downloads/jlink/)
 - [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
 - [nRF PPK2](https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2)
 - [Salea Logic](https://www.saleae.com/downloads/)
@@ -172,6 +177,16 @@ List of the tools I use (Windows 10 Pro x64):
 - [Draw.io](https://app.diagrams.net/)
 - [Fusion 360 (Electronics)](https://www.autodesk.com/products/fusion-360/overview)
 - [Saturn PCB Toolkit](https://saturnpcb.com/saturn-pcb-toolkit/)
+
+### Environment variables
+
+It is required to add next environment variables:
+- `ARM-GCC` with location of bin folder from ARM-GCC.
+- `JLink` with location of root J-Link folder.
+- `Make` with location of bin folder from Make.
+- Add location of Graphviz's bin folder to `Path` variable(Windows).
+
+After adding variables, it is needed to log out from Windows account or reset whole PC.
 
 
 # CODE RULES
@@ -182,7 +197,7 @@ I prefer to use tabs for indents, size 4.
 
 ### C++ over C!
 
-I prefer to use C++ over C, but only parts of C++ that do not induce runtime overhead and bloat(except templates), eg., classes, namespaces, and enum classes!
+I prefer to use C++ over C, but only parts of C++ that do not induce runtime overhead and bloat, eg., classes, namespaces, templates and enum classes! CRTP pattern for driver.
 
 ### Code layout
 
@@ -356,23 +371,23 @@ enum enum_type_t : uint8_t
 */
 enum class EnumClass_t : uint16_t
 {
-    EnumOne = 0,
-    EnumTwo
+    One = 0,
+    Two
 };
 
 // Type alias is written using the same rules as enum classes. 
 typedef uint16_t Idx_t;
 
-// Same as typedef above but it ends with "_f".
+// Same for function typedef but it ends with "_f".
 typedef void (*ExtHandler_f)(void);
 
 /*
-    Struct type uses old C style, same as C style enums.
+    Same as enum classes but it ends with "_s".
     Struct members are named using rules for global variables.
     Each member should have a default value.
-    Structs are used only for data storage(no functions).
+    Structs are used only for data storage(no functions/methods).
 */
-struct this_is_struct_t
+struct ThisIsStruct_s
 {
     uint8_t someVar = 1;
     uint32_t* somePtr = nullptr;
@@ -398,7 +413,7 @@ class ThisIsClass
     uint8_t somePublicFunction(void);
 
 	protected:
-	// Here goes protected stuff (between public and private)
+	// Here goes protected stuff (between public and private tag)
 
     private:
     char someArray[] = "Array"; /**< @brief This is inline doxygen comment. */
@@ -485,8 +500,7 @@ void foo(void)
 		return;
 	}
 
-	// Rest of the function...
-
+	// ...
 }
 ```
 
@@ -615,18 +629,14 @@ Inline and template stuff are defined in header files.
 **Global debug build flags:**
 - `DEBUG`: Main flag for debug build. If not defined during compile/build, content/body of debug print handlers will be empty.
 - `DEBUG_SRC`: Flag for header file name with declarations of debug handlers.
-- `DEBUG_PRINT(_L)=log`: Flag with the name of print handler for constant strings. Function is declared as `void (const char* string, const uint16_t len = strlen(string));`. It is possible to set print handler per debug level.
+- `DEBUG_PRINT(_L)=log`: Flag with the name of print handler for constant strings. Function for formatted strings will have `f` at the end(`log` -> `logf`). Function is declared as `void log(const char* string, const uint16_t len);` and `void log(const char* string);`. Function for formatted strings is declated as `void logf(const char* string, ...);`. It is possible to set print handler per debug level.
     - `DEBUG_PRINT_VERBOSE`: Print handler for verbose debug level.
     - `DEBUG_PRINT_INFO`: Print handler for info debug level.
     - `DEBUG_PRINT_ERROR`: Print handler for error debug level. 
-- `DEBUG_PRINTF(_L)=logf`: Flag with the name of print handler for fromatted strings. Function is declared as `void (const char* string, ...);`. It is possible to set print handler per debug level.
-    - `DEBUG_PRINTF_VERBOSE`: Print handler for verbose debug level.
-    - `DEBUG_PRINTF_INFO`: Print handler for info debug level.
-    - `DEBUG_PRINTF_ERROR`: Print handler for error debug level. 
 
 **Local debug build flags:**
 - `DEBUG_X`: Enable debug for the driver/libryry/module `X`. Eg., `DEBUG_ILPS22QS` will enable debug for `ILPS22QS` driver.
-- `DEBUG_X_L`: Flag to enable debug of certian level in certian driver/library/module. `X` is the name of the drvier/library/module, eg., `ILPS22QS` and `L` is debug level(`VERBOSE`, `INFO`, `ERROR`).
+- `DEBUG_X_L`: Flag to enable debug of certian level in certian driver/library/module. `X` is the name of the drvier/library/module, eg., `ILPS22QS` and `L` is debug level(`VERBOSE`, `INFO`, `ERROR`).Flag `DEBUG_X` is required.
 
 Debug-related code have to be removed in non-debug build.
 Debug implementation example:
@@ -640,24 +650,23 @@ Debug implementation example:
 
 #ifdef DEBUG_ILPS22QS_VERBOSE
 	#ifdef DEBUG_PRINT_VERBOSE
+	#define DEBUG_ILPS22QS_VERBOSE_LEN 11
 	#define DEBUG_ILPS22QS_PRINT(...) \
-		DEBUG_PRINT_VERBOSE("[ILPS22QS] ", 11); \
+		DEBUG_PRINT_VERBOSE("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
 		DEBUG_PRINT_VERBOSE(...)
+
+	#define DEBUG_ILPS22QS_PRINTF(...) \
+		DEBUG_PRINT_VERBOSE("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
+		DEBUG_PRINT_VERBOSE#f(...)		
 	#else // DEBUG_PRINT_VERBOSE
 	#define DEBUG_ILPS22QS_PRINT(...) \
-		DEBUG_PRINT("[ILPS22QS] ", 11); \
+		DEBUG_PRINT("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
 		DEBUG_PRINT(...)
-	#endif // DEBUG_PRINT_VERBOSE
 
-	#ifdef DEBUG_PRINTF_VERBOSE
 	#define DEBUG_ILPS22QS_PRINTF(...) \
-		DEBUG_PRINTF_VERBOSE("[ILPS22QS] "); \
-		DEBUG_PRINTF_VERBOSE(...)
-	#else // DEBUG_PRINTF_VERBOSE
-	#define DEBUG_ILPS22QS_PRINTF(...) \
-		DEBUG_PRINTF("[ILPS22QS] "); \
-		DEBUG_PRINTF(...)
-	#endif // DEBUG_PRINTF_VERBOSE	
+		DEBUG_PRINT("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
+		DEBUG_PRINT#f(...)		
+	#endif // DEBUG_PRINT_VERBOSE
 #else // DEBUG_ILPS22QS_VERBOSE
 #define DEBUG_ILPS22QS_PRINT(...)
 #define DEBUG_ILPS22QS_PRINTF(...)
@@ -665,24 +674,23 @@ Debug implementation example:
 
 #ifdef DEBUG_ILPS22QS_INFO
 	#ifdef DEBUG_PRINT_INFO
+	#define DEBUG_ILPS22QS_INFO_LEN 17
 	#define DEBUG_ILPS22QS_PRINT_INFO(...) \
-		DEBUG_PRINT_INFO("[ILPS22QS] info: ", 17); \
+		DEBUG_PRINT_INFO("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
 		DEBUG_PRINT_INFO(...)
+
+	#define DEBUG_ILPS22QS_PRINTF_INFO(...) \
+		DEBUG_PRINT_INFO("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
+		DEBUG_PRINT_INFO#f(...)		
 	#else // DEBUG_PRINT_INFO
 	#define DEBUG_ILPS22QS_PRINT_INFO(...) \
-		DEBUG_PRINT("[ILPS22QS] info: ", 17); \
+		DEBUG_PRINT("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
 		DEBUG_PRINT(...)
-	#endif // DEBUG_PRINT_INFO
 
-	#ifdef DEBUG_PRINTF_INFO
 	#define DEBUG_ILPS22QS_PRINTF_INFO(...) \
-		DEBUG_PRINTF_INFO("[ILPS22QS] info: "); \
-		DEBUG_PRINTF_INFO(...)
-	#else // DEBUG_PRINTF_INFO
-	#define DEBUG_ILPS22QS_PRINTF_INFO(...) \
-		DEBUG_PRINTF("[ILPS22QS] info: "); \
-		DEBUG_PRINTF(...)
-	#endif // DEBUG_PRINTF_INFO	
+		DEBUG_PRINT("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
+		DEBUG_PRINT#f(...)		
+	#endif // DEBUG_PRINT_INFO
 #else // DEBUG_ILPS22QS_INFO
 #define DEBUG_ILPS22QS_PRINT_INFO(...)
 #define DEBUG_ILPS22QS_PRINTF_INFO(...)
@@ -690,24 +698,23 @@ Debug implementation example:
 
 #ifdef DEBUG_ILPS22QS_ERROR
 	#ifdef DEBUG_PRINT_ERROR
+	#define DEBUG_ILPS22QS_ERROR_LEN 18
 	#define DEBUG_ILPS22QS_PRINT_ERROR(...) \
-		DEBUG_PRINT_ERROR("[ILPS22QS] error: ", 18); \
+		DEBUG_PRINT_ERROR("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
 		DEBUG_PRINT_ERROR(...)
+
+	#define DEBUG_ILPS22QS_PRINTF_ERROR(...) \
+		DEBUG_PRINT_ERROR("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
+		DEBUG_PRINT_ERROR#f(...)		
 	#else // DEBUG_PRINT_ERROR
 	#define DEBUG_ILPS22QS_PRINT_ERROR(...) \
-		DEBUG_PRINT("[ILPS22QS] error: ", 18); \
+		DEBUG_PRINT("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
 		DEBUG_PRINT(...)
-	#endif // DEBUG_PRINT_ERROR
 
-	#ifdef DEBUG_PRINTF_ERROR
 	#define DEBUG_ILPS22QS_PRINTF_ERROR(...) \
-		DEBUG_PRINTF_ERROR("[ILPS22QS] error: "); \
-		DEBUG_PRINTF_ERROR(...)
-	#else // DEBUG_PRINTF_ERROR
-	#define DEBUG_ILPS22QS_PRINTF_ERROR(...) \
-		DEBUG_PRINTF("[ILPS22QS] error: "); \
-		DEBUG_PRINTF(...)
-	#endif // DEBUG_PRINTF_ERROR	
+		DEBUG_PRINT("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
+		DEBUG_PRINT#f(...)		
+	#endif // DEBUG_PRINT_ERROR	
 #else // DEBUG_ILPS22QS_ERROR
 #define DEBUG_ILPS22QS_PRINT_ERROR(...)
 #define DEBUG_ILPS22QS_PRINTF_ERROR(...)

@@ -1,7 +1,7 @@
 /**
- * @file Main.cpp
+ * @file HW_Template.hpp
  * @author silvio3105 (www.github.com/silvio3105)
- * @brief Main source file.
+ * @brief Hardware configuration header file.
  * 
  * @copyright Copyright (c) 2025, silvio3105
  * 
@@ -22,57 +22,12 @@
 	This License shall be included in all functional textual files.
 */
 
-// ----- INCLUDE FILES
-#include			"Main.hpp"
-#include			"AppConfig.hpp"
-#include 			HW_CONFIG
-#include			DEBUG_SRC
-
-#ifdef RTOS
-#include			"cmsis_os2.h"
-#endif // RTOS
-
-#include			<stdint.h>
-#include 			<stdio.h>
-#include			<string.h>
-
+#ifndef _HW_TEMPLATE_HPP
+#define _HW_TEMPLATE_HPP
 
 // ----- DEFINES
 
 
-// ----- MACRO FUNCTIONS
-
-
-// ----- ENUMS
-
-
-// ----- TYPEDEFS
-
-
-// ----- STRUCTS
-
-
-// ----- CLASSES	
-
-
-// ----- VARIABLES
-
-
-// ----- STATIC FUNCTION DECLARATIONS
-
-
-// ----- FUNCTION DEFINITIONS
-int main(void)
-{
-	while (1)
-	{
-
-	}
-}
-
-
-// ----- STATIC FUNCTION DEFINITIONS
-
-
+#endif // _HW_TEMPLATE_HPP
 
 // END WITH NEW LINE

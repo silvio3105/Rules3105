@@ -63,11 +63,14 @@ Application layer glues different modules together and creates functional applic
     - 📂 **Drivers**: Folder with driver source files.
         - 📂 **Inc**: Folder with driver header files.
     - 📂 **Hardware**: Folder with application-related hardware config header files and MCU SDK files.
-        - 📂 **{MCU type}**: Folder with MCU files.
+        - 📂 **{Build_name}**: Folder with build and MCU files.
             - 📂 **Inc**: Folder with MCU SDK header files.
             - 📂 **Linker**: Folder with MCU linker script files. 
+            - 📂 **Src**: Folder with MCU SDK src files. 
             - 📂 **Startup**: Folder with MCU startup files.
             - 📂 **SVD**: Folder with MCU system view description file. 
+            - {Build_name}: Make file for this hardware build.
+            - {Build_name}.hpp: Header file with hardware build config.
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.
     - 📂 **Make**: Folder with per hardware Make files(one Make file for every build type).
@@ -97,6 +100,22 @@ Application layer glues different modules together and creates functional applic
     - README.md: Project readme file.
     - {Project_name}.cpp: Driver/library source file.
     - {Project_name}.hpp: Driver/library header file.
+
+
+# Build
+
+ARM-GCC and Make are used for building the project. To build the project, type `make -f Hardware/{HW_build}/{HW_build}` into terminal(CMD or PowerShell). Each build has its own build folder in `.builds` folder. Adding `-j{X}`, where `{x}` is number of jobs to create(~1.5 * number of CPU threads), will speed up the build process(eg., `make -f Make/{HW_build}/{HW_build} -j48`). Every build will create `.bin` and `.hex` files.
+
+It's possible to add different options to make command. Supported options are:
+- `flash`: Will create flash J-Link script in `.jlink` folder and flash the build onto target device.
+- `erase`: Will create flash J-Link script in `.jlink` folder and erase target device's (whole) flash.
+- `clean`: Will delete build folder from `.builds` and J-Link script files from `.jlink` folder.
+- `rtos_cfg`: Will open RTOS config file in CMSIS Config Wizard Java application.
+
+### Make
+
+Make file `AppConfig` in `Config` folder contains build configuration which is common for all project builds.
+Make file `{HW_build}` in `Hardware/{HW_build}` folder contains build configuration just for that build.
 
 
 # VERSIONING & NAMING

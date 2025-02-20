@@ -70,23 +70,23 @@ CPP_FILES += \
 
 # C TRANSLATION FILES
 C_FILES += \
-Hardware/STM32F1/system_stm32f1xx.c \
-Hardware/STM32F1/stm32f1xx_hal_gpio_ex.c \
-Hardware/STM32F1/stm32f1xx_hal_tim.c \
-Hardware/STM32F1/stm32f1xx_hal_tim_ex.c \
-Hardware/STM32F1/stm32f1xx_hal_uart.c \
-Hardware/STM32F1/stm32f1xx_hal.c \
-Hardware/STM32F1/stm32f1xx_hal_rcc.c \
-Hardware/STM32F1/stm32f1xx_hal_rcc_ex.c \
-Hardware/STM32F1/stm32f1xx_hal_gpio.c \
-Hardware/STM32F1/stm32f1xx_hal_dma.c \
-Hardware/STM32F1/stm32f1xx_hal_cortex.c \
-Hardware/STM32F1/stm32f1xx_hal_pwr.c \
-Hardware/STM32F1/stm32f1xx_hal_flash.c \
-Hardware/STM32F1/stm32f1xx_hal_flash_ex.c \
-Hardware/STM32F1/stm32f1xx_hal_exti.c \
-Hardware/STM32F1/stm32f1xx_hal_i2c.c \
-Hardware/STM32F1/stm32f1xx_it.c \
+Hardware/STM32F1/Src/system_stm32f1xx.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_gpio_ex.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_tim.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_tim_ex.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_uart.c \
+Hardware/STM32F1/Src/stm32f1xx_hal.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_rcc.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_rcc_ex.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_gpio.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_dma.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_cortex.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_pwr.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_flash.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_flash_ex.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_exti.c \
+Hardware/STM32F1/Src/stm32f1xx_hal_i2c.c \
+Hardware/STM32F1/Src/stm32f1xx_it.c \
 
 # ASSEMBLER TRANSLATION FILES
 ASM_FILES += \
@@ -108,6 +108,7 @@ INCLUDE_PATHS += \
 
 # DEFINES
 DEFINES += \
+-DHW_CONFIG=\"$(BUILD_NAME).hpp\" \
 
 
 ######################################

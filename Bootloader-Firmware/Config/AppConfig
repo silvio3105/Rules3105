@@ -112,7 +112,7 @@ APP_RTOS_CFG = RTOS/RTX/Inc/RTX_Config.h
 BUILD_FOLDER = .builds\$(BUILD_NAME)
 
 # MAKEFILE FILE NAME
-MAKEFILE = Make/$(BUILD_NAME)
+MAKEFILE = Hardware/$(BUILD_NAME)/$(BUILD_NAME)
 
 # Location of CMSIS configuration wizard
 CMSIS_WIZARD = CMSIS/CMSIS_Configuration_Wizard.jar

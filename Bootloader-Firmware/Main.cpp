@@ -24,9 +24,6 @@
 
 // ----- INCLUDE FILES
 #include			"Main.hpp"
-#include			"AppConfig.hpp"
-#include 			HW_CONFIG
-#include			DEBUG_SRC
 
 #ifdef RTOS
 #include			"cmsis_os2.h"

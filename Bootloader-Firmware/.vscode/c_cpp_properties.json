@@ -7,8 +7,8 @@
             ],
             "defines": [
 				"BUILD_HW_Template",
-				"STM32F103x8",
 				"HW_CONFIG=\"HW_Template.hpp\"",
+				"STM32F103x8",
 				"RTOS",
 				"DEBUG",
 				"DEBUG_SRC=\"Debug.hpp\"",

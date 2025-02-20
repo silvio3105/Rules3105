@@ -23,7 +23,7 @@ MCU_ARCH = armv7-m
 MCU_FPABI = soft
 
 # NAME OF MCU LINKER SCRIPT FILE
-MCU_LINKER = Hardware/STM32F1/Linker/STM32F103XB_FLASH.ld
+MCU_LINKER = Hardware/$(BUILD_NAME)/Linker/STM32F103XB_FLASH.ld
 
 # NAME OF MCU STARTUP FILE
 MCU_STARTUP = startup_stm32f103xb.s
@@ -70,27 +70,27 @@ CPP_FILES += \
 
 # C TRANSLATION FILES
 C_FILES += \
-Hardware/STM32F1/Src/system_stm32f1xx.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_gpio_ex.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_tim.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_tim_ex.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_uart.c \
-Hardware/STM32F1/Src/stm32f1xx_hal.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_rcc.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_rcc_ex.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_gpio.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_dma.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_cortex.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_pwr.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_flash.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_flash_ex.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_exti.c \
-Hardware/STM32F1/Src/stm32f1xx_hal_i2c.c \
-Hardware/STM32F1/Src/stm32f1xx_it.c \
+Hardware/HW_Template/Src/system_stm32f1xx.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_gpio_ex.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_tim.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_tim_ex.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_uart.c \
+Hardware/HW_Template/Src/stm32f1xx_hal.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_rcc.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_rcc_ex.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_gpio.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_dma.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_cortex.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_pwr.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_flash.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_flash_ex.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_exti.c \
+Hardware/HW_Template/Src/stm32f1xx_hal_i2c.c \
+Hardware/HW_Template/Src/stm32f1xx_it.c \
 
 # ASSEMBLER TRANSLATION FILES
 ASM_FILES += \
-Hardware/STM32F1/Startup/$(MCU_STARTUP) \
+Hardware/HW_Template/Startup/$(MCU_STARTUP) \
 
 
 ######################################
@@ -99,7 +99,7 @@ Hardware/STM32F1/Startup/$(MCU_STARTUP) \
 
 # INCLUDE DIRECTORIES
 INCLUDE_PATHS += \
--IHardware/STM32F1/Inc
+-IHardware/$(BUILD_NAME)/Inc
 
 
 ######################################

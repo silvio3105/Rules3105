@@ -80,6 +80,7 @@ Application layer glues different modules together and creates functional applic
       	- 📂 **Inc**: Folder with RTOS header files.
         - 📂 **IRQ**: Folder with RTOS IRQ files.  
     - .gitignore: List of items for Git to ignore.
+    - BatchBuild.bat: Batch script file for batch build.
     - Doxyfile: Doxygen project file.
     - LICENSE: Project license.
     - Main.cpp: Main source file with application entry point.
@@ -116,6 +117,10 @@ It's possible to add different options to make command. Supported options are:
 
 Make file `AppConfig` in `Config` folder contains build configuration which is common for all project builds.
 Make file `{HW_build}` in `Hardware/{HW_build}` folder contains build configuration just for that build.
+
+### Batch build
+
+To do batch build, execute `BatchBuild.bat` batch script by typing `&.\BatchBuild.bat` to terminal.
 
 
 # VERSIONING & NAMING

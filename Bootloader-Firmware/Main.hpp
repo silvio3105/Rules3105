@@ -26,6 +26,10 @@
 #define _MAIN_HPP_
 
 // ----- INCLUDE FILES
+#include			"AppConfig.hpp"
+#include 			HW_CONFIG
+#include			DEBUG_SRC
+
 #include			<stdint.h>
 
 

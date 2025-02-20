@@ -8,7 +8,7 @@
 			"name": "HW_Template",
 			"executable": ".builds/HW_Template/HW_Template.elf",
 			"device": "STM32F103C8",
-			"svdFile": "MCU/STM32F1/SCD/STM32F103.svd",
+			"svdFile": "Hardware/HW_Template/SVD/STM32F103.svd",
 			"breakAfterReset": true,
 			"type": "cortex-debug",
 			"request": "launch",

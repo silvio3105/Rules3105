@@ -3,12 +3,12 @@
  * @author silvio3105 (www.github.com/silvio3105)
  * @brief Main source file.
  * 
- * @copyright Copyright (c) 2023, silvio3105
+ * @copyright Copyright (c) 2025, silvio3105
  * 
  */
 
 /*
-	Copyright (c) 2023, silvio3105 (www.github.com/silvio3105)
+	Copyright (c) 2025, silvio3105 (www.github.com/silvio3105)
 
 	Access and use of this Project and its contents are granted free of charge to any Person.
 	The Person is allowed to copy, modify and use The Project and its contents only for non-commercial use.
@@ -22,10 +22,14 @@
 	This License shall be included in all functional textual files.
 */
 
-
 // ----- INCLUDE FILES
 #include			"Main.hpp"
 #include			"AppConfig.hpp"
+#include			DEBUG_SRC
+
+#ifdef RTOS
+#include			"cmsis_os2.h"
+#endif // RTOS
 
 #include			<stdint.h>
 #include 			<stdio.h>
@@ -54,12 +58,22 @@
 
 
 // ----- STATIC FUNCTION DECLARATIONS
+static void SystemClock_Config(void);
+static void Error_Handler(void);
 
 
 // ----- FUNCTION DEFINITIONS
+int main(void)
+{
+	while (1)
+	{
+
+	}
+}
 
 
 // ----- STATIC FUNCTION DEFINITIONS
+
 
 
 // END WITH NEW LINE

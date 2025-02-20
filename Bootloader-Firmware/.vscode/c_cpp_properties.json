@@ -6,8 +6,13 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-				"STM32F103xB",
-                "USE_HAL_DRIVER"
+				"BUILD_HW_Template",
+				"STM32F103x8",
+				"RTOS",
+				"DEBUG",
+				"DEBUG_SRC=\"Debug.hpp\"",
+				"DEBUG_PRINT=Debug::log",
+				"DEBUG_PRINTF=Debug::logf"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",

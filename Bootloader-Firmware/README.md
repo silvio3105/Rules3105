@@ -1,12 +1,12 @@
 
 # About
 
-Lorem
+Template for application project(firmware/bootloader).
 
 
 # LICENSE
 
-Copyright (c) 2023, silvio3105 (www.github.com/silvio3105)
+Copyright (c) 2025, silvio3105 (www.github.com/silvio3105)
 
 Access and use of this Project and its contents are granted free of charge to any Person.
 The Person is allowed to copy, modify and use The Project and its contents only for non-commercial use.
@@ -21,4 +21,4 @@ This License shall be included in all functional textual files.
 
 ---
 
-Copyright (c) 2023, silvio3105
+Copyright (c) 2025, silvio3105

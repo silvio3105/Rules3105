@@ -5,15 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Make_Template",
-			"executable": ".builds/Make_Template/Make_Template.elf",
+			"name": "HW_Template",
+			"executable": ".builds/HW_Template/HW_Template.elf",
 			"device": "STM32F103C8",
-			"svdFile": "C:/Development Tools/SVDs/STM32F103.svd",
+			"svdFile": "MCU/STM32F1/SCD/STM32F103.svd",
 			"breakAfterReset": true,
 			"type": "cortex-debug",
 			"request": "launch",
 			"cwd": "${workspaceRoot}",
-			"serverpath": "C:/Development Tools/JLink/JLinkGDBServerCL.exe", 
+			"serverpath": "${env:JLink}/JLinkGDBServerCL.exe", 
 			"servertype": "jlink",
 			"interface": "swd"
 		}

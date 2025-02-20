@@ -21,7 +21,7 @@ PRINT_VER = 0
 # SET TO 1 TO GENERATE STACK ANALYSIS FILE FOR EACH TRANSLATION UNIT
 STACK_ANALYSIS = 0
 
-# SET TO 1 TO ENABLE WARNING IF STACKOVERFLOW MIGHT HAPPEND
+# SET TO 0 TO DISABLE WARNING IF STACKOVERFLOW MIGHT HAPPEND OR SET TO X BYTES FOR MAXIMUM STACK SIZE
 STACK_OVERFLOW = 0
 
 # SET TO 1 TO GENERATE RUNTIME TYPE IDENTIFICATION INFORMATION
@@ -45,10 +45,10 @@ DEBUG = 1
 DEBUG_SRC=Debug.hpp
 
 # NAME OF THE FUNCTION FOR PRINTING CONSTANT STRINGS
-DEBUG_PRINT=log
+DEBUG_PRINT=Debug::log
 
 # NAME OF THE FUNCTION FOR PRINTING FORMATTED STRINGS
-DEBUG_PRINTF=logf
+DEBUG_PRINTF=Debug::logf
 
 # ENABLE DEBUG FOR
 DEBUG_ENABLE = \
@@ -61,23 +61,17 @@ DEBUG_HANDLER = \
 
 
 ######################################
-# APPLICATION-RELATED CONFIG
-######################################
-
-# SET TO 1 TO BUILD WITH RTOS
-APP_RTOS = 1
-
-
-######################################
 # APPLICATION-RELATED FILE LIST
 ######################################
 
 # C++ TRANSLATION FILES
 CPP_FILES = \
-Main.cpp
+Main.cpp \
+Modules/Debug.cpp 
 
 # C TRANSLATION FILES
 C_FILES = \
+Libraries/SEGGER_RTT.c \
 
 # ASSEMBLER TRANSLATION FILES
 ASM_FILES = \
@@ -88,30 +82,40 @@ ASM_FILES = \
 ######################################
 
 # INCLUDE DIRECTORIES
-INCLUDE_PATHS =  \
+INCLUDE_PATHS = \
 -I. \
--IConfig \
 -IApplication/Inc \
--ILibraries/Inc
+-ICMSIS \
+-IConfig \
+-IDrivers/Inc \
+-IHardware \
+-ILibraries/Inc \
+-IModules/Inc
 
 
 ######################################
-# APPLICATION-RELATED DEFINES
+# APPLICATION-RELATED CONFIG
 ######################################
 
-# DEFINES
-DEFINES =  \
+# SET TO 1 TO BUILD WITH RTOS
+APP_RTOS = 1
+
+# RTOS CONFIG FILE LOCATION
+APP_RTOS_CFG = RTOS/RTX/Inc/RTX_Config.h
 
 
 ######################################
-# TOOLCHAIN CONFIG
+# MISC CONFIG
 ######################################
 
-# BUILD FOLDER LOCATION
+# BUILD FOLDER NAME AND LOCATION
 BUILD_FOLDER = .builds\$(BUILD_NAME)
 
 # MAKEFILE FILE NAME
 MAKEFILE = Make/$(BUILD_NAME)
+
+# Location of CMSIS configuration wizard
+CMSIS_WIZARD = CMSIS/CMSIS_Configuration_Wizard.jar
 
 
 ######################################
@@ -124,3 +128,43 @@ JLINK_ERASE = JLink_Erase_$(BUILD_NAME).jlink
 
 # J-LINK FOLDER NAME
 JLINK_FOLDER = .jlink
+
+# J-LINK RTT UP BUFFER SIZE (32-bit aligned, 0 to use default)
+JLINK_RTT_UP = 512
+
+# J-LINK RTT UP BUFFER SIZE (32-bit aligned, 0 to use default)
+JLINK_RTT_DOWN = 0
+
+
+######################################
+# APPLICATION-RELATED DEFINES
+######################################
+
+# DEFINES
+DEFINES = \
+-DBUILD_$(BUILD_NAME) \
+-D$(MCU_DEFINE) \
+
+# RTOS-RELATED DEFINES
+ifeq ($(APP_RTOS), 1)
+DEFINES += -DRTOS
+endif
+
+# DEBUG-RELATED DEFINES
+ifeq ($(DEBUG), 1)
+DEFINES += -DDEBUG
+endif
+
+DEFINES += -DDEBUG_SRC=\"$(DEBUG_SRC)\" -DDEBUG_PRINT=$(DEBUG_PRINT) -DDEBUG_PRINTF=$(DEBUG_PRINTF)
+DEFINES += $(DEBUG_ENABLE)
+DEFINES += $(DEBUG_LEVEL)
+DEFINES += $(DEBUG_HANDLER)
+
+# RTT-RELATED DEFINES
+ifneq ($(JLINK_RTT_UP), 0)
+DEFINES += -DBUFFER_SIZE_UP=$(JLINK_RTT_UP)
+endif
+
+ifneq ($(JLINK_RTT_DOWN), 0)
+DEFINES += -DBUFFER_SIZE_DOWN=$(JLINK_RTT_DOWN)
+endif

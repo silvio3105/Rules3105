@@ -1,7 +1,7 @@
 /**
- * @file Main.hpp
+ * @file Debug.hpp
  * @author silvio3105 (www.github.com/silvio3105)
- * @brief Main header file.
+ * @brief Debug header file.
  * 
  * @copyright Copyright (c) 2025, silvio3105
  * 
@@ -22,41 +22,23 @@
 	This License shall be included in all functional textual files.
 */
 
-#ifndef _MAIN_HPP_
-#define _MAIN_HPP_
+#ifndef _DEBUG_HPP_
+#define _DEBUG_HPP_
 
 // ----- INCLUDE FILES
-#include			<stdint.h>
-
-
-// ----- DEFINES
-
-
-// ----- MACRO FUNCTIONS
-
-
-// ----- TYPEDEFS
-
-
-// ----- ENUMS
-
-
-// ----- STRUCTS
-
-
-// ----- CLASSES
-
-
-// ----- EXTERNS
+#include <stdint.h>
 
 
 // ----- NAMESPACES
+namespace Debug
+{
+	// ----- FUNCTION DECLARATIONS
+	void log(const char* string, const uint16_t len);
+	void log(const char* string);
+	void logf(const char* string, ...);
+};
 
 
-// ----- FUNCTION DECLARATIONS
-
-
-
-#endif // _MAIN_HPP_
+#endif // _DEBUG_HPP_
 
 // END WITH NEW LINE

@@ -1,4 +1,4 @@
 .builds/*
-.releases/*
-*.jlink/*
-*.cortex-*.json
+.releases/*.*
+.releases/RC/*
+.jlink/*

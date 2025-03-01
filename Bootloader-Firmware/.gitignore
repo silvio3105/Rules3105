@@ -1,7 +1,4 @@
-.builds/*.
-!.builds/.gitkeep
-.releases/*.*
-.releases/RC/*
-!.releases/RC/.gitkeep
-.jlink/*
-!.jlink/.gitkeep
+.builds
+.releases
+*.jlink
+*.cortex-*.json

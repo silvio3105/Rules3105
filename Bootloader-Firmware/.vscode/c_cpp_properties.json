@@ -3,10 +3,18 @@
         {
             "name": "HW_Template",
             "includePath": [
-                "${workspaceFolder}/**"
+				"${workspaceFolder}/Hardware/HW_Template/**",
+				"${workspaceFolder}/Hardware/HW_Template/Inc/**",
+                "${workspaceFolder}/Application/Inc/**",
+				"${workspaceFolder}/CMSIS/**",
+				"${workspaceFolder}/Config/**",
+				"${workspaceFolder}/Drivers/Inc/**",
+				"${workspaceFolder}/Libraries/Inc/**",
+				"${workspaceFolder}/Modules/Inc/**",
+				"${workspaceFolder}/RTOS/RTX/Inc/**"
             ],
             "defines": [
-				"BUILD_HW_Template",
+				"HW_HW_Template",
 				"HW_CONFIG=\"HW_Template.hpp\"",
 				"STM32F103x8",
 				"RTOS",

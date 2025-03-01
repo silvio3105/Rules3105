@@ -5,8 +5,8 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "HW_Template",
-			"executable": ".builds/HW_Template/HW_Template.elf",
+			"name": "Build_Template",
+			"executable": ".builds/Build_Template/Build_Template.elf",
 			"device": "STM32F103C8",
 			"svdFile": "Hardware/HW_Template/SVD/STM32F103.svd",
 			"breakAfterReset": true,

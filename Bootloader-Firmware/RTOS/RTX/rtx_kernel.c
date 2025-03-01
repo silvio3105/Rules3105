@@ -256,8 +256,10 @@ static osStatus_t svcRtxKernelStart (void) {
     return osError;
   }
 
+  #ifndef SOFTDEVICE_PRESENT
   // Setup SVC and PendSV System Service Calls
   SVC_Setup();
+  #endif // SOFTDEVICE_PRESENT
 
   // Setup RTOS Tick
   if (OS_Tick_Setup(osRtxConfig.tick_freq, OS_TICK_HANDLER) != 0) {

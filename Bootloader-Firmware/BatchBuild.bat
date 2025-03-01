@@ -1,1 +1,1 @@
-make -f .\Hardware\HW_Template\HW_Template -j48
+make -f .\Builds\Build_Template.mk -j48

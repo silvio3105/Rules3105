@@ -46,7 +46,7 @@ Application layer glues different modules together and creates functional applic
 ### Application project folder structure
 
 - 📂 **{Project_name}**: Root folder.
-    - 📂 **.builds**: Folder with per hardware build folders.
+    - 📂 **.builds**: Folder with compiler and linker files from building process.
         - 📂 **{Build_name}**: Folder for build type.
     - 📂 **.git**: Git folder.
     - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
@@ -55,10 +55,12 @@ Application layer glues different modules together and creates functional applic
     - 📂 **.vscode**: Folder with VS Code config files.
     - 📂 **Application**: Folder with application layer source files.
         - 📂 **Inc**: Folder with application layer header files.
+    - 📂 **Builds**: Folder with Make file for each build type.
+        - {Build_name}.mk: Make file for build type.
     - 📂 **CMSIS**: Folder with CMSIS-related files.
     - 📂 **Config**: Folder with application configuration files.
         - AppConfig.hpp: Header file with application config(common to all hardware builds).
-        - AppConfig: Make file with application build config(common to all hardware builds).
+        - AppConfig.mk: Make file with application build config(common to all hardware builds).
     - 📂 **Documentation**: Folder with application documentation generated with Doxygen and files used for documentation.
     - 📂 **Drivers**: Folder with driver source files.
         - 📂 **Inc**: Folder with driver header files.
@@ -69,7 +71,7 @@ Application layer glues different modules together and creates functional applic
             - 📂 **Src**: Folder with MCU SDK src files. 
             - 📂 **Startup**: Folder with MCU startup files.
             - 📂 **SVD**: Folder with MCU system view description file. 
-            - {Build_name}: Make file for this hardware build.
+            - {Build_name}.mk: Make file for this hardware build.
             - {Build_name}.hpp: Header file with hardware build config.
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.

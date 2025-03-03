@@ -50,11 +50,17 @@ Application layer glues different modules together and creates functional applic
         - 📂 **{Build_name}**: Folder for build type.
     - 📂 **.git**: Git folder.
     - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
-    - 📂 **.releases**: Folder with stable releases(one release per folder).
-        - 📂 **RC**: Folder with release candidate releases(one release per folder).
+    - 📂 **.outputs**: Folder with build executables(BIN and HEX files + MAP file).
+    - 📂 **.releases**: Folder with stable releases(one release per folder, BIN and HEX files + MAP file).
+        - 📂 **RC**: Folder with release candidate releases(one release per folder, BIN and HEX files + MAP file).
     - 📂 **.vscode**: Folder with VS Code config files.
+        - c_cpp_properties.json: C/C++ config.
+        - launch.json: File with configs for debugging.
     - 📂 **Application**: Folder with application layer source files.
         - 📂 **Inc**: Folder with application layer header files.
+            - main.h: Legacy main header file.
+            - Main.hpp: Main header file.
+        - Main.cpp: Main source file with application entry point.
     - 📂 **Builds**: Folder with Make file for each build type.
         - {Build_name}.mk: Make file for build type.
     - 📂 **CMSIS**: Folder with CMSIS-related files.
@@ -65,29 +71,29 @@ Application layer glues different modules together and creates functional applic
     - 📂 **Drivers**: Folder with driver source files.
         - 📂 **Inc**: Folder with driver header files.
     - 📂 **Hardware**: Folder with application-related hardware config header files and MCU SDK files.
-        - 📂 **{Build_name}**: Folder with build and MCU files.
+        - 📂 **{HW_name}**: Folder with MCU files.
             - 📂 **Inc**: Folder with MCU SDK header files.
             - 📂 **Linker**: Folder with MCU linker script files. 
-            - 📂 **Src**: Folder with MCU SDK src files. 
+            - 📂 **Src**: Folder with MCU SDK source files. 
             - 📂 **Startup**: Folder with MCU startup files.
             - 📂 **SVD**: Folder with MCU system view description file. 
-            - {Build_name}.mk: Make file for this hardware build.
-            - {Build_name}.hpp: Header file with hardware build config.
+            - {HW_name}.mk: Make file for this hardware build.
+            - {HW_name}.hpp: Header file with hardware build config.
     - 📂 **Libraries**: Folder with library source files.
         - 📂 **Inc**: Folder with library header files.
-    - 📂 **Make**: Folder with per hardware Make files(one Make file for every build type).
+    - 📂 **Make**: Folder with Make files.
+        - Backend.mk: File with build process and Make actions, shared across all builds.
+        - Config.mk: File with Make config, shared across all builds.
     - 📂 **Modules**: Folder with application modules source files.
         - 📂 **Inc**: Folder with application modules header files.
     - 📂 **RTOS**: Folder with RTOS-related files.
-      	- 📂 **Inc**: Folder with RTOS header files.
-        - 📂 **IRQ**: Folder with RTOS IRQ files.  
+        - 📂 **{RTOS_name}**: RTOS name(eg., RTX5, FreeRTOS).
+          	- 📂 **Inc**: Folder with RTOS header files.
+            - 📂 **IRQ**: Folder with RTOS IRQ files.  
     - .gitignore: List of items for Git to ignore.
     - BatchBuild.bat: Batch script file for batch build.
     - Doxyfile: Doxygen project file.
     - LICENSE: Project license.
-    - Main.cpp: Main source file with application entry point.
-    - main.h: Legacy main header file.
-    - Main.hpp: Main header file.
     - README.md: Project readme file.
 
 ### Driver/library project folder structure

@@ -27,78 +27,66 @@
 #include			"SEGGER_RTT.h"
 
 #include			<stdint.h>
-#include 			<string.h>
 #include			<stdio.h>
 
 
+/**
+ * @addtogroup Debug
+ * 
+ * Module with debug print functions.
+ * @{
+ */
+
+
 // ----- DEFINES
-#define RTT_CH_IDX							0 /**< @brief Segger RTT buffer index. */
 #ifndef DEBUG_BUFFER_SIZE
 #define DEBUG_BUFFER_SIZE					128 /**< @brief Buffer size in bytes for formatted strings. */
 #endif // DEBUG_BUFFER_SIZE
-//#define DEBUG_STACK_BUFFER /**< @brief Uncomment this to use stack buffer for formatted strings (thread-safe).  */
 
 
-// ----- VARIABLES
-#if !defined(DEBUG_STACK_BUFFER) && defined(DEBUG)
-char buffer[DEBUG_BUFFER_SIZE];
-#endif // DEBUG_STACK_BUFFER && DEBUG
-
-
-// ----- FUNCTION DEFINITIONS
+// ----- NAMESPACES
 /**
- * @brief Output constant debug string.
+ * @brief Debug namespace.
  * 
- * @param string Pointer to constant string.
- * @param len Length of \c string
- * 
- * @return No return value. 
  */
-void Debug::log(const char* string, const uint16_t len)
+namespace Debug
 {
-	#ifdef DEBUG
-	SEGGER_RTT_Write(RTT_CH_IDX, string, len);
-	#endif // DEBUG
-}
 
-/**
- * @brief Output constant string of unknown length.
- * 
- * @param string Pointer to constant string.
- * 
- * @return No return value.
- */
-void Debug::log(const char* string)
-{
-	#ifdef DEBUG
-	Debug::log(string, strlen(string));
-	#endif // DEBUG
-}
+	// FUNCTION DEFINITIONS
+	/**
+	 * @brief Output formatted string.
+	 * 
+	 * @param string Debug string format.
+	 * @param ... Format arguments.
+	 * 
+	 * @return No return value
+	 */
+	void logf(const char* string, ...)
+	{
+		#ifdef DEBUG
 
-/**
- * @brief Output formatted string.
- * 
- * @param string Debug string format.
- * @param ... String arguments.
- * 
- * @return No return value
- */
-void Debug::logf(const char* string, ...)
-{
-	#ifdef DEBUG
+		#ifdef DEBUG_STACK_PRINTF
+		char buffer[DEBUG_BUFFER_SIZE];
+		#else
+		static char buffer[DEBUG_BUFFER_SIZE];
+		#endif // DEBUG_STACK_PRINTF
 
-	#ifdef DEBUG_STACK_BUFFER
-	char buffer[DEBUG_BUFFER_SIZE];
-	#endif // DEBUG_STACK_BUFFER
+		va_list args;
+		va_start(args, string);
+		uint16_t len = vsnprintf(buffer, sizeof(buffer), string, args);
+		DEBUG_PRINT(buffer, len);
+		va_end(args);
 
-	va_list args;
-	va_start(args, string);
-	uint16_t len = vsnprintf(buffer, sizeof(buffer), string, args);
-	Debug::log(buffer, len);
-	va_end(args);
+		// Prevent warning if no debug level is enabled
+		#if !defined(DEBUG_VERBOSE) && !defined(DEBUG_INFO) && !defined(DEBUG_ERROR)
+		(void)len;
+		#endif 
 
-	#endif // DEBUG
-}
+		#endif // DEBUG
+	}
 
+};
+
+/** @} */
 
 // END WITH NEW LINE

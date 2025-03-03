@@ -19,9 +19,14 @@
 				"STM32F103x8",
 				"RTOS",
 				"DEBUG",
+				"DEBUG_VERBOSE",
+				"DEBUG_INFO",
+				"DEBUG_ERROR",
+				"DEBUG_HANDLER_PRINT=Debug::log",
+				"DEBUG_HANDLER_PRINTF=Debug::logf",
 				"DEBUG_SRC=\"Debug.hpp\"",
-				"DEBUG_PRINT=Debug::log",
-				"DEBUG_PRINTF=Debug::logf"
+				"DEBUG_PRINTF_STACK",
+				"DEBUG_BUFFER_SIZE=128"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",

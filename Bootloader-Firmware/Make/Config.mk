@@ -4,7 +4,7 @@
 ######################################
 
 # SET TO 1 TO PRINT COMPILER VERSION AFTER BUILD
-TC_PRINT_VER = 1
+TC_PRINT_VER = 0
 
 # TOOLCHAIN PREFIX
 TC_PREFIX = arm-none-eabi-
@@ -22,7 +22,7 @@ SZ = $(TC_PREFIX)size
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
 
-# J-LINK SWD SPEED
+# J-LINK SWD SPEED IN kHz
 JLINK_SPEED = 4000
 
 

@@ -25,7 +25,6 @@
 				"DEBUG_HANDLER_PRINT=Debug::log",
 				"DEBUG_HANDLER_PRINTF=Debug::logf",
 				"DEBUG_SRC=\"Debug.hpp\"",
-				"DEBUG_PRINTF_STACK",
 				"DEBUG_BUFFER_SIZE=128"
             ],
             "cStandard": "c17",

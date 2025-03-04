@@ -113,22 +113,58 @@ Application layer glues different modules together and creates functional applic
 
 # Build
 
-ARM-GCC and Make are used for building the project. To build the project, type `make -f Hardware/{HW_build}/{HW_build}` into terminal(CMD or PowerShell). Each build has its own build folder in `.builds` folder. Adding `-j{X}`, where `{x}` is number of jobs to create(~1.5 * number of CPU threads), will speed up the build process(eg., `make -f Make/{HW_build}/{HW_build} -j48`). Every build will create `.bin` and `.hex` files.
+ARM-GCC and Make are used for building the project. To build the project, type `make -f Builds/{Build_name}.mk` into terminal(CMD or PowerShell). Each build has its own build folder in `.builds` folder. Adding `-j{X}`, where `{x}` is number of jobs to create(~1.5 * number of CPU threads), will speed up the build process(eg., `make -f Builds/{Build_name}.mk -j48`). Every build will create `.bin` and `.hex` files(a.k.a. application executables) and copy them together with build `.map` file to `.outputs` folder.
 
-It's possible to add different options to make command. Supported options are:
-- `flash`: Will create flash J-Link script in `.jlink` folder and flash the build onto target device.
-- `erase`: Will create flash J-Link script in `.jlink` folder and erase target device's (whole) flash.
-- `clean`: Will delete build folder from `.builds` and J-Link script files from `.jlink` folder.
-- `rtos_cfg`: Will open RTOS config file in CMSIS Config Wizard Java application.
+It's possible to add different options to `make` command. Supported options are:
+- `flash`: Flash the application onto MCU.
+- `erase`: Erase application part in MCU flash.
+- `erase_all`: Erase whole MCU flash.
+- `reset`: Reset the MCU.
+- `clean`: Delete the build folder from `.builds`, J-Link script files from `.jlink` folder and application executables from `.output` folder.
+- `clean_jlink`: Delete J-Link script files from `.jlink` folder.
+- `rtos_cfg`: Open the RTOS config file in CMSIS Config Wizard Java application.
 
-### Make
+### Structure
 
-Make file `AppConfig` in `Config` folder contains build configuration which is common for all project builds.
-Make file `{HW_build}` in `Hardware/{HW_build}` folder contains build configuration just for that build.
+- **Build file**: Entry make file. Contains build specific config(eg., disabled debug, different optimization). Located in `Builds` folder.
+- **Hardware file**: Make file with hardware configuration. Contains hardware-related files, defines etc.. Shared between all builds for same hardware. Located in `Hardware/{HW_name}` folder.
+- **Application file**: Make file with application configuration. Contains application-related files, defines etc.. Shared between all builds. Located in `Config` folder.
+- **Backend**: Make file with build process. Contains options for `make` command. Located in `Make` folder. Shared between all builds and does not contain application or hardware configuration.
+- **Config**: Make file with configuration for build process. Located in `Make` folder. Shared between all builds and does not contain application or hardware configuration.
 
 ### Batch build
 
 To do batch build, execute `BatchBuild.bat` batch script by typing `&.\BatchBuild.bat` to terminal.
+To add new builds to batch build script, write make command as described above.
+
+
+# DEBUG
+
+**Debug levels:**
+- Verbose: This level is used to print small steps inside function(s), eg., measured sensor value each second, return value of each function.
+- Info: This level is used to print debug stuff for events/actions, eg., when measured value from the sensor is above or below defined threshold. Will not enable verbose level. 
+- Error: This level is used to print debug stuff only when something fails, eg., when sensor init fails. Will not enable info and verbose levels.
+
+**Global debug build flags:**
+- `DEBUG`: Main flag for debug build. If not defined during compile/build, body of debug print handlers will be empty.
+- `DEBUG_VERBOSE`: Flag to enable verbose debug prints for whole build. 
+- `DEBUG_INFO`: Flag to enable info debug prints for whole build.
+- `DEBUG_ERROR`: Flag to enable error debug prints for whole build.
+- `DEBUG_SRC`: Define for header file name with debug handler declarations. Eg., `DEBUG_SRC=\"Debug.hpp\"`
+- `DEBUG_HANDLER_PRINT`: Define with name of handler for constant string print. Eg., `DEBUG_HANDLER_PRINT=log`. Function must be declared as `void (const char* string, const uint16_t len)` and `void (const char* string);`.
+- `DEBUG_HANDLER_PRINTF`: Define with name of handler for formatted string print. Eg., `DEBUG_HANDLER_PRINT=logf`. Function must be declared as `void (const char* string, ...)`.
+- `DEBUG_STACK_PRINTF`: Flag to use stack buffer in formatted string print handler.
+- `DEBUG_BUFFER_SIZE`: Define with formatted string buffer size in bytes. If not defined, buffer will be 128 bytes.
+
+**Local debug build flags:**
+- `DEBUG_X_L`: Flag to enable debug level `L` for the driver/libryry/module `X`. Eg., `DEBUG_ILPS22QS_INFO` will enable info debug for `ILPS22QS` driver. Wanted debug level must be enabled for whole build(in this case `DEBUG_INFO`) to work for selected driver/library/module.
+
+Debug-related code have to be removed in non-debug build.
+Debug implementation example:
+
+```cpp
+Soon
+```
 
 
 # VERSIONING & NAMING
@@ -649,117 +685,3 @@ uint8_t arr[] = { 1, 2, 3, 4, 5 };
 Declarations are placed in header files(.hpp).<br>
 Definitions and private (static) stuff are placed in translation units(.cpp).<br>
 Inline and template stuff are defined in header files.
-
-
-# DEBUG
-
-**Debug levels:**
-- Verbose: This level is used to print debug stuff only when all information is needed, eg., measured sensor value each second.
-- Info: This level is used to print debug stuff for events/actions, eg., when measured value from the sensor is above or below defined threshold. Will not enable verbose level. 
-- Error: This level is used to print debug stuff only when something fails, eg., when sensor init fails. Will not enable info and verbose levels.
-
-**Global debug build flags:**
-- `DEBUG`: Main flag for debug build. If not defined during compile/build, content/body of debug print handlers will be empty.
-- `DEBUG_SRC`: Flag for header file name with declarations of debug handlers.
-- `DEBUG_PRINT(_L)=log`: Flag with the name of print handler for constant strings. Function for formatted strings will have `f` at the end(`log` -> `logf`). Function is declared as `void log(const char* string, const uint16_t len);` and `void log(const char* string);`. Function for formatted strings is declated as `void logf(const char* string, ...);`. It is possible to set print handler per debug level.
-    - `DEBUG_PRINT_VERBOSE`: Print handler for verbose debug level.
-    - `DEBUG_PRINT_INFO`: Print handler for info debug level.
-    - `DEBUG_PRINT_ERROR`: Print handler for error debug level. 
-
-**Local debug build flags:**
-- `DEBUG_X`: Enable debug for the driver/libryry/module `X`. Eg., `DEBUG_ILPS22QS` will enable debug for `ILPS22QS` driver.
-- `DEBUG_X_L`: Flag to enable debug of certian level in certian driver/library/module. `X` is the name of the drvier/library/module, eg., `ILPS22QS` and `L` is debug level(`VERBOSE`, `INFO`, `ERROR`).Flag `DEBUG_X` is required.
-
-Debug-related code have to be removed in non-debug build.
-Debug implementation example:
-
-```cpp
-#ifdef DEBUG_SRC
-#include 			""DEBUG_SRC""
-#endif // DEBUG_SRC
-
-#ifdef DEBUG_ILPS22QS
-
-#ifdef DEBUG_ILPS22QS_VERBOSE
-	#ifdef DEBUG_PRINT_VERBOSE
-	#define DEBUG_ILPS22QS_VERBOSE_LEN 11
-	#define DEBUG_ILPS22QS_PRINT(...) \
-		DEBUG_PRINT_VERBOSE("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
-		DEBUG_PRINT_VERBOSE(...)
-
-	#define DEBUG_ILPS22QS_PRINTF(...) \
-		DEBUG_PRINT_VERBOSE("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
-		DEBUG_PRINT_VERBOSE#f(...)		
-	#else // DEBUG_PRINT_VERBOSE
-	#define DEBUG_ILPS22QS_PRINT(...) \
-		DEBUG_PRINT("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
-		DEBUG_PRINT(...)
-
-	#define DEBUG_ILPS22QS_PRINTF(...) \
-		DEBUG_PRINT("[ILPS22QS] ", DEBUG_ILPS22QS_VERBOSE_LEN); \
-		DEBUG_PRINT#f(...)		
-	#endif // DEBUG_PRINT_VERBOSE
-#else // DEBUG_ILPS22QS_VERBOSE
-#define DEBUG_ILPS22QS_PRINT(...)
-#define DEBUG_ILPS22QS_PRINTF(...)
-#endif // DEBUG_ILPS22QS_VERBOSE
-
-#ifdef DEBUG_ILPS22QS_INFO
-	#ifdef DEBUG_PRINT_INFO
-	#define DEBUG_ILPS22QS_INFO_LEN 17
-	#define DEBUG_ILPS22QS_PRINT_INFO(...) \
-		DEBUG_PRINT_INFO("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
-		DEBUG_PRINT_INFO(...)
-
-	#define DEBUG_ILPS22QS_PRINTF_INFO(...) \
-		DEBUG_PRINT_INFO("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
-		DEBUG_PRINT_INFO#f(...)		
-	#else // DEBUG_PRINT_INFO
-	#define DEBUG_ILPS22QS_PRINT_INFO(...) \
-		DEBUG_PRINT("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
-		DEBUG_PRINT(...)
-
-	#define DEBUG_ILPS22QS_PRINTF_INFO(...) \
-		DEBUG_PRINT("[ILPS22QS] info: ", DEBUG_ILPS22QS_INFO_LEN); \
-		DEBUG_PRINT#f(...)		
-	#endif // DEBUG_PRINT_INFO
-#else // DEBUG_ILPS22QS_INFO
-#define DEBUG_ILPS22QS_PRINT_INFO(...)
-#define DEBUG_ILPS22QS_PRINTF_INFO(...)
-#endif // DEBUG_ILPS22QS_INFO
-
-#ifdef DEBUG_ILPS22QS_ERROR
-	#ifdef DEBUG_PRINT_ERROR
-	#define DEBUG_ILPS22QS_ERROR_LEN 18
-	#define DEBUG_ILPS22QS_PRINT_ERROR(...) \
-		DEBUG_PRINT_ERROR("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
-		DEBUG_PRINT_ERROR(...)
-
-	#define DEBUG_ILPS22QS_PRINTF_ERROR(...) \
-		DEBUG_PRINT_ERROR("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
-		DEBUG_PRINT_ERROR#f(...)		
-	#else // DEBUG_PRINT_ERROR
-	#define DEBUG_ILPS22QS_PRINT_ERROR(...) \
-		DEBUG_PRINT("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
-		DEBUG_PRINT(...)
-
-	#define DEBUG_ILPS22QS_PRINTF_ERROR(...) \
-		DEBUG_PRINT("[ILPS22QS] error: ", DEBUG_ILPS22QS_ERROR_LEN); \
-		DEBUG_PRINT#f(...)		
-	#endif // DEBUG_PRINT_ERROR	
-#else // DEBUG_ILPS22QS_ERROR
-#define DEBUG_ILPS22QS_PRINT_ERROR(...)
-#define DEBUG_ILPS22QS_PRINTF_ERROR(...)
-#endif // DEBUG_ILPS22QS_ERROR
-
-#else // DEBUG_ILPS22QS
-
-#define DEBUG_ILPS22QS_PRINT(...)
-#define DEBUG_ILPS22QS_PRINTF(...) 
-#define DEBUG_ILPS22QS_PRINT_INFO(...)
-#define DEBUG_ILPS22QS_PRINTF_INFO(...) 
-#define DEBUG_ILPS22QS_PRINT_ERROR(...)
-#define DEBUG_ILPS22QS_PRINTF_ERROR(...) 
-
-#endif // DEBUG_ILPS22QS
-```

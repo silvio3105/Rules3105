@@ -66,8 +66,19 @@ endif
 #######################################
 
 DEFINES += $(DEBUG_ENABLE)
-DEFINES += $(DEBUG_LEVEL)
 DEFINES += -DDEBUG_HANDLER_PRINT=$(DEBUG_HANDLER_PRINT) -DDEBUG_HANDLER_PRINTF=$(DEBUG_HANDLER_PRINTF)
+
+ifeq ($(DEBUG_VERBOSE), 1)
+DEFINES += -DDEBUG_VERBOSE
+endif
+
+ifeq ($(DEBUG_INFO), 1)
+DEFINES += -DDEBUG_INFO
+endif
+
+ifeq ($(DEBUG_ERROR), 1)
+DEFINES += -DDEBUG_ERROR
+endif
 
 ifneq ($(DEBUG_BUFFER_SIZE), 0)
 DEFINES += -DDEBUG_BUFFER_SIZE=$(DEBUG_BUFFER_SIZE)
@@ -241,7 +252,7 @@ reset:
 	
 
 #######################################
-# REMOVE BUILD FOLDER & OTHER STUFF
+# CLEAN STUFF
 #######################################
 
 clean: clean_jlink
@@ -263,3 +274,9 @@ clean_jlink:
 
 rtos_cfg:
 	java -jar $(CMSIS_WIZARD) $(RTOS_CFG)
+
+
+#######################################
+# CUSTOM OPTIONS
+#######################################
+

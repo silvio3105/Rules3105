@@ -1,6 +1,6 @@
 
 ######################################
-# MISC CONFIG
+# TOOLCHAIN CONFIG
 ######################################
 
 # SET TO 1 TO PRINT COMPILER VERSION AFTER BUILD
@@ -10,20 +10,17 @@ TC_PRINT_VER = 0
 TC_PREFIX = arm-none-eabi-
 
 ifeq ($(GPP), 1)
-CC = $(TC_PREFIX)g++
-AS = $(TC_PREFIX)g++
+TC_CC = $(TC_PREFIX)g++
+TC_AS = $(TC_PREFIX)g++
 else
-CC = $(TC_PREFIX)gcc
-AS = $(TC_PREFIX)gcc -x assembler-with-cpp
+TC_CC = $(TC_PREFIX)gcc
+TC_AS = $(TC_PREFIX)gcc -x assembler-with-cpp
 endif
 
-CP = $(TC_PREFIX)objcopy
-SZ = $(TC_PREFIX)size
-HEX = $(CP) -O ihex
-BIN = $(CP) -O binary -S
-
-# J-LINK SWD SPEED IN kHz
-JLINK_SPEED = 4000
+TC_CP = $(TC_PREFIX)objcopy
+TC_SZ = $(TC_PREFIX)size
+TC_HEX = $(TC_CP) -O ihex
+TC_BIN = $(TC_CP) -O binary -S
 
 
 ######################################
@@ -31,19 +28,22 @@ JLINK_SPEED = 4000
 ######################################
 
 # DIRECTORY FOR CURRENT BUILD
-BUILD = .builds\$(BUILD_NAME)
+DIR_BUILD = .builds\$(BUILD_NAME)
 
 # DIRECTORY FOR HARDWARE BUILD
-HARDWARE = Hardware/$(HW_NAME)
+DIR_HARDWARE = Hardware/$(HW_NAME)
 
 # DIRECTORY WITH LINKER SCRIPT
-LINKER = $(HARDWARE)/Linker
+DIR_LINKER = $(DIR_HARDWARE)/Linker
 
 # DIRECTORY WITH STARTUP FILE
-STARTUP = $(HARDWARE)/Startup
+DIR_STARTUP = $(DIR_HARDWARE)/Startup
 
 # OUTPUT FILE
-OUTPUT = .outputs\$(BUILD_NAME)
+DIR_OUTPUT = .outputs\$(BUILD_NAME)
+
+# MAKE FILE LOCATION
+MAKEFILE = Builds/$(BUILD_NAME).mk
 
 # J-LINK SCRIPT FILE LOCATIONS
 JLINK_FLASH = .jlink\JLink_Flash_$(HW_NAME).jlink

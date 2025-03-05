@@ -52,6 +52,9 @@ JLINK_ADDR_START = 0x08000000
 # J-LINK END ADDRESS
 JLINK_ADDR_END = 0x08001000
 
+# J-LINK SWD SPEED IN kHz
+JLINK_SPEED = 4000
+
 
 ######################################
 # HARDWARE-RELATED FILE LIST
@@ -62,27 +65,26 @@ HW_CPP_FILES = \
 
 # C TRANSLATION FILES
 HW_C_FILES = \
-$(HARDWARE)/Src/system_stm32f1xx.c \
-$(HARDWARE)/Src/stm32f1xx_hal_gpio_ex.c \
-$(HARDWARE)/Src/stm32f1xx_hal_tim.c \
-$(HARDWARE)/Src/stm32f1xx_hal_tim_ex.c \
-$(HARDWARE)/Src/stm32f1xx_hal_uart.c \
-$(HARDWARE)/Src/stm32f1xx_hal.c \
-$(HARDWARE)/Src/stm32f1xx_hal_rcc.c \
-$(HARDWARE)/Src/stm32f1xx_hal_rcc_ex.c \
-$(HARDWARE)/Src/stm32f1xx_hal_gpio.c \
-$(HARDWARE)/Src/stm32f1xx_hal_dma.c \
-$(HARDWARE)/Src/stm32f1xx_hal_cortex.c \
-$(HARDWARE)/Src/stm32f1xx_hal_pwr.c \
-$(HARDWARE)/Src/stm32f1xx_hal_flash.c \
-$(HARDWARE)/Src/stm32f1xx_hal_flash_ex.c \
-$(HARDWARE)/Src/stm32f1xx_hal_exti.c \
-$(HARDWARE)/Src/stm32f1xx_hal_i2c.c \
-$(HARDWARE)/Src/stm32f1xx_it.c \
+$(DIR_HARDWARE)/Src/system_stm32f1xx.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_gpio_ex.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_tim.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_tim_ex.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_uart.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_rcc.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_rcc_ex.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_gpio.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_dma.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_cortex.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_pwr.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_flash.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_flash_ex.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_exti.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_hal_i2c.c \
+$(DIR_HARDWARE)/Src/stm32f1xx_it.c \
 
 # ASSEMBLER TRANSLATION FILES
 HW_ASM_FILES = \
-$(STARTUP)/$(MCU_STARTUP) \
 
 
 ######################################
@@ -91,7 +93,8 @@ $(STARTUP)/$(MCU_STARTUP) \
 
 # INCLUDE DIRECTORIES
 HW_INCLUDE_PATHS = \
--I$(HARDWARE)/Inc \
+-I$(DIR_HARDWARE) \
+-I$(DIR_HARDWARE)/Inc \
 
 
 ######################################

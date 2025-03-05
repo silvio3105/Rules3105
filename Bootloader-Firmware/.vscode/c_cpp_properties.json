@@ -14,17 +14,14 @@
 				"${workspaceFolder}/RTOS/RTX/Inc/**"
             ],
             "defines": [
+				"BUILD_Build_Template",
 				"HW_HW_Template",
-				"HW_CONFIG=\"HW_Template.hpp\"",
 				"STM32F103x8",
-				"RTOS",
+				"USING_RTOS",
 				"DEBUG",
 				"DEBUG_VERBOSE",
 				"DEBUG_INFO",
 				"DEBUG_ERROR",
-				"DEBUG_HANDLER_PRINT=Debug::log",
-				"DEBUG_HANDLER_PRINTF=Debug::logf",
-				"DEBUG_SRC=\"Debug.hpp\"",
 				"DEBUG_BUFFER_SIZE=128"
             ],
             "cStandard": "c17",

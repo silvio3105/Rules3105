@@ -1,50 +1,47 @@
 
-# MAKE FILE LOCATION
-MAKEFILE = Builds/$(BUILD_NAME).mk
-
-
 ######################################
-# FILE LIST
+# FILES, INCLUDES AND DEFINES
 ######################################
 
 # C++ TRANSLATION FILES
-CPP_FILES += \
+CPP_FILES = \
+$(BUILD_CPP_FILES) \
 $(HW_CPP_FILES) \
 $(APP_CPP_FILES)
 
 # C TRANSLATION FILES
-C_FILES += \
+C_FILES = \
+$(BUILD_C_FILES) \
 $(HW_C_FILES) \
 $(APP_C_FILES)
 
 # ASSEMBLER TRANSLATION FILES
-ASM_FILES += \
+ASM_FILES = \
+$(BUILD_ASM_FILES) \
 $(HW_ASM_FILES) \
-$(APP_ASM_FILES)
-
-
-######################################
-# INCLUDE PATHS
-######################################
+$(APP_ASM_FILES) \
+$(DIR_STARTUP)/$(MCU_STARTUP) \
 
 # INCLUDE DIRECTORIES
-INCLUDE_PATHS += \
+INCLUDE_PATHS = \
+$(BUILD_INCLUDE_FILES) \
 $(HW_INCLUDE_PATHS) \
 $(APP_INCLUDE_PATHS) \
 -I$(HARDWARE)
 
-
-######################################
 # DEFINES
-######################################
-
-# DEFINES
-DEFINES += \
--DHW_CONFIG=\"$(HW_NAME).hpp\" \
+DEFINES = \
+-DBUILD_$(BUILD_NAME) \
 -DHW_$(HW_NAME) \
 -D$(MCU_DEFINE) \
+$(BUILD_DEFINES) \
 $(HW_DEFINES) \
 $(APP_DEFINES)
+
+
+#######################################
+# J-LINK
+#######################################
 
 # J-LINK RTT DEFINES
 ifneq ($(JLINK_RTT_UP), 0)
@@ -57,7 +54,7 @@ endif
 
 # RTOS DEFINE
 ifeq ($(APP_RTOS), 1)
-DEFINES += -DRTOS
+DEFINES += -DUSING_RTOS
 endif
 
 
@@ -66,7 +63,6 @@ endif
 #######################################
 
 DEFINES += $(DEBUG_ENABLE)
-DEFINES += -DDEBUG_HANDLER_PRINT=$(DEBUG_HANDLER_PRINT) -DDEBUG_HANDLER_PRINTF=$(DEBUG_HANDLER_PRINTF)
 
 ifeq ($(DEBUG_VERBOSE), 1)
 DEFINES += -DDEBUG_VERBOSE
@@ -83,8 +79,6 @@ endif
 ifneq ($(DEBUG_BUFFER_SIZE), 0)
 DEFINES += -DDEBUG_BUFFER_SIZE=$(DEBUG_BUFFER_SIZE)
 endif
-
-DEFINES += -DDEBUG_SRC=\"$(DEBUG_SRC)\"
 
 ifeq ($(DEBUG_STACK_PRINTF), 1)
 DEFINES += -DDEBUG_STACK_PRINTF
@@ -165,53 +159,53 @@ endif
 # LINKER FLAGS
 #######################################
 
-LINKER_FLAGS = $(CAL_FLAGS) -specs=nano.specs -T$(LINKER)/$(MCU_LINKER) -L$(LINKER) -lc -lm -lnosys -Wl,-Map=$(BUILD)/$(BUILD_NAME).map,--cref,--gc-sections,--print-memory-usage,--fuse-ld=gold
+LINKER_FLAGS = $(CAL_FLAGS) -specs=nano.specs -T$(DIR_LINKER)/$(MCU_LINKER) -L$(DIR_LINKER) -lc -lm -lnosys -Wl,-Map=$(DIR_BUILD)/$(BUILD_NAME).map,--cref,--gc-sections,--print-memory-usage,--fuse-ld=gold
 
 
 #######################################
 # BUILD
 #######################################
 
-all: $(BUILD)/$(BUILD_NAME).elf $(BUILD)/$(BUILD_NAME).hex $(BUILD)/$(BUILD_NAME).bin
+all: $(DIR_BUILD)/$(BUILD_NAME).elf $(DIR_BUILD)/$(BUILD_NAME).hex $(DIR_BUILD)/$(BUILD_NAME).bin
 
 # LIST OF C OBJECTS
-OBJECTS = $(addprefix $(BUILD)/,$(notdir $(C_FILES:.c=.o)))
+OBJECTS = $(addprefix $(DIR_BUILD)/,$(notdir $(C_FILES:.c=.o)))
 vpath %.c $(sort $(dir $(C_FILES)))
 
 # LIST OF C++ OBJECTS
-OBJECTS += $(addprefix $(BUILD)/,$(notdir $(CPP_FILES:.cpp=.o)))
+OBJECTS += $(addprefix $(DIR_BUILD)/,$(notdir $(CPP_FILES:.cpp=.o)))
 vpath %.cpp $(sort $(dir $(CPP_FILES)))
 
 # LIST OF ASM OBJECTS
-OBJECTS += $(addprefix $(BUILD)/,$(notdir $(ASM_FILES:.s=.o)))
+OBJECTS += $(addprefix $(DIR_BUILD)/,$(notdir $(ASM_FILES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_FILES)))
 
-$(BUILD)/%.o: %.c $(MAKEFILE) | $(BUILD) 
-	$(CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
+$(DIR_BUILD)/%.o: %.c $(MAKEFILE) | $(DIR_BUILD) 
+	$(TC_CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(DIR_BUILD)/$(notdir $(<:.c=.lst)) $< -o $@
 
-$(BUILD)/%.o: %.cpp $(MAKEFILE) | $(BUILD) 
-	$(CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(BUILD)/$(notdir $(<:.cpp=.lst)) $< -o $@
+$(DIR_BUILD)/%.o: %.cpp $(MAKEFILE) | $(DIR_BUILD) 
+	$(TC_CC) -c $(COMPILER_FLAGS) -Wa,-a,-ad,-alms=$(DIR_BUILD)/$(notdir $(<:.cpp=.lst)) $< -o $@
 
-$(BUILD)/%.o: %.s $(MAKEFILE) | $(BUILD)
-	$(AS) -c $(COMPILER_FLAGS) $< -o $@
+$(DIR_BUILD)/%.o: %.s $(MAKEFILE) | $(DIR_BUILD)
+	$(TC_AS) -c $(COMPILER_FLAGS) $< -o $@
 
-$(BUILD)/$(BUILD_NAME).elf: $(OBJECTS) $(MAKEFILE)
-	$(CC) $(OBJECTS) $(LINKER_FLAGS) -o $@
-	copy /-y /y $(BUILD)\$(BUILD_NAME).map $(OUTPUT).map
+$(DIR_BUILD)/$(BUILD_NAME).elf: $(OBJECTS) $(MAKEFILE)
+	$(TC_CC) $(OBJECTS) $(LINKER_FLAGS) -o $@
+	copy /-y /y $(DIR_BUILD)\$(BUILD_NAME).map $(DIR_OUTPUT).map
 
-$(BUILD)/%.hex: $(BUILD)/%.elf | $(BUILD)
-	$(HEX) $< $@
-	copy /-y /y $(BUILD)\$(BUILD_NAME).hex $(OUTPUT).hex
+$(DIR_BUILD)/%.hex: $(DIR_BUILD)/%.elf | $(DIR_BUILD)
+	$(TC_HEX) $< $@
+	copy /-y /y $(DIR_BUILD)\$(BUILD_NAME).hex $(DIR_OUTPUT).hex
 	
-$(BUILD)/%.bin: $(BUILD)/%.elf | $(BUILD)
-	$(BIN) $< $@
-	copy /-y /y $(BUILD)\$(BUILD_NAME).bin $(OUTPUT).bin
+$(DIR_BUILD)/%.bin: $(DIR_BUILD)/%.elf | $(DIR_BUILD)
+	$(TC_BIN) $< $@
+	copy /-y /y $(DIR_BUILD)\$(BUILD_NAME).bin $(DIR_OUTPUT).bin
 
 ifeq ($(TC_PRINT_VER), 1)
-	$(CC) --version
+	$(TC_CC) --version
 endif
 	
-$(BUILD):
+$(DIR_BUILD):
 	mkdir $@
 
 
@@ -220,7 +214,7 @@ $(BUILD):
 #######################################
 
 flash: all
-	if not exist $(JLINK_FLASH) ((echo r & echo h & echo loadbin $(BUILD)/$(BUILD_NAME).bin,$(JLINK_ADDR_START) & echo verifybin $(BUILD)/$(BUILD_NAME).bin,$(JLINK_ADDR_START) & echo r & echo q) > $(JLINK_FLASH))
+	if not exist $(JLINK_FLASH) ((echo r & echo h & echo loadbin $(DIR_BUILD)/$(BUILD_NAME).bin,$(JLINK_ADDR_START) & echo verifybin $(DIR_BUILD)/$(BUILD_NAME).bin,$(JLINK_ADDR_START) & echo r & echo q) > $(JLINK_FLASH))
 	JLink.exe -device $(JLINK_DEVICE) -if SWD -speed $(JLINK_SPEED) -autoconnect 1 -CommandFile $(JLINK_FLASH)
 	
 
@@ -256,10 +250,10 @@ reset:
 #######################################
 
 clean: clean_jlink
-	if exist $(BUILD) (echo Deleting build directory & rmdir /s /q $(BUILD))
-	if exist $(OUTPUT).bin (echo Deleting bin executable & del $(OUTPUT).bin)
-	if exist $(OUTPUT).hex (echo Deleting hex executable & del $(OUTPUT).hex)
-	if exist $(OUTPUT).map (echo Deleting build map file & del $(OUTPUT).map)
+	if exist $(DIR_BUILD) (echo Deleting build directory & rmdir /s /q $(DIR_BUILD))
+	if exist $(DIR_OUTPUT).bin (echo Deleting bin executable & del $(DIR_OUTPUT).bin)
+	if exist $(DIR_OUTPUT).hex (echo Deleting hex executable & del $(DIR_OUTPUT).hex)
+	if exist $(DIR_OUTPUT).map (echo Deleting build map file & del $(DIR_OUTPUT).map)
 
 clean_jlink:
 	if exist $(JLINK_FLASH) (echo Deleting flash script & del $(JLINK_FLASH))

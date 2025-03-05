@@ -23,7 +23,7 @@
 */
 
 // ----- INCLUDE FILES
-#include			DEBUG_SRC
+#include			"Debug.hpp"
 #include			"SEGGER_RTT.h"
 
 #include			<stdint.h>
@@ -51,8 +51,7 @@
  */
 namespace Debug
 {
-
-	// FUNCTION DEFINITIONS
+	// ----- FUNCTION DEFINITIONS
 	/**
 	 * @brief Output formatted string.
 	 * 
@@ -61,7 +60,7 @@ namespace Debug
 	 * 
 	 * @return No return value
 	 */
-	void logf(const char* string, ...)
+	void __outputf(const char* string, ...)
 	{
 		#ifdef DEBUG
 
@@ -74,7 +73,7 @@ namespace Debug
 		va_list args;
 		va_start(args, string);
 		uint16_t len = vsnprintf(buffer, sizeof(buffer), string, args);
-		DEBUG_PRINT(buffer, len);
+		__output(buffer, len);
 		va_end(args);
 
 		// Prevent warning if no debug level is enabled
@@ -85,7 +84,17 @@ namespace Debug
 		#endif // DEBUG
 	}
 
+	/**
+	 * @brief Dummy function used when debug level is disabled.
+	 * 
+	 * @return No return value.
+	 */
+	void __dummy(...)
+	{
+
+	}
 };
+
 
 /** @} */
 

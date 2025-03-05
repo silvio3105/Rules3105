@@ -1,7 +1,7 @@
 # BUILD NAME
 BUILD_NAME = Build_Template
 
-# NAME OF MAKE FOR HARDWARE BUILD
+# NAME OF MAKE FILE FOR HARDWARE BUILD
 HW_NAME = HW_Template
 
 
@@ -12,10 +12,16 @@ HW_NAME = HW_Template
 # SET TO 1 TO ENABLE DEBUG BUILD
 DEBUG = 1
 
+# SET TO 1 TO USE STACK FOR FORMATTED PRINTS
+DEBUG_STACK_PRINTF = 0
+
+# DEBUG FORMATTED PRINT BUFFER SIZE IN BYTES	
+DEBUG_BUFFER_SIZE = 128
+
 # ENABLE DEBUG FOR (eg., "-DDEBUG_ILPS22QS_INFO")
 DEBUG_ENABLE = \
 
-# DEBUG LEVEL (SET TO 1 TO ENABLE)
+# DEBUG LEVELS (SET TO 1 TO ENABLE)
 DEBUG_VERBOSE = 1
 DEBUG_INFO = 1
 DEBUG_ERROR = 1
@@ -24,6 +30,15 @@ DEBUG_ERROR = 1
 ######################################
 # BUILD CONFIG
 ######################################
+
+# STACK SIZE IN BYTES
+APP_STACK = 1024
+
+# HEAP SIZE IN BYTES
+APP_HEAP = 0
+
+# SET TO 1 TO BUILD WITH RTOS
+APP_RTOS = 1
 
 # SET TO 1 TO OPTIMIZE BUILD FOR SIZE
 SIZE = 0
@@ -51,6 +66,26 @@ EXCEPTIONS = 0
 
 # SET TO 1 TO USE DEFAULT LIB
 DEF_LIB = 0
+
+
+######################################
+# BUILD FILES, INCLUDES OR DEFINES
+######################################
+
+# C++ TRANSLATION FILES
+BUILD_CPP_FILES = \
+
+# C TRANSLATION FILES
+BUILD_C_FILES = \
+
+# ASSEMBLER TRANSLATION FILES
+BUILD_ASM_FILES = \
+
+# INCLUDE DIRECTORIES
+BUILD_INCLUDE_PATHS = \
+
+# DEFINES
+BUILD_DEFINES = \
 
 
 ######################################
@@ -87,33 +122,13 @@ include Config/AppConfig.mk
 # HARDWARE MAKE
 ######################################
 
-include $(HARDWARE)/$(HW_NAME).mk
+include $(DIR_HARDWARE)/$(HW_NAME).mk
 
 
 ######################################
 # RECONFIGURE APPLICATION OR HARDWARE MAKE
 ######################################
 
-
-
-######################################
-# BUILD FILES, INCLUDES OR DEFINES
-######################################
-
-# C++ TRANSLATION FILES
-CPP_FILES = \
-
-# C TRANSLATION FILES
-C_FILES = \
-
-# ASSEMBLER TRANSLATION FILES
-ASM_FILES = \
-
-# INCLUDE DIRECTORIES
-INCLUDE_PATHS = \
-
-# DEFINES
-DEFINES = \
 
 
 ############################################################################
@@ -126,6 +141,3 @@ DEFINES = \
 
 include Make/Backend.mk
 
-
-
--include $(wildcard $(BUILD_FOLDER)/*.d)

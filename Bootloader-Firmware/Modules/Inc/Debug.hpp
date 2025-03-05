@@ -34,27 +34,21 @@
 
 // ----- DEFINES
 #ifdef DEBUG_VERBOSE
-#define DEBUG_PRINT				DEBUG_HANDLER_PRINT
-#define DEBUG_PRINTF			DEBUG_HANDLER_PRINTF
+#define VERBOSE_OUTPUTF	Debug::__outputf
 #else
-#define DEBUG_PRINT(...)		
-#define DEBUG_PRINTF(...)	
+#define VERBOSE_OUTPUTF	Debug::__dummy
 #endif // DEBUG_VERBOSE
 
 #ifdef DEBUG_INFO
-#define DEBUG_PRINT_INFO		DEBUG_HANDLER_PRINT
-#define DEBUG_PRINTF_INFO		DEBUG_HANDLER_PRINTF
+#define INFO_OUTPUTF	Debug::__outputf
 #else
-#define DEBUG_PRINT_INFO(...)		
-#define DEBUG_PRINTF_INFO(...)	
+#define INFO_OUTPUTF	Debug::__dummy
 #endif // DEBUG_INFO
 
 #ifdef DEBUG_ERROR
-#define DEBUG_PRINT_ERROR		DEBUG_HANDLER_PRINT
-#define DEBUG_PRINTF_ERROR		DEBUG_HANDLER_PRINTF
+#define ERROR_OUTPUTF	Debug::__outputf
 #else
-#define DEBUG_PRINT_ERROR(...)		
-#define DEBUG_PRINTF_ERROR(...)	
+#define ERROR_OUTPUTF	Debug::__dummy
 #endif // DEBUG_ERROR
 
 
@@ -69,9 +63,10 @@ namespace Debug
 	 * @param len Length of \c string
 	 * 
 	 * @return No return value. 
+	 * 
 	 * \addtogroup Debug
 	 */	
-	inline void log(const char* string, const uint16_t len)
+	inline void __output(const char* string, const uint16_t len)
 	{
 		#ifdef DEBUG
 		SEGGER_RTT_Write(0, string, len);
@@ -84,17 +79,163 @@ namespace Debug
 	 * @param string Pointer to constant string.
 	 * 
 	 * @return No return value.
+	 * 
 	 * \addtogroup Debug
 	 */
-	inline void log(const char* string)
+	inline void __output(const char* string)
 	{
 		#ifdef DEBUG
-		log(string, strlen(string));
+		__output(string, strlen(string));
 		#endif // DEBUG
 	}
 
-	void logf(const char* string, ...);
+	void __outputf(const char* string, ...);
+	void __dummy(...);
+
+	/**
+	 * @brief Output verbose prints.
+	 * 
+	 * @param string Pointer to constant string.
+	 * @param len Length of \c string
+	 * 
+	 * @return No return value. 
+	 * 
+	 * \addtogroup Debug
+	 * @{
+	 */	
+	inline void verbose(const char* string, const uint16_t len)
+	{
+		#ifdef DEBUG_VERBOSE
+		__output(string, len);
+		#endif // DEBUG_VERBOSE
+	}
+
+	inline void verbose(const char* string)
+	{
+		#ifdef DEBUG_VERBOSE
+		__output(string, strlen(string));
+		#endif // DEBUG_VERBOSE
+	}
+
+	/** @} */
+	
+	/**
+	 * @brief Output info prints.
+	 * 
+	 * @param string Pointer to constant string.
+	 * @param len Length of \c string
+	 * 
+	 * @return No return value. 
+	 * 
+	 * \addtogroup Debug
+	 * @{
+	 */	
+	inline void info(const char* string, const uint16_t len)
+	{
+		#ifdef DEBUG_INFO
+		__output(string, len);
+		#endif // DEBUG_INFO
+	}
+
+	inline void info(const char* string)
+	{
+		#ifdef DEBUG_INFO
+		__output(string, strlen(string));
+		#endif // DEBUG_INFO
+	}
+
+	/** @} */
+
+	/**
+	 * @brief Output error prints.
+	 * 
+	 * @param string Pointer to constant string.
+	 * @param len Length of \c string
+	 * 
+	 * @return No return value.
+	 *  
+	 * \addtogroup Debug
+	 * @{
+	 */	
+	inline void error(const char* string, const uint16_t len)
+	{
+		#ifdef DEBUG_ERROR
+		__output(string, len);
+		#endif // DEBUG_ERROR
+	}
+
+	inline void error(const char* string)
+	{
+		#ifdef DEBUG_ERROR
+		__output(string, strlen(string));
+		#endif // DEBUG_ERROR
+	}
+	
+	/** @} */
 };
+
+
+// ----- SNIPPETS
+/**
+ * @brief Enable verbose debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_VERBOSE_ENABLE() \
+	const auto& PRINTN = static_cast<void(*)(const char*, const uint16_t)>(Debug::verbose); \
+	const auto& PRINT = static_cast<void(*)(const char*)>(Debug::verbose); \
+	constexpr auto& PRINTF = VERBOSE_OUTPUTF;
+
+/**
+ * @brief Enable info debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_INFO_ENABLE() \
+	const auto& PRINTN_INFO = static_cast<void(*)(const char*, const uint16_t)>(Debug::info); \
+	const auto& PRINT_INFO = static_cast<void(*)(const char*)>(Debug::info); \
+	constexpr auto& PRINTF_INFO = INFO_OUTPUTF;	
+
+/**
+ * @brief Enable error debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_ERROR_ENABLE() \
+	const auto& PRINTN_ERROR = static_cast<void(*)(const char*, const uint16_t)>(Debug::error); \
+	const auto& PRINT_ERROR = static_cast<void(*)(const char*)>(Debug::error); \
+	constexpr auto& PRINTF_ERROR = ERROR_OUTPUTF;
+	
+/**
+ * @brief Disable verbose debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_VERBOSE_DISABLE() \
+	constexpr auto& PRINTN = Debug::__dummy; \
+	constexpr auto& PRINT = Debug::__dummy; \
+	constexpr auto& PRINTF = Debug::__dummy;	
+
+/**
+ * @brief Disable info debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_INFO_DISABLE() \
+	constexpr auto& PRINTN_INFO = Debug::__dummy; \
+	constexpr auto& PRINT_INFO = Debug::__dummy; \
+	constexpr auto& PRINTF_INFO = Debug::__dummy;	
+	
+/**
+ * @brief Disable error debug.
+ *  
+ * \addtogroup Debug
+ */
+#define DEBUG_ERROR_DISABLE() \
+	constexpr auto& PRINTN_ERROR = Debug::__dummy; \
+	constexpr auto& PRINT_ERROR = Debug::__dummy; \
+	constexpr auto& PRINTF_ERROR = Debug::__dummy;		
+
 
 
 #endif // _DEBUG_HPP_

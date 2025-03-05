@@ -151,7 +151,7 @@ void DebugMon_Handler(void)
   /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
-#ifndef RTOS
+#ifndef USING_RTOS
 /**
   * @brief This function handles Pendable request for system service.
   */

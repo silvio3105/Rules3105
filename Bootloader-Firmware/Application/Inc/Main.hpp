@@ -27,8 +27,8 @@
 
 // ----- INCLUDE FILES
 #include			"AppConfig.hpp"
-#include 			HW_CONFIG
-#include			DEBUG_SRC
+#include 			"HW_Template.hpp"
+#include			"Debug.hpp"
 
 #include			<stdint.h>
 

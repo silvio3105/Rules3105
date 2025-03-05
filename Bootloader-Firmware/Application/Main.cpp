@@ -25,7 +25,7 @@
 // ----- INCLUDE FILES
 #include			"Main.hpp"
 
-#ifdef RTOS
+#ifdef USING_RTOS
 #include			"cmsis_os2.h"
 #endif // RTOS
 
@@ -61,22 +61,9 @@
 // ----- FUNCTION DEFINITIONS
 int main(void)
 {
-	DEBUG_PRINT("Verbose print\n");
-	DEBUG_PRINTF("Verbose printf\n");
-
-	DEBUG_PRINT_INFO("Info print\n", 11);
-	DEBUG_PRINTF_INFO("Info printf\n");
-	
-	DEBUG_PRINT_ERROR("Error print\n");
-	DEBUG_PRINTF_ERROR("Error printf\n");	
-
 	while (1)
 	{
-		DEBUG_PRINT("Loop\n");
-		for (uint32_t i = 0; i < 0xFFFFFE; i++)
-		{
-			(void)i;
-		}
+		
 	}
 }
 

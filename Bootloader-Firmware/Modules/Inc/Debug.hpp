@@ -182,9 +182,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_VERBOSE_ENABLE() \
-	const auto& PRINTN = static_cast<void(*)(const char*, const uint16_t)>(Debug::verbose); \
-	const auto& PRINT = static_cast<void(*)(const char*)>(Debug::verbose); \
-	constexpr auto& PRINTF = VERBOSE_OUTPUTF;
+	static const auto& PRINTN = static_cast<void(*)(const char*, const uint16_t)>(Debug::verbose); \
+	static const auto& PRINT = static_cast<void(*)(const char*)>(Debug::verbose); \
+	static constexpr auto& PRINTF = VERBOSE_OUTPUTF;
 
 /**
  * @brief Enable info debug.
@@ -192,9 +192,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_INFO_ENABLE() \
-	const auto& PRINTN_INFO = static_cast<void(*)(const char*, const uint16_t)>(Debug::info); \
-	const auto& PRINT_INFO = static_cast<void(*)(const char*)>(Debug::info); \
-	constexpr auto& PRINTF_INFO = INFO_OUTPUTF;	
+	static const auto& PRINTN_INFO = static_cast<void(*)(const char*, const uint16_t)>(Debug::info); \
+	static const auto& PRINT_INFO = static_cast<void(*)(const char*)>(Debug::info); \
+	static constexpr auto& PRINTF_INFO = INFO_OUTPUTF;	
 
 /**
  * @brief Enable error debug.
@@ -202,9 +202,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_ERROR_ENABLE() \
-	const auto& PRINTN_ERROR = static_cast<void(*)(const char*, const uint16_t)>(Debug::error); \
-	const auto& PRINT_ERROR = static_cast<void(*)(const char*)>(Debug::error); \
-	constexpr auto& PRINTF_ERROR = ERROR_OUTPUTF;
+	static const auto& PRINTN_ERROR = static_cast<void(*)(const char*, const uint16_t)>(Debug::error); \
+	static const auto& PRINT_ERROR = static_cast<void(*)(const char*)>(Debug::error); \
+	static constexpr auto& PRINTF_ERROR = ERROR_OUTPUTF;
 	
 /**
  * @brief Disable verbose debug.
@@ -212,9 +212,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_VERBOSE_DISABLE() \
-	constexpr auto& PRINTN = Debug::__dummy; \
-	constexpr auto& PRINT = Debug::__dummy; \
-	constexpr auto& PRINTF = Debug::__dummy;	
+	static constexpr auto& PRINTN = Debug::__dummy; \
+	static constexpr auto& PRINT = Debug::__dummy; \
+	static constexpr auto& PRINTF = Debug::__dummy;	
 
 /**
  * @brief Disable info debug.
@@ -222,9 +222,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_INFO_DISABLE() \
-	constexpr auto& PRINTN_INFO = Debug::__dummy; \
-	constexpr auto& PRINT_INFO = Debug::__dummy; \
-	constexpr auto& PRINTF_INFO = Debug::__dummy;	
+	static constexpr auto& PRINTN_INFO = Debug::__dummy; \
+	static constexpr auto& PRINT_INFO = Debug::__dummy; \
+	static constexpr auto& PRINTF_INFO = Debug::__dummy;	
 	
 /**
  * @brief Disable error debug.
@@ -232,9 +232,9 @@ namespace Debug
  * \addtogroup Debug
  */
 #define DEBUG_ERROR_DISABLE() \
-	constexpr auto& PRINTN_ERROR = Debug::__dummy; \
-	constexpr auto& PRINT_ERROR = Debug::__dummy; \
-	constexpr auto& PRINTF_ERROR = Debug::__dummy;		
+	static constexpr auto& PRINTN_ERROR = Debug::__dummy; \
+	static constexpr auto& PRINT_ERROR = Debug::__dummy; \
+	static constexpr auto& PRINTF_ERROR = Debug::__dummy;		
 
 
 

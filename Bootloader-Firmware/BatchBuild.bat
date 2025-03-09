@@ -1,1 +1,0 @@
-make -f .\Builds\Build_Template.mk -j48

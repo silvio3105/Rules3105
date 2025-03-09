@@ -1,17 +1,10 @@
 
-# ABOUT
+# About
 
-This repo contains a template I use for application projects. Template includes:
-- Makefile template with RTOS support for building the application
-- RTX5 files with CMSIS-RTOS2 API
-- Readme file
-- License file
-- Git ignore file
-- Project folder structure
-- Set of coding rules I follow in embedded software development
+This repo contains rules I obey in my projects.
 
 
-# APPLICATION LAYERS
+# Application layers
 
 <p align="center">
   <img src=".docs/Application%20layers.png" alt="Application layers diagram" title="Application layers diagram" />
@@ -41,133 +34,13 @@ Application layer is made from RTOS tasks(or just `main` "task" in bare metal). 
 Application layer glues different modules together and creates functional application. 
 
 
-# PROJECT FOLDER STRUCTURE
+# Project templates
 
-### Application project folder structure
-
-- 📂 **{Project_name}**: Root folder.
-    - 📂 **.builds**: Folder with compiler and linker files from building process.
-        - 📂 **{Build_name}**: Folder for build type.
-    - 📂 **.git**: Git folder.
-    - 📂 **.jlink**: Folder with J-Link scripts for flash and erase.
-    - 📂 **.outputs**: Folder with build executables(BIN and HEX files + MAP file).
-    - 📂 **.releases**: Folder with stable releases(one release per folder, BIN and HEX files + MAP file).
-        - 📂 **RC**: Folder with release candidate releases(one release per folder, BIN and HEX files + MAP file).
-    - 📂 **.vscode**: Folder with VS Code config files.
-        - c_cpp_properties.json: C/C++ config.
-        - launch.json: File with configs for debugging.
-    - 📂 **Application**: Folder with application layer source files.
-        - 📂 **Inc**: Folder with application layer header files.
-            - main.h: Legacy main header file.
-            - Main.hpp: Main header file.
-        - Main.cpp: Main source file with application entry point.
-    - 📂 **Builds**: Folder with Make file for each build type.
-        - {Build_name}.mk: Make file for build type.
-    - 📂 **CMSIS**: Folder with CMSIS-related files.
-    - 📂 **Config**: Folder with application configuration files.
-        - AppConfig.hpp: Header file with application config(common to all hardware builds).
-        - AppConfig.mk: Make file with application build config(common to all hardware builds).
-    - 📂 **Documentation**: Folder with application documentation generated with Doxygen and files used for documentation.
-    - 📂 **Drivers**: Folder with driver source files.
-        - 📂 **Inc**: Folder with driver header files.
-    - 📂 **Hardware**: Folder with application-related hardware config header files and MCU SDK files.
-        - 📂 **{HW_name}**: Folder with MCU files.
-            - 📂 **Inc**: Folder with MCU SDK header files.
-            - 📂 **Linker**: Folder with MCU linker script files. 
-            - 📂 **Src**: Folder with MCU SDK source files. 
-            - 📂 **Startup**: Folder with MCU startup files.
-            - 📂 **SVD**: Folder with MCU system view description file. 
-            - {HW_name}.mk: Make file for this hardware build.
-            - {HW_name}.hpp: Header file with hardware build config.
-    - 📂 **Libraries**: Folder with library source files.
-        - 📂 **Inc**: Folder with library header files.
-    - 📂 **Make**: Folder with Make files.
-        - Backend.mk: File with build process and Make actions, shared across all builds.
-        - Config.mk: File with Make config, shared across all builds.
-    - 📂 **Modules**: Folder with application modules source files.
-        - 📂 **Inc**: Folder with application modules header files.
-    - 📂 **RTOS**: Folder with RTOS-related files.
-        - 📂 **{RTOS_name}**: RTOS name(eg., RTX5, FreeRTOS).
-          	- 📂 **Inc**: Folder with RTOS header files.
-            - 📂 **IRQ**: Folder with RTOS IRQ files.  
-    - .gitignore: List of items for Git to ignore.
-    - BatchBuild.bat: Batch script file for batch build.
-    - Doxyfile: Doxygen project file.
-    - LICENSE: Project license.
-    - README.md: Project readme file.
-
-### Driver/library project folder structure
-
-- 📂 **{Project_name}**: Root folder.
-    - 📂 **.git**: Git folder.
-    - 📂 **.vscode**: Folder with VS Code config files.
-    - 📂 **Documentation**: Folder with project documentation generated with Doxygen and files used for documentation.
-    - 📂 **Example**: Folder with project example files. 
-    - .gitignore: List of items for Git to ignore.
-    - Doxyfile: Doxygen project file.
-    - LICENSE: Project license.
-    - README.md: Project readme file.
-    - {Project_name}.cpp: Driver/library source file.
-    - {Project_name}.hpp: Driver/library header file.
+- [Application template](https://github.com/silvio3105/AppTemplate)
+- [Library/driver template](https://github.com/silvio3105/LibTemplate)
 
 
-# Build
-
-ARM-GCC and Make are used for building the project. To build the project, type `make -f Builds/{Build_name}.mk` into terminal(CMD or PowerShell). Each build has its own build folder in `.builds` folder. Adding `-j{X}`, where `{x}` is number of jobs to create(~1.5 * number of CPU threads), will speed up the build process(eg., `make -f Builds/{Build_name}.mk -j48`). Every build will create `.bin` and `.hex` files(a.k.a. application executables) and copy them together with build `.map` file to `.outputs` folder.
-
-It's possible to add different options to `make` command. Supported options are:
-- `flash`: Flash the application onto MCU.
-- `erase`: Erase application part in MCU flash.
-- `erase_all`: Erase whole MCU flash.
-- `reset`: Reset the MCU.
-- `clean`: Delete the build folder from `.builds`, J-Link script files from `.jlink` folder and application executables from `.output` folder.
-- `clean_jlink`: Delete J-Link script files from `.jlink` folder.
-- `rtos_cfg`: Open the RTOS config file in CMSIS Config Wizard Java application.
-
-### Structure
-
-- **Build file**: Entry make file. Contains build specific config(eg., disabled debug, different optimization). Located in `Builds` folder.
-- **Hardware file**: Make file with hardware configuration. Contains hardware-related files, defines etc.. Shared between all builds for same hardware. Located in `Hardware/{HW_name}` folder.
-- **Application file**: Make file with application configuration. Contains application-related files, defines etc.. Shared between all builds. Located in `Config` folder.
-- **Backend**: Make file with build process. Contains options for `make` command. Located in `Make` folder. Shared between all builds and does not contain application or hardware configuration.
-- **Config**: Make file with configuration for build process. Located in `Make` folder. Shared between all builds and does not contain application or hardware configuration.
-
-### Batch build
-
-To do batch build, execute `BatchBuild.bat` batch script by typing `&.\BatchBuild.bat` to terminal.
-To add new builds to batch build script, write make command as described above.
-
-
-# DEBUG
-
-**Debug levels:**
-- Verbose: This level is used to print small steps inside function(s), eg., measured sensor value each second, return value of each function.
-- Info: This level is used to print debug stuff for events/actions, eg., when measured value from the sensor is above or below defined threshold. Will not enable verbose level. 
-- Error: This level is used to print debug stuff only when something fails, eg., when sensor init fails. Will not enable info and verbose levels.
-
-**Global debug build flags:**
-- `DEBUG`: Main flag for debug build. If not defined during compile/build, body of debug print handlers will be empty.
-- `DEBUG_VERBOSE`: Flag to enable verbose debug prints for whole build. 
-- `DEBUG_INFO`: Flag to enable info debug prints for whole build.
-- `DEBUG_ERROR`: Flag to enable error debug prints for whole build.
-- `DEBUG_SRC`: Define for header file name with debug handler declarations. Eg., `DEBUG_SRC=\"Debug.hpp\"`
-- `DEBUG_HANDLER_PRINT`: Define with name of handler for constant string print. Eg., `DEBUG_HANDLER_PRINT=log`. Function must be declared as `void (const char* string, const uint16_t len)` and `void (const char* string);`.
-- `DEBUG_HANDLER_PRINTF`: Define with name of handler for formatted string print. Eg., `DEBUG_HANDLER_PRINT=logf`. Function must be declared as `void (const char* string, ...)`.
-- `DEBUG_STACK_PRINTF`: Flag to use stack buffer in formatted string print handler.
-- `DEBUG_BUFFER_SIZE`: Define with formatted string buffer size in bytes. If not defined, buffer will be 128 bytes.
-
-**Local debug build flags:**
-- `DEBUG_X_L`: Flag to enable debug level `L` for the driver/libryry/module `X`. Eg., `DEBUG_ILPS22QS_INFO` will enable info debug for `ILPS22QS` driver. Wanted debug level must be enabled for whole build(in this case `DEBUG_INFO`) to work for selected driver/library/module.
-
-Debug-related code have to be removed in non-debug build.
-Debug implementation example:
-
-```cpp
-Soon
-```
-
-
-# VERSIONING & NAMING
+# Versioning & Naming
 ### Software versioning
 
 - **Application: vX.Y.Z(rcA)**
@@ -216,7 +89,7 @@ Every file is named with first uppercase letter(Main.cpp, not main.cpp).
 Files made for C++ have a .hpp header file, while C files have a .h header file.
 
 
-# TOOLS
+# Tools
 
 List of the tools I use (Windows 10 Pro x64):
 -	[VS Code](https://code.visualstudio.com/download)
@@ -257,7 +130,7 @@ It is required to add next environment variables:
 After adding variables, it is needed to log out from Windows account or reset whole PC.
 
 
-# CODE RULES
+# Code rules
 
 ### Indents
 
@@ -265,7 +138,7 @@ I prefer to use tabs for indents, size 4.
 
 ### C++ over C!
 
-I prefer to use C++ over C, but only parts of C++ that do not induce runtime overhead and bloat, eg., classes, namespaces, templates and enum classes! CRTP pattern for driver.
+I prefer to use C++ over C, but only parts of C++ that do not induce runtime overhead and bloat, eg., classes, namespaces, templates and enum classes! CRTP pattern for drivers.
 
 ### Code layout
 
@@ -421,18 +294,6 @@ Here's complete code example:
     ((_argOne) - (_argTwo))
 
 /*
-    C-style enum type is written in lowercase, spaces are replaced with underscores and the type name ends with "_t".
-    Enum values are written like defines.
-    Enum definition also contains data size(uint8_t, uint16_t, etc..).
-    Every value starts with an abbreviation(eg., "GSM_ERROR") if not placed inside the namespace.
-*/
-enum enum_type_t : uint8_t
-{
-    ENUM_ONE = 0,
-    ENUM_TWO
-};
-
-/*
     Same as classes:
     Enum value names in the enum class are named with uppercase letters for every word.
     Value names do not start with an abbreviation(eg., "ERROR", not "GSM_ERROR").
@@ -452,13 +313,12 @@ typedef void (*ExtHandler_f)(void);
 /*
     Same as enum classes but it ends with "_s".
     Struct members are named using rules for global variables.
-    Each member should have a default value.
     Structs are used only for data storage(no functions/methods).
 */
 struct ThisIsStruct_s
 {
-    uint8_t someVar = 1;
-    uint32_t* somePtr = nullptr;
+    uint8_t someVar;
+    uint32_t* somePtr;
 };
 
 /*
@@ -484,12 +344,12 @@ class ThisIsClass
 	// Here goes protected stuff (between public and private tag)
 
     private:
-    char someArray[] = "Array"; /**< @brief This is inline doxygen comment. */
+    char someArray[16]; /**< @brief This is inline doxygen comment. */
 
     inline void somePrivateFunction(void);
 };
 
-// Classic extern
+// Extern
 extern volatile uint8_t someVaraible;
 
 /*
@@ -572,7 +432,7 @@ void foo(void)
 }
 ```
 
-### Nested if statments?
+### Nested if statments
 
 I prefer less nested code. If I can check requirements before the function does its job, I do it.
 
